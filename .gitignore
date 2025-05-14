@@ -5,4 +5,4 @@ node_modules/
 # Bỏ qua folder config
 config/
 # Bỏ qua file deployment.yml
-deployment.yml
+deployments.yml
