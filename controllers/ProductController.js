@@ -171,14 +171,14 @@ exports.getProductById = async (req, res) => {
           {
             model: db.Attribute,
             as: "attribute",
-            attributes: ["id", "name"], // ➡ Lấy tên Attribute.
+            attributes: ["id", "name"], // ➡ Lấy thống tin của model.
           },
         ],
       },
       {
         model: db.ProductVariantValue,
         as: "variants",
-        attributes: ["id", "price", "old_price", "stock", "sku"], // ➡ Lấy các trường của ProductVariantValue.
+        attributes: ["id", "price", "old_price", "stock", "sku"], // ➡ Lấy thống tin của model.
       },
     ],
   });
@@ -200,7 +200,7 @@ exports.getProductById = async (req, res) => {
         {
           model: db.Variant, // ➡ Chỉ định model cần join.
           as: "variant", // ➡ Đặt tên alias cho mối quan hệ này.
-          attributes: ["id", "name"],
+          attributes: ["id", "name"], // ➡ Lấy thống tin của model.
         },
       ],
     });

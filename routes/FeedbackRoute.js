@@ -23,7 +23,7 @@ module.exports = (router) => {
     "/feedbacks",
     requireRoles([UserRole.USER, UserRole.ADMIN]),
     validate(InsertFeedbackRequest),
-    asyncHandler(FeedbackController.createFeedback)
+    asyncHandler(FeedbackController.insertFeedback)
   );
   router.put(
     "/feedbacks/:id",

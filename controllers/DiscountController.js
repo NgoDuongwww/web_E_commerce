@@ -70,13 +70,13 @@ exports.getDiscountById = async (req, res) => {
       // ↳ Kết hợp với bảng Brand và Category.
       {
         model: db.Brand, // ➡ Chỉ định model cần join.
-        required: true, // ➡ Là bắt buộc phải có dữ liệu trong bảng Brand.
-        attributes: ["name"], // ➡ Chỉ lấy trường name từ bảng Brand.
+        required: true, // ➡ Là bắt buộc phải có dữ liệu trong bảng.
+        attributes: ["name"], // ➡ Lấy thống tin của model.
       },
       {
         model: db.Category, // ➡ Chỉ định model cần join.
-        required: true, // ➡ Là bắt buộc phải có dữ liệu trong bảng Category.
-        attributes: ["name"], // ➡ Chỉ lấy trường name từ bảng Category.
+        required: true, // ➡ Là bắt buộc phải có dữ liệu trong bảng.
+        attributes: ["name"], // ➡ Lấy thống tin của model.
       },
     ],
   });

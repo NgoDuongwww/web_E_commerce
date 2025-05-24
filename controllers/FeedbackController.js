@@ -15,15 +15,16 @@ exports.getFeedbacks = async (req, res) => {
       limit: pageSize, // ➡ Giới hạn số lượng danh mục lấy về.
       offset: offset, // ➡ Bỏ qua số lượng danh mục đã chỉ định.
       include: [
-        // ↳ Kết hợp với các bảng khác:
         {
-          model: db.User, // ➡ Chỉ định model cần join.
+          model: db.User, // ➡ Chị định model cần join.
+          attributes: ["name", "avatar"], // ➡ Lấy thống tin của model.
         },
         {
-          model: db.Product, // ➡ Chỉ định model cần join.
+          model: db.Product, // ➡ Chị định model cần join.
+          attributes: ["name", "image"], // ➡ Lấy thống tin của model.
         },
         {
-          model: db.Order, // ➡ Chỉ định model cần join.
+          model: db.Order, // ➡ Chị định model cần join.
         },
       ],
     }),
@@ -40,9 +41,38 @@ exports.getFeedbacks = async (req, res) => {
   });
 };
 
-exports.getFeedbackById = async (req, res) => {};
+exports.getFeedbackById = async (req, res) => {
+  const { id } = req.params; // ➡ Lấy id từ params (đường dẫn).
+  const feedbackExists = await db.FeedBack.findByPk(id, {
+    include: [
+      {
+        model: db.User, // ➡ Chị định model cần join.
+        attributes: ["name", "avatar"], // ➡ Lấy thống tin của model.
+      },
+      {
+        model: db.Product, // ➡ Chị định model cần join.
+        attributes: ["name", "image"], // ➡ Lấy thống tin của model.
+      },
+      {
+        model: db.Order, // ➡ Chị định model cần join.
+      },
+    ],
+  }); // Tìm phản hồi theo id chính (Primary Key).
+  if (!feedbackExists) {
+    return res.status(404).json({
+      // ↳ Trả về status 404 Not Found.
+      message: "Không tìm thấy phản hồi",
+    });
+  }
 
-exports.createFeedback = async (req, res) => {
+  return res.status(200).json({
+    // ↳ Trả về status 200 OK.
+    message: "Lấy phản hồi thành công",
+    data: feedbackExists, // ➡ Thông tin phản hồi.
+  });
+};
+
+exports.insertFeedback = async (req, res) => {
   const { product_variant_id, user_id, order_id, star } = req.body; // ➡ Lấy dữ liệu từ body.
 
   const productExists = await db.ProductVariantValue.findByPk(
@@ -131,9 +161,9 @@ exports.createFeedback = async (req, res) => {
 
 exports.deleteFeedback = async (req, res) => {
   const { id } = req.params; // ➡ Lấy id từ params (đường dẫn).
-  const UserValid = req.user; // ➡ Lấy thông tin người dùng từ token.
+  const UserValid = req.user; // ➡ Lấy người dùng muốn hành động.
 
-  const feedbackExists = await db.FeedBack.findByPk(id); // ➡ Tìm kiếm phản hồi theo id.
+  const feedbackExists = await db.FeedBack.findByPk(id); // Tìm phản hồi theo id chính (Primary Key).
   if (!feedbackExists) {
     return res.status(404).json({
       // ↳ Trả về status 404 Not Found.
@@ -142,31 +172,73 @@ exports.deleteFeedback = async (req, res) => {
   }
 
   if (UserValid.role === UserRole.USER) {
-    // ↳ Kiểm tra xem người dùng có phải là người dùng không.
+    // ↳ kiểm tra xem người dùng muốn hành động có phải người dùng hay không.
     if (feedbackExists.user_id !== UserValid.id) {
-      // ↳ Kiểm tra xem phản hồi có thuộc về người dùng không.
+      // ↳ kiểm tra xem người dùng muốn hành động có phải người dùng tạo phản hồi nây hay không.
       return res.status(403).json({
         // ↳ Trả về status 403 Forbidden.
         message: "Bạn không có quyền xóa phản hồi này",
       });
     }
 
-    await db.FeedBack.update({
-      // ↳ Cập nhật phản hồi.
-      where: { id },
-      data: { is_visible: false },
-    });
+    await db.FeedBack.update(
+      // ↳ Cập nhật phản hồi theo id trong database.
+      { is_visible: false },
+      { where: { id } }
+    );
     return res.status(200).json({
       // ↳ Trả về status 200 OK.
       message: "Xóa phản hồi thành công",
     });
   }
 
-  await db.FeedBack.destroy({ where: id }); // ➡ Xoá phẩn hồi theo id
+  await db.FeedBack.destroy(
+    // ↳ Xóa phản hồi theo id trong database.
+    { where: { id } }
+  );
   return res.status(200).json({
     // ↳ Trả về status 200 OK.
     message: "Xóa phản hồi người dùng thành công",
   });
 };
 
-exports.updateFeedback = async (req, res) => {};
+exports.updateFeedback = async (req, res) => {
+  const { id } = req.params; // ➡ Lý id từ params (đường dẫn).
+  const UserValid = req.user; // ➡ Lý người dùng muốn hành động.
+
+  const feedbackExists = await db.FeedBack.findOne({
+    where: {
+      id,
+      is_visible: true,
+    },
+  }); // Tìm phản hồi theo id chính (Primary Key).
+  if (!feedbackExists) {
+    return res.status(404).json({
+      // ↳ Trả về status 404 Not Found.
+      message: "Không tìm thấy phản hồi",
+    });
+  }
+
+  if (UserValid.role === UserRole.USER) {
+    // ↳ kiểm tra xem người dùng muốn hành động có phải người dùng hay không.
+    if (feedbackExists.user_id !== UserValid.id) {
+      // ↳ kiểm tra xem người dùng muốn hành động có phải người dùng tạo phản hồi nây hay không.
+      return res.status(403).json({
+        // ↳ Trả về status 403 Forbidden.
+        message: "Bạn không có quyền cập nhật phản hồi nây",
+      });
+    }
+  }
+
+  const { star, content } = req.body; // ➡ Lấy star và content từ body.
+  await db.FeedBack.update(
+    // ↳ Cập nhật phản hồi theo id trong database.
+    { star, content },
+    { where: { id } }
+  );
+
+  return res.status(200).json({
+    // ↳ Trả về status 200 OK.
+    message: "Cập nhật phản hồi người dùng thành công",
+  });
+};

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 22, 2025 at 04:23 PM
+-- Generation Time: May 24, 2025 at 03:43 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -237,8 +237,31 @@ CREATE TABLE `feedbacks` (
   `content` text,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `is_visible` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1: visible, 2: invisible'
+  `is_visible` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1: visible, 0: invisible',
+  `order_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `feedbacks`
+--
+
+INSERT INTO `feedbacks` (`id`, `product_id`, `user_id`, `star`, `content`, `created_at`, `updated_at`, `is_visible`, `order_id`) VALUES
+(1, 9, 2, 1, 'abc', '2025-05-23 15:18:10', '2025-05-24 15:37:39', 0, 2),
+(2, 9, 1, 5, NULL, '2025-05-23 15:19:35', '2025-05-23 15:19:35', 1, 2),
+(4, 9, 1, 5, NULL, '2025-05-23 15:20:25', '2025-05-23 15:20:25', 1, 2),
+(5, 9, 1, 5, NULL, '2025-05-23 15:20:33', '2025-05-23 15:20:33', 1, 2),
+(6, 9, 1, 3, NULL, '2025-05-23 15:21:05', '2025-05-23 15:21:05', 1, 2),
+(7, 9, 1, 3, NULL, '2025-05-23 15:21:51', '2025-05-23 15:21:51', 1, 2),
+(8, 9, 1, 3, NULL, '2025-05-23 15:21:52', '2025-05-23 15:21:52', 1, 2),
+(9, 9, 1, 3, NULL, '2025-05-23 15:21:53', '2025-05-23 15:21:53', 1, 2),
+(10, 9, 1, 3, NULL, '2025-05-23 15:21:54', '2025-05-23 15:21:54', 1, 2),
+(11, 9, 1, 3, NULL, '2025-05-23 15:23:02', '2025-05-23 15:23:02', 1, 2),
+(12, 9, 1, 3, NULL, '2025-05-23 15:24:04', '2025-05-23 15:24:04', 1, 2),
+(13, 8, 1, 3, NULL, '2025-05-23 15:25:06', '2025-05-23 15:25:06', 1, 2),
+(14, 2, 1, 3, NULL, '2025-05-23 15:26:31', '2025-05-23 15:26:31', 1, 2),
+(15, 2, 1, 3, NULL, '2025-05-23 15:27:41', '2025-05-23 15:27:41', 1, 9),
+(16, 2, 1, 3, NULL, '2025-05-23 15:30:20', '2025-05-23 15:30:20', 1, 9),
+(17, 3, 1, 3, NULL, '2025-05-23 15:57:17', '2025-05-23 15:57:17', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -386,7 +409,7 @@ CREATE TABLE `products` (
   `total_sold` int NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `is_visible` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1: Visible, 2: Invisible'
+  `is_visible` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1: Visible, 0: Invisible'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -394,14 +417,14 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `image`, `description`, `buyturn`, `brand_id`, `category_id`, `rating`, `total_ratings`, `total_sold`, `created_at`, `updated_at`, `is_visible`) VALUES
-(2, 'Đồng hồ thông minh Xiaomi Mi Watch', '1745938789881-ronaldo-drinking.jpg', 'Xiaomi Mi Watch – Đồng hồ thông minh thiết kế cao cấp, tích hợp GPS, cảm biến SpO2, đo nhịp tim liên tục, hỗ trợ 117 chế độ luyện tập, khả năng chống nước 5ATM.', 523, 3, 4, 0, 0, 0, '2025-05-12 15:25:47', '2025-05-12 15:25:47', 1),
-(3, 'Samsung Galaxy S21', '1745938789881-ronaldo-drinking.jpg', 'Samsung Galaxy S21 – Smartphone cao cấp với màn hình Dynamic AMOLED 2X, camera 64MP, hỗ trợ 5G, pin 4000mAh, hỗ trợ sạc nhanh 25W.', 152, 1, 1, 0, 0, 0, '2025-05-12 15:56:26', '2025-05-12 15:56:26', 1),
+(2, 'Đồng hồ thông minh Xiaomi Mi Watch', '1745938789881-ronaldo-drinking.jpg', 'Xiaomi Mi Watch – Đồng hồ thông minh thiết kế cao cấp, tích hợp GPS, cảm biến SpO2, đo nhịp tim liên tục, hỗ trợ 117 chế độ luyện tập, khả năng chống nước 5ATM.', 523, 3, 4, 3, 3, 0, '2025-05-12 15:25:47', '2025-05-23 15:30:20', 0),
+(3, 'Samsung Galaxy S21', '1745938789881-ronaldo-drinking.jpg', 'Samsung Galaxy S21 – Smartphone cao cấp với màn hình Dynamic AMOLED 2X, camera 64MP, hỗ trợ 5G, pin 4000mAh, hỗ trợ sạc nhanh 25W.', 152, 1, 1, 0, 0, 0, '2025-05-12 15:56:26', '2025-05-23 15:57:17', 1),
 (4, 'Iphone 16', '1745938789881-ronaldo-drinking.jpg', 'Iphone 16', 321, 1, 2, 0, 0, 0, '2025-05-12 15:57:52', '2025-05-20 15:23:25', 1),
 (5, 'MacBook Pro 16-inch', '1745938789881-ronaldo-drinking.jpg', 'MacBook Pro 16-inch với chip M1 Pro, hiệu năng mạnh mẽ cho công việc sáng tạo và lập trình.', 120, 1, 2, 0, 0, 0, '2025-05-20 08:30:01', '2025-05-20 08:30:01', 1),
 (6, 'MacBook Air 13-inch', '1745938789881-ronaldo-drinking.jpg', 'MacBook Air 13-inch với chip M2, thiết kế mỏng nhẹ, hiệu năng ổn định cho công việc hàng ngày và học tập.', 96, 1, 2, 0, 0, 21, '2025-05-20 08:36:09', '2025-05-22 16:14:09', 1),
 (7, 'Canon EOS R7', '1745938789881-ronaldo-drinking.jpg', 'Canon EOS R7 là máy ảnh mirrorless APS-C cao cấp, phù hợp cho nhiếp ảnh gia chuyên nghiệp và bán chuyên.', 75, 7, 6, 0, 0, 0, '2025-05-20 12:54:12', '2025-05-20 12:54:12', 1),
-(8, 'Dell XPS 15', '1745938789881-ronaldo-drinking.jpg', 'Dell XPS 15 sở hữu thiết kế cao cấp, hiệu năng mạnh mẽ với chip Intel Core i7 thế hệ 13, phù hợp cho công việc nặng và sáng tạo nội dung.', 80, 8, 2, 0, 0, 0, '2025-05-20 13:21:36', '2025-05-20 13:21:36', 1),
-(9, 'Vivo V27 5G', '1745938789881-ronaldo-drinking.jpg', 'Vivo V27 5G với thiết kế mỏng nhẹ, camera ấn tượng và hiệu năng mạnh mẽ nhờ chip Dimensity 7200.', 210, 4, 1, 0, 0, 0, '2025-05-20 13:28:07', '2025-05-20 13:28:07', 1),
+(8, 'Dell XPS 15', '1745938789881-ronaldo-drinking.jpg', 'Dell XPS 15 sở hữu thiết kế cao cấp, hiệu năng mạnh mẽ với chip Intel Core i7 thế hệ 13, phù hợp cho công việc nặng và sáng tạo nội dung.', 80, 8, 2, 3, 1, 0, '2025-05-20 13:21:36', '2025-05-23 15:25:06', 1),
+(9, 'Vivo V27 5G', '1745938789881-ronaldo-drinking.jpg', 'Vivo V27 5G với thiết kế mỏng nhẹ, camera ấn tượng và hiệu năng mạnh mẽ nhờ chip Dimensity 7200.', 210, 4, 1, 5, 11, 0, '2025-05-20 13:28:07', '2025-05-23 15:24:04', 1),
 (10, 'Vivo X80 Pro', '1745938789881-ronaldo-drinking.jpg', 'Vivo X80 Pro với camera ZEISS, chip Snapdragon 8 Gen 1, màn hình AMOLED 6.78 inch, hiệu năng mạnh mẽ và thiết kế sang trọng.', 180, 4, 1, 0, 0, 0, '2025-05-20 13:34:15', '2025-05-20 13:34:15', 1),
 (17, 'Vivo V25 5G', '1745938789881-ronaldo-drinking.jpg', 'Vivo V25 5G với thiết kế đổi màu độc đáo, camera chính 64MP, chip MediaTek Dimensity 900, màn hình AMOLED 6.44 inch.', 150, 4, 1, 0, 0, 0, '2025-05-20 15:22:01', '2025-05-20 15:22:01', 1);
 
@@ -522,7 +545,7 @@ CREATE TABLE `product_variant_values` (
   `sku` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `is_visible` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1: Visible, 2: Invisible'
+  `is_visible` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1: Visible, 0: Invisible'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -786,7 +809,8 @@ ALTER TABLE `discounts`
 ALTER TABLE `feedbacks`
   ADD PRIMARY KEY (`id`),
   ADD KEY `product_id` (`product_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `fk_feedbacks_orders_id` (`order_id`);
 
 --
 -- Indexes for table `news`
@@ -932,7 +956,7 @@ ALTER TABLE `discounts`
 -- AUTO_INCREMENT for table `feedbacks`
 --
 ALTER TABLE `feedbacks`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `news`
@@ -1036,7 +1060,8 @@ ALTER TABLE `discounts`
 --
 ALTER TABLE `feedbacks`
   ADD CONSTRAINT `feedBacks_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `feedBacks_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `feedBacks_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_feedbacks_orders_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `newsdetails`
