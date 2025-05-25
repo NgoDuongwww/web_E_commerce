@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const { Op } = Sequelize;
 const db = require("../models");
-const { BannerStatus } = require("../constants");
+const { BannerStatus, UserRole } = require("../constants");
 const { getAvatarUrl } = require("../helpers");
 
 exports.getBanners = async (req, res) => {
@@ -9,12 +9,35 @@ exports.getBanners = async (req, res) => {
   const pageSize = 5; // Hiển thị 5 banner mỗi trang.
   const offset = (page - 1) * pageSize; // offset là số banner cần bỏ qua.
 
-  let whereClause = {}; // Tạo điều kiện lọc (WHERE) cho câu truy vấn.
+  let whereClause = {}; // ➡ Tạo điều kiện lọc (WHERE) cho câu truy vấn.
+
+  const checkRole = req.user && req.user.role === UserRole.ADMIN; // Kiểm tra quyền người dùng.
+
+  if (!checkRole) {
+    // ↳ Kiểm tra quyen người dùng. Nếu người dùng Không có quyền, lọc theo is_visible = true.
+    whereClause = {
+      status: BannerStatus.ACTIVE,
+    };
+  }
+
   if (search.trim() !== "") {
     // ↳ Nếu search không rộng, thì lọc banner theo name chứa chuỗi search.
-    whereClause = {
+    const searchCondition = {
       name: { [Op.like]: `%${search}%` }, // Tìm banner có name chứa từ khóa search.
     };
+
+    if (checkRole) {
+      // ↳ Kiểm tra quyền người dùng.
+      whereClause = {
+        // ↳ Tạo điều kiện lọc (WHERE) cho câu truy vấn.
+        ...whereClause,
+        [Op.and]: [searchCondition], // Tìm banner theo name chứa từ khóa search.
+      };
+    } else {
+      whereClause = {
+        [Op.and]: [{ status: BannerStatus.ACTIVE }, searchCondition], // Tìm banner theo name chứa từ khóa search theo status = ACTIVE.
+      };
+    }
   }
 
   const [banners, totalBanners] = await Promise.all([

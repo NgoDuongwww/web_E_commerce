@@ -16,13 +16,8 @@ module.exports = (router) => {
   const UpdateProductRequest = require("../dto/requests/product/UpdateProductRequest.js");
 
   router.get(
-    "/admin/products", // ➡ tạo routes GET /products.
-    asyncHandler(ProductController.getProductsByAdmin) // ➡ asyncHandler để tự động bắt lỗi trong getProductsByAdmin.
-  );
-
-  router.get(
     "/products", // ➡ tạo routes GET /products.
-    asyncHandler(ProductController.getProductsByUser) // ➡ asyncHandler để tự động bắt lỗi trong getProductsByUser.
+    asyncHandler(ProductController.getProducts) // ➡ asyncHandler để tự động bắt lỗi trong getProducts.
   );
   router.get(
     "/products/:id", // ➡ tạo routes GET /products/:id.

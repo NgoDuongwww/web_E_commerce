@@ -4,22 +4,46 @@ const db = require("../models");
 const { getAvatarUrl } = require("../helpers");
 const { UserRole } = require("../constants");
 
-exports.getProductsByAdmin = async (req, res) => {
+exports.getProducts = async (req, res) => {
   const { search = "", page = 1 } = req.query; // ➡ Lấy search (chuỗi tìm kiếm) và page (trang hiện tại) từ query URL. Mặc định search = "", page = 1.
   const pageSize = 5; // ➡ Hiển thị 5 sản phẩm mỗi trang.
   const offset = (page - 1) * pageSize; // ➡ offset là số sản phẩm cần bỏ qua.
 
   let whereClause = {}; // ➡ Tạo điều kiện lọc (WHERE) cho câu truy vấn.
   let attributeWhereClause = {}; // ➡ Tạo điều kiện lọc (WHERE) cho thuộc tính.
+
+  const checkRole = req.user && req.user.role === UserRole.ADMIN; // ➡ Kiểm tra quyền người dùng.
+
+  if (!checkRole) {
+    // ↳ Kiểm tra quyen người dùng. Nếu người dùng Không có quyền, lọc theo is_visible = true.
+    whereClause = {
+      is_visible: true,
+    };
+  }
+
   if (search.trim() !== "") {
     // ↳ Nếu search không rỗng, thì lọc danh mục theo name chứa chuỗi search.
-    whereClause = {
+    const searchCondition = {
       [Op.or]: [
         // ↳ Tạo điều kiện lọc theo OR cho nhiều cột.
         { name: { [Op.like]: `%${search}%` } }, // ➡ Tìm sản phẩm có name chứa từ khóa search.
         { description: { [Op.like]: `%${search}%` } }, // ➡ Hoặc description chứa search.
       ],
     };
+
+    if (checkRole) {
+      // ↳ Kiểm tra quyền người dùng.
+      whereClause = {
+        // ↳ Tạo điều kiện lọc cho bảng Product.
+        ...whereClause,
+        [Op.and]: [searchCondition], // ➡ Tìm sản phẩm theo name, description chứa từ khóa search.
+      };
+    } else {
+      whereClause = {
+        [Op.and]: [{ is_visible: true }, searchCondition], // ➡ Tìm sản phẩm theo name, description chứa từ khóa search có is_visible = true.
+      };
+    }
+
     attributeWhereClause = {
       // ↳ Tạo điều kiện lọc cho thuộc tính.
       value: { [Op.like]: `%${search}%` }, // ➡ Tìm thuộc tính có name chứa từ khóa search.
@@ -30,83 +54,7 @@ exports.getProductsByAdmin = async (req, res) => {
     // ↳ Chạy song song 2 truy vấn:
     db.Product.findAll({
       // ↳ Lấy danh sách sản phẩm (theo phân trang và lọc nếu có).
-      where: whereClause, // ➡ Tìm sản phẩm theo name, description chúa từ khóa search.
-      include: [
-        {
-          model: db.ProductAttributeValue, // ➡ Kết hợp với bảng ProductAttributeValue.
-          as: "attributes", // ➡ Đặt tên alias cho mối quan hệ này.
-          include: [{ model: db.Attribute, as: "attribute" }], // ➡ Kết hợp với bảng Attribute.
-          where: attributeWhereClause, // ➡ Tìm thuộc tính theo name chứa từ khóa search.
-          required: false, // ➡ Không bắt buộc phải có thuộc tính.
-        },
-      ],
-      limit: pageSize,
-      offset: offset,
-    }),
-    db.Product.count({
-      // ↳ Đếm tổng số sản phẩm (để tính tổng số trang).
-      where: whereClause, // ➡ Tìm sản phẩm theo name, description chúa từ khóa search.
-    }),
-  ]);
-
-  return res.status(200).json({
-    // ↳ Trả về phản hồi JSON với mã trạng thái HTTP 200 OK.
-    message: "Lấy danh sách sản phẩm thành công",
-    data: products.map((product) => ({
-      // ↳ Trả về mảng bài viết (mảng object) bao góc bảng product.
-      ...product.get({ plain: true }),
-      // ↳ .get({ plain: true }) sẽ chuyển instance đó thành một JavaScript object bình thường,
-      // ↳ chỉ chứa dữ liệu thực (không kèm các method và metadata của Sequelize).
-      image: getAvatarUrl(product.image), // ➡ Lấy URL hình ảnh bảng product.
-      attributes: (product.attributes || []).map((attr) => ({
-        // ↳ Lấy tất cả thống tính của sản phẩm (attributes).
-        // ↳ Với mỗi phần tử attr, tạo object mới.
-        name: attr.attribute?.name || "", // ➡ Lấy tên Attribute (nếu không có thì gán rỗng).
-        value: attr.value, // ➡ Lấy giá trị Attribute.
-      })),
-    })),
-    current_page: parseInt(page, 10), // ➡ trang hiện tại.
-    total_page: Math.ceil(totalProducts / pageSize), // ➡ tổng số trang (ceil để làm tròn lên).
-    total: totalProducts, // ➡ tổn số sản phẩm.
-  });
-};
-
-exports.getProductsByUser = async (req, res) => {
-  const { search = "", page = 1 } = req.query; // ➡ Lấy search (chuỗi tìm kiếm) và page (trang hiện tại) từ query URL. Mặc định search = "", page = 1.
-  const pageSize = 5; // ➡ Hiển thị 5 sản phẩm mỗi trang.
-  const offset = (page - 1) * pageSize; // ➡ offset là số sản phẩm cần bỏ qua.
-
-  let whereClause = {
-    // ↳ Tạo điều kiện lọc (WHERE) cho câu truy vấn.
-    is_visible: true, // ➡ Chỉ lấy sản phẩm có is_visible = true.
-  };
-  let attributeWhereClause = {}; // ➡ Tạo điều kiện lọc (WHERE) cho thuộc tính.
-  if (search.trim() !== "") {
-    // ↳ Nếu search không rỗng, thì lọc danh mục theo name chứa chuỗi search.
-    whereClause = {
-      [Op.and]: [
-        // ↳ Tạo điều kiện lọc theo AND cho nhiều cột.
-        { is_visible: true }, // ➡ Chỉ lấy sản phẩm có is_visible = true.
-        {
-          [Op.or]: [
-            // ↳ Tạo điều kiện lọc theo OR cho nhiều cột.
-            { name: { [Op.like]: `%${search}%` } }, // ➡ Tìm sản phẩm có name chứa từ khóa search.
-            { description: { [Op.like]: `%${search}%` } }, // ➡ Hoặc description chứa search.
-          ],
-        },
-      ],
-    };
-    attributeWhereClause = {
-      // ↳ Tạo điều kiện lọc cho thuộc tính.
-      value: { [Op.like]: `%${search}%` }, // ➡ Tìm thuộc tính có name chứa từ khóa search.
-    };
-  }
-
-  const [products, totalProducts] = await Promise.all([
-    // ↳ Chạy song song 2 truy vấn:
-    db.Product.findAll({
-      // ↳ Lấy danh sách sản phẩm (theo phân trang và lọc nếu có).
-      where: whereClause, // ➡ Tìm sản phẩm theo name, description chúa từ khóa search.
+      where: whereClause, // ➡ Tìm sản phẩm theo name, description chứa từ khóa search.
       include: [
         {
           model: db.ProductAttributeValue, // ➡ Kết hợp với bảng ProductAttributeValue.
@@ -122,7 +70,7 @@ exports.getProductsByUser = async (req, res) => {
     }),
     db.Product.count({
       // ↳ Đếm tổng số sản phẩm (để tính tổng số trang).
-      where: whereClause, // ➡ Tìm sản phẩm theo name, description chúa từ khóa search.
+      where: whereClause, // ➡ Tìm sản phẩm theo name, description chứa từ khóa search.
     }),
   ]);
 
@@ -155,8 +103,9 @@ exports.getProductById = async (req, res) => {
   // name, description, or description, constain "search"
 
   const { id } = req.params; // ➡ Lấy id từ params (đường dẫn).
-  const productById = await db.Product.findByPk(id, {
+  const productById = await db.Product.findOne({
     // ↳ Tìm sản phẩm theo id (khóa chính) trong database.
+    where: { id, is_visible: true },
     include: [
       // ↳ Kết hợp với bảng ProductImage, ProductAttributeValue, ProductVariantValue.
       {
