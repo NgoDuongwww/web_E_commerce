@@ -15,8 +15,25 @@ module.exports = (router) => {
   const InsertBannerRequest = require("../dto/requests/banner/InsertBannerRequest.js");
   const UpdateBannerRequest = require("../dto/requests/banner/UpdateBannerRequest.js");
 
-  router.get("/banners", asyncHandler(BannerController.getBanners));
-  router.get("/banners/:id", asyncHandler(BannerController.getBannerById));
+  // Admin
+  router.get(
+    "/admin/banners",
+    requireRoles([UserRole.ADMIN]),
+    asyncHandler(BannerController.getBannersForAdmin)
+  );
+  router.get(
+    "/admin/banners/:id",
+    requireRoles([UserRole.ADMIN]),
+    asyncHandler(BannerController.getBannerByIdForAdmin)
+  );
+
+  // Public
+  router.get("/banners", asyncHandler(BannerController.getBannersForPublic));
+  router.get(
+    "/banners/:id",
+    asyncHandler(BannerController.getBannerByIdForPublic)
+  );
+
   router.post(
     "/banners",
     requireRoles([UserRole.ADMIN]),

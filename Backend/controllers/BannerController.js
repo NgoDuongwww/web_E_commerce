@@ -2,78 +2,64 @@ const Sequelize = require("sequelize");
 const { Op } = Sequelize;
 const db = require("../models");
 const { BannerStatus, UserRole } = require("../constants");
-const { getAvatarUrl } = require("../helpers");
+const { getAvatarUrl, getBanners } = require("../helpers");
 
-exports.getBanners = async (req, res) => {
-  const { search = "", page = 1 } = req.query; // Lấy search (chuỗi tìm kiếm) và page (trang hiện tại) từ query URL. Mặc định search = "", page = 1.
-  const pageSize = 5; // Hiển thị 5 banner mỗi trang.
-  const offset = (page - 1) * pageSize; // offset là số banner cần bỏ qua.
-
-  let whereClause = {}; // ➡ Tạo điều kiện lọc (WHERE) cho câu truy vấn.
-
-  const checkRole = req.user && req.user.role === UserRole.ADMIN; // Kiểm tra quyền người dùng.
-
-  if (!checkRole) {
-    // ↳ Kiểm tra quyen người dùng. Nếu người dùng Không có quyền, lọc theo is_visible = true.
-    whereClause = {
-      status: BannerStatus.ACTIVE,
-    };
-  }
-
-  if (search.trim() !== "") {
-    // ↳ Nếu search không rộng, thì lọc banner theo name chứa chuỗi search.
-    const searchCondition = {
-      name: { [Op.like]: `%${search}%` }, // Tìm banner có name chứa từ khóa search.
-    };
-
-    if (checkRole) {
-      // ↳ Kiểm tra quyền người dùng.
-      whereClause = {
-        // ↳ Tạo điều kiện lọc (WHERE) cho câu truy vấn.
-        ...whereClause,
-        [Op.and]: [searchCondition], // Tìm banner theo name chứa từ khóa search.
-      };
-    } else {
-      whereClause = {
-        [Op.and]: [{ status: BannerStatus.ACTIVE }, searchCondition], // Tìm banner theo name chứa từ khóa search theo status = ACTIVE.
-      };
-    }
-  }
-
-  const [banners, totalBanners] = await Promise.all([
-    // ↳ Chạy song song 2 truy vấn:
-    db.Banner.findAll({
-      // ↳ Lấy danh sách banner (theo phân trang và lọc nếu có).
-      where: whereClause, // Tìm banner theo name chứa từ khóa search.
-      limit: pageSize,
-      offset: offset,
-    }),
-    db.Banner.count({
-      // ↳ Đếm tổng số banner (để tính tổng số trang).
-      where: whereClause, // Tìm banner theo name chứa từ khóa search.
-    }),
-  ]);
+exports.getBannersForAdmin = async (req, res) => {
+  const { search, page } = req.query;
+  const result = await getBanners({ search, page, checkRole: UserRole.ADMIN  });
 
   return res.status(200).json({
-    // ↳ Trả về status 200 OK.
     message: "Lấy danh sách banner thành công",
-    data: banners.map((banner) => ({
-      // ↳ Trả về mảng bài viết (mảng object) bao góc bảng banner.
-      ...banner.get({ plain: true }),
-      // ↳ .get({ plain: true }) sẽ chuyển instance đó thành một JavaScript object bình thường,
-      // ↳ chỉ chứa dữ liệu thực (không kèm các method và metadata của Sequelize).
-      image: getAvatarUrl(banner.image), // ➡ Lấy URL hình anh bảng banner.
-    })),
-    current_page: parseInt(page, 10), // ➡ trang hiện tại.
-    total_page: Math.ceil(totalBanners / pageSize), // ➡ tổng số trang (ceil để làm tròn lên).
-    total: totalBanners, // ➡ tổng số banner.
+    data: result.banners,
+    current_page: result.current_page,
+    total_page: result.total_page,
+    total: result.total,
   });
 };
 
-exports.getBannerById = async (req, res) => {
+exports.getBannerByIdForAdmin = async (req, res) => {
   const { id } = req.params; // ➡ Lấy id từ params (đường dẫn).
 
   const bannerById = await db.Banner.findByPk(id); // Tìm banner theo id chính (Primary Key).
+  if (!bannerById) {
+    return res.status(404).json({
+      // ➡ Trả về status 404 Not Found.
+      message: "Không tìm thấy banner",
+    });
+  }
+
+  return res.status(200).json({
+    // ↳ Trả về status 200 OK.
+    message: "Lấy thông tin banner thành công",
+    data: {
+      ...bannerById.get({ plain: true }),
+      // ↳ .get({ plain: true }) sẽ chuyển instance đó thành một JavaScript object bình thường,
+      // ↳ chỉ chúa dữ liệu thực (không kèm các method và metadata của Sequelize).
+      image: getAvatarUrl(bannerById.image), // ➡ Lấy URL hình anh bảng banner.
+    },
+  });
+};
+
+exports.getBannersForPublic = async (req, res) => {
+  const { search, page } = req.query;
+  const result = await getBanners({ search, page, checkRole: UserRole.USER });
+
+  return res.status(200).json({
+    message: "Lấy danh sách banner thành công",
+    data: result.banners,
+    current_page: result.current_page,
+    total_page: result.total_page,
+    total: result.total,
+  });
+};
+
+exports.getBannerByIdForPublic = async (req, res) => {
+  const { id } = req.params; // ➡ Lấy id từ params (đường dẫn).
+
+  const bannerById = await db.Banner.findOne({
+    // ↳ Tìm banner theo id chính (Primary Key).
+    where: { id, status: BannerStatus.ACTIVE }, // ➡ Chỉ lấy banner có status là ACTIVE.
+  });
   if (!bannerById) {
     return res.status(404).json({
       // ➡ Trả về status 404 Not Found.
