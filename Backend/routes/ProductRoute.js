@@ -15,14 +15,28 @@ module.exports = (router) => {
   const InsertProductRequest = require("../dto/requests/product/InsertProductRequest.js");
   const UpdateProductRequest = require("../dto/requests/product/UpdateProductRequest.js");
 
+  // Admin
+  router.get(
+    "/admin/products", // ➡ tạo routes GET /admin/products.
+    requireRoles([UserRole.ADMIN]),
+    asyncHandler(ProductController.getProductsForAdmin) // ➡ asyncHandler để tự động bắt lỗi trong getProductsForAdmin.
+  );
+  router.get(
+    "/admin/products/:id", // ➡ tạo routes GET /admin/products/:id.
+    requireRoles([UserRole.ADMIN]),
+    asyncHandler(ProductController.getProductByIdForAdmin) // ➡ asyncHandler để tự động bắt lỗi trong getProductByIdForAdmin.
+  );
+
+  // Public
   router.get(
     "/products", // ➡ tạo routes GET /products.
-    asyncHandler(ProductController.getProducts) // ➡ asyncHandler để tự động bắt lỗi trong getProducts.
+    asyncHandler(ProductController.getProductsForPublic) // ➡ asyncHandler để tự động bắt lỗi trong getProductsForPublic.
   );
   router.get(
     "/products/:id", // ➡ tạo routes GET /products/:id.
-    asyncHandler(ProductController.getProductById) // ➡ asyncHandler để tự động bắt lỗi trong getProductById.
+    asyncHandler(ProductController.getProductByIdForPublic) // ➡ asyncHandler để tự động bắt lỗi trong getProductByIdForPublic.
   );
+
   router.post(
     "/products", // ➡ tạo routes POST /products.
     requireRoles([UserRole.ADMIN]), // ➡ requireRoles kiểm tra quyền truy cập của người dùng.
