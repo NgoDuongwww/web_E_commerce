@@ -18,21 +18,21 @@ module.exports = (router) => {
   router.get("/brands", asyncHandler(BrandController.getBrands));
   router.get("/brands/:id", asyncHandler(BrandController.getBrandById));
   router.post(
-    "/brands",
+    "/admin/brands",
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
     validate(InsertBrandRequest),
     asyncHandler(BrandController.insertBrand)
   );
   router.put(
-    "/brands/:id",
+    "/admin/brands/:id",
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
     validate(UpdateBrandRequest),
     asyncHandler(BrandController.updateBrand)
   );
   router.delete(
-    "/brands/:id",
+    "/admin/brands/:id",
     requireRoles([UserRole.ADMIN]),
     asyncHandler(BrandController.deleteBrand)
   );

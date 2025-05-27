@@ -24,7 +24,7 @@ exports.getDiscounts = async (req, res) => {
     // ↳ Chạy song song 2 truy vấn:
     db.Discount.findAll({
       // ↳ Lấy danh sách danh mục (theo phân trang và lọc nếu có).
-      where: whereClause, // ➡ Tìm danh mục theo code, percent_value, max_discount chứa từ khóa search.
+      where: whereClause, 
       include: [
         // ↳ Kết hợp với bảng Brand và Category.
         {
@@ -41,7 +41,7 @@ exports.getDiscounts = async (req, res) => {
     }),
     db.Discount.count({
       // ↳ Đếm tổng số danh mục (để tính tổng số trang).
-      where: whereClause, // ➡ Tìm danh mục theo code, percent_value, max_discount chứa từ khóa search.
+      where: whereClause, 
     }),
   ]);
 

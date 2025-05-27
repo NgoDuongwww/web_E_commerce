@@ -22,13 +22,13 @@ exports.getBrands = async (req, res) => {
   const [brands, totalBrands] = await Promise.all([
     db.Brand.findAll({
       // ↳ Lấy danh sách thương hiệu (theo phân trang và lọc nếu có).
-      where: whereClause, // ➡ Tìm thương hiệu theo name chứa từ khóa search.
+      where: whereClause,
       limit: pageSize,
       offset: offset,
     }),
     db.Brand.count({
       // ↳ Đếm tổng số thương hiệu (để tính tổng số trang).
-      where: whereClause, // ➡ Tìm thương hiệu theo name chứa từ khóa search.
+      where: whereClause,
     }),
   ]);
 

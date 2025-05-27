@@ -20,19 +20,19 @@ module.exports = (router) => {
     asyncHandler(DiscountController.getDiscountById)
   );
   router.post(
-    "/discounts",
+    "/admin/discounts",
     requireRoles([UserRole.ADMIN]),
     validate(InsertDiscountRequest),
     asyncHandler(DiscountController.insertDiscount)
   );
   router.put(
-    "/discounts/:id",
+    "/admin/discounts/:id",
     requireRoles([UserRole.ADMIN]),
     validate(UpdateDiscountRequest),
     asyncHandler(DiscountController.updateDiscount)
   );
   router.delete(
-    "/discounts/:id",
+    "/admin/discounts/:id",
     requireRoles([UserRole.ADMIN]),
     asyncHandler(DiscountController.deleteDiscount)
   );

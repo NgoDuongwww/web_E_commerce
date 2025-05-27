@@ -21,14 +21,14 @@ exports.getProductImages = async (req, res) => {
     // ↳ Chạy song song 2 truy vấn:
     db.ProductImage.findAll({
       // ↳ Lấy danh sách ảnh sản phẩm (theo phân trang và lọc nếu có).
-      where: whereClause, // ➡ Tìm ảnh sản phẩm theo product_id.
+      where: whereClause,
       limit: pageSize,
       offset: offset,
       // include: [{ model: db.Product, as: "Product" }], // ➡ Kết hợp với bảng Product (sản phẩm).
     }),
     db.ProductImage.count({
       // ↳ Đếm tổng số ảnh sản phẩm (để tính tổng số trang).
-      where: whereClause, // ➡ Tìm ảnh sản phẩm theo product_id.
+      where: whereClause,
     }),
   ]);
 

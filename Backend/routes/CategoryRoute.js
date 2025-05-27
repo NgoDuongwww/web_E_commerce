@@ -21,21 +21,21 @@ module.exports = (router) => {
     asyncHandler(CategoryController.getCategoryById)
   );
   router.post(
-    "/categories",
+    "/admin/categories",
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
     validate(InsertCategoryRequest),
     asyncHandler(CategoryController.insertCategory)
   );
   router.put(
-    "/categories/:id",
+    "/admin/categories/:id",
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
     validate(UpdateCategoryRequest),
     asyncHandler(CategoryController.updateCategory)
   );
   router.delete(
-    "/categories/:id",
+    "/admin/categories/:id",
     requireRoles([UserRole.ADMIN]),
     asyncHandler(CategoryController.deleteCategory)
   );

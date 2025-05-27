@@ -34,21 +34,21 @@ module.exports = (router) => {
     asyncHandler(BannerController.getBannerByIdForAdmin)
   );
   router.post(
-    "/banners",
+    "/admin/banners",
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
     validate(InsertBannerRequest),
     asyncHandler(BannerController.insertBanner)
   );
   router.put(
-    "/banners/:id",
+    "/admin/banners/:id",
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
     validate(UpdateBannerRequest),
     asyncHandler(BannerController.updateBanner)
   );
   router.delete(
-    "/banners/:id",
+    "/admin/banners/:id",
     requireRoles([UserRole.ADMIN]),
     asyncHandler(BannerController.deleteBanner)
   );

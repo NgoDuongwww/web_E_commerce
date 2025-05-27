@@ -14,13 +14,13 @@ exports.getCartItems = async (req, res) => {
     // ↳ Chạy song song 2 truy vấn:
     db.CartItem.findAll({
       // ↳ Lấy danh sách chi tiết giỏ hàng (theo phân trang và lọc nếu có).
-      where: whereClause, // ➡ Tìm chi tiết giỏ hàng theo cart_id.
+      where: whereClause,
       limit: pageSize,
       offset: offset,
     }),
     db.CartItem.count({
       // ↳ Đếm tổng số chi tiết giỏ hàng (để tính tổng số trang).
-      where: whereClause, // ➡ Tìm chi tiết giỏ hàng theo cart_id.
+      where: whereClause,
     }),
   ]);
 

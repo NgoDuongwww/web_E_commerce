@@ -7,22 +7,22 @@ module.exports = async ({ page = 1, checkRole = UserRole.USER }) => {
 
   let bannerInclude = [
     {
-      model: db.Banner, // ➡ Kết hợp với bảng Banner (banner).
+      model: db.Banner, // ➡ Chị định model cần join.
     },
     {
-      model: db.Product, // ➡ Kết hợp với bảng Product (sản phẩm).
+      model: db.Product, // ➡ Chị định model cần join.
     },
   ];
 
   if (checkRole !== UserRole.ADMIN) {
     bannerInclude = [
       {
-        model: db.Banner, // ➡ Kết hợp với bảng Banner (banner).
-        where: { status: BannerStatus.ACTIVE }, // ➡ Chỉ lấy banner có trạng thái ACTIVE.
+        model: db.Banner, // ➡ Chị định model cần join.
+        where: { status: BannerStatus.ACTIVE }, // ➡ Chèn điều kiện, lấy chi tiết banner có trạng thái ACTIVE.
         required: true, // ➡ Bắt buộc phải có banner.
       },
       {
-        model: db.Product, // ➡ Kết hợp với bảng Product (sản phẩm).
+        model: db.Product, // ➡ Chị định model cần join.
       },
     ];
   }

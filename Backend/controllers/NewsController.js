@@ -24,13 +24,13 @@ exports.getNewsArticles = async (req, res) => {
     // ↳ Chạy song song 2 truy vấn:
     db.News.findAll({
       // ↳ Lấy danh sách tin tức (theo phân trang và lọc nếu có).
-      where: whereClause, // ➡ Tìm tin tức theo title chứa từ khóa search.
+      where: whereClause,
       limit: pageSize,
       offset: offset,
     }),
     db.News.count({
       // ↳ Đếm tổng số tin tức (để tính tổng số trang).
-      where: whereClause, // ➡ Tìm tin tức theo title chứa từ khóa search.
+      where: whereClause,
     }),
   ]);
 

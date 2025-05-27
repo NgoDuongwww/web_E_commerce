@@ -1,248 +1,55 @@
 const Sequelize = require("sequelize");
 const { Op } = Sequelize;
 const db = require("../models");
-const { getAvatarUrl } = require("../helpers");
+const { UserRole } = require("../constants");
+const { getProducts, getProductId } = require("../helpers");
 
 exports.getProductsForAdmin = async (req, res) => {
-  const { search = "", page = 1 } = req.query; // ➡ Lấy search (chuỗi tìm kiếm) và page (trang hiện tại) từ query URL. Mặc định search = "", page = 1.
-  const pageSize = 5; // ➡ Hiển thị 5 sản phẩm mỗi trang.
-  const offset = (page - 1) * pageSize; // ➡ offset là số sản phẩm cần bỏ qua.
-
-  let whereClause = {}; // ➡ Tạo điều kiện lọc (WHERE) cho câu truy vấn.
-  let attributeWhereClause = {}; // ➡ Tạo điều kiện lọc (WHERE) cho thuộc tính.
-
-  if (search.trim() !== "") {
-    // ↳ Nếu search không rỗng, thì lọc danh mục theo name chứa chuỗi search.
-    whereClause = {
-      [Op.or]: [
-        // ↳ Tạo điều kiện lọc theo OR cho nhiều cột.
-        { name: { [Op.like]: `%${search}%` } }, // ➡ Tìm sản phẩm có name chứa từ khóa search.
-        { description: { [Op.like]: `%${search}%` } }, // ➡ Hoặc description chứa search.
-      ],
-    };
-
-    attributeWhereClause = {
-      // ↳ Tạo điều kiện lọc cho thuộc tính.
-      value: { [Op.like]: `%${search}%` }, // ➡ Tìm thuộc tính có name chứa từ khóa search.
-    };
-  }
-
-  const [products, totalProducts] = await Promise.all([
-    // ↳ Chạy song song 2 truy vấn:
-    db.Product.findAll({
-      // ↳ Lấy danh sách sản phẩm (theo phân trang và lọc nếu có).
-      where: whereClause, // ➡ Tìm sản phẩm theo name, description chứa từ khóa search.
-      include: [
-        {
-          model: db.ProductAttributeValue, // ➡ Kết hợp với bảng ProductAttributeValue.
-          as: "attributes", // ➡ Đặt tên alias cho mối quan hệ này.
-          include: [{ model: db.Attribute, as: "attribute" }], // ➡ Kết hợp với bảng Attribute.
-          where: attributeWhereClause, // ➡ Tìm thuộc tính theo name chứa từ khóa search.
-          required: false, // ➡ Không bắt buộc phải có thuộc tính.
-        },
-      ],
-      limit: pageSize,
-      offset: offset,
-      // order: [["createdAt", "DESC"]], // ➡ Sắp xếp theo ngày tạo (createdAt) giảm dần (mới nhất trước).
-    }),
-    db.Product.count({
-      // ↳ Đếm tổng số sản phẩm (để tính tổng số trang).
-      where: whereClause, // ➡ Tìm sản phẩm theo name, description chứa từ khóa search.
-    }),
-  ]);
+  const { search, page } = req.query; // ➡ Lấy search và page từ query URL. Mặc định page = 1.
+  const result = await getProducts({ search, page, checkRole: UserRole.ADMIN });
+  // ↳ Sử dụng hàm getProducts để lấy danh sách sản phẩm với phân trang và tìm kiếm.
 
   return res.status(200).json({
-    // ↳ Trả về phản hồi JSON với mã trạng thái HTTP 200 OK.
     message: "Lấy danh sách sản phẩm thành công",
-    data: products.map((product) => ({
-      // ↳ Trả về mảng bài viết (mảng object) bao góc bảng product.
-      ...product.get({ plain: true }),
-      // ↳ .get({ plain: true }) sẽ chuyển instance đó thành một JavaScript object bình thường,
-      // ↳ chỉ chứa dữ liệu thực (không kèm các method và metadata của Sequelize).
-      image: getAvatarUrl(product.image), // ➡ Lấy URL hình ảnh bảng product.
-      attributes: (product.attributes || []).map((attr) => ({
-        // ↳ Lấy tất cả thống tính của sản phẩm (attributes).
-        // ↳ Với mỗi phần tử attr, tạo object mới.
-        name: attr.attribute?.name || "", // ➡ Lấy tên Attribute (nếu không có thì gán rỗng).
-        value: attr.value, // ➡ Lấy giá trị Attribute.
-      })),
-    })),
-    current_page: parseInt(page, 10), // ➡ trang hiện tại.
-    total_page: Math.ceil(totalProducts / pageSize), // ➡ tổng số trang (ceil để làm tròn lên).
-    total: totalProducts, // ➡ tổn số sản phẩm.
+    data: result.products,
+    current_page: result.current_page,
+    total_page: result.total_page,
+    total: result.total,
   });
 };
 
 exports.getProductByIdForAdmin = async (req, res) => {
-  // const { id } = req.params; // Lấy id từ đường dẫn (/products/:id). Cần phân trang.
-  // const product = await db.Product.findByPk(id); // Tìm sản phẩm theo id (khóa chính) trong database.
-  // req.query.search: .../products?search=iphone$page=1
-  // name, description, or description, constain "search"
-
   const { id } = req.params; // ➡ Lấy id từ params (đường dẫn).
-  const productById = await db.Product.findOne({
-    // ↳ Tìm sản phẩm theo id (khóa chính) trong database.
-    where: { id },
-    include: [
-      // ↳ Kết hợp với bảng ProductImage, ProductAttributeValue, ProductVariantValue.
-      {
-        model: db.ProductImage, // ➡ Chỉ định model cần join.
-        as: "product_images", // ➡ Đặt tên alias cho mối quan hệ này.
-      },
-      {
-        model: db.ProductAttributeValue,
-        as: "attributes",
-        include: [
-          // ↳ Kết hợp với bảng Attribute.
-          {
-            model: db.Attribute,
-            as: "attribute",
-            attributes: ["id", "name"], // ➡ Lấy thống tin của model.
-          },
-        ],
-      },
-      {
-        model: db.ProductVariantValue,
-        as: "variants",
-        attributes: ["id", "price", "old_price", "stock", "sku"], // ➡ Lấy thống tin của model.
-      },
-    ],
-  });
-  if (!productById) {
-    // ↳ Nếu không tìm thấy sản phẩm.
+  const result = await getProductId({ id, checkRole: UserRole.ADMIN });
+  // ↳ Sử dụng hàm getProductId để lấy thống tin sản phẩm theo id (khóa chính) trong database.
+
+  if (!result) {
     return res.status(404).json({
       // ↳ Trả về status 404 Not Found.
       message: "Sản phẩm không tìm thấy",
     });
   }
 
-  const variantValuesData = []; // ➡ Tạo mảng rỗng để lưu trữ các giá trị biến thể mới.
-  for (const variant of productById.variants) {
-    const variantValueIds = variant.sku.split("-").map(Number);
-    const variantValues = await db.VariantValue.findAll({
-      where: { id: variantValueIds },
-      include: [
-        // ↳ Kết hợp với bảng Variant.
-        {
-          model: db.Variant, // ➡ Chỉ định model cần join.
-          as: "variant", // ➡ Đặt tên alias cho mối quan hệ này.
-          attributes: ["id", "name"], // ➡ Lấy thống tin của model.
-        },
-      ],
-    });
-    variantValuesData.push({
-      id: variant.id,
-      price: variant.price,
-      old_price: variant.old_price,
-      stock: variant.stock,
-      sku: variant.sku,
-      values: variantValues.map((value) => ({
-        id: value.id,
-        name: value.variant?.name,
-        value: value.value,
-        image: value.image || null,
-      })),
-    });
-  }
-
   return res.status(200).json({
-    // ↳ Trả về status 200 OK.
     message: "Lấy thông tin sản phẩm thành công",
-    data: {
-      ...productById.get({ plain: true }),
-      // ↳ .get({ plain: true }) sẽ chuyển instance đó thành một JavaScript object bình thường,
-      // ↳ chỉ chứa dữ liệu thực (không kèm các method và metadata của Sequelize).
-      product_images: productById.product_images.map((img) =>
-        // ↳ Lấy tất cả các ảnh của sản phẩm.
-        getAvatarUrl(img.get({ plain: true }).image_url)
-      ),
-      attributes: productById.attributes.map((attr) => ({
-        // ↳ Lấy tất cả thống tính của sản phẩm (attributes).
-        // ↳ Với mỗi phần tử attr, tạo object mới.
-        name: attr.attribute?.name || "", // ➡ Lấy tên Attribute (nếu không có thì gán rỗng).
-        value: attr.value, // ➡ Lấy giá trị Attribute.
-      })),
-      variants: variantValuesData,
-    },
+    product: result.product,
+    product_images: result.product_images,
+    attributes: result.attributes,
+    variants: result.variants,
   });
 };
 
 exports.getProductsForPublic = async (req, res) => {
-  const { search = "", page = 1 } = req.query; // ➡ Lấy search (chuỗi tìm kiếm) và page (trang hiện tại) từ query URL. Mặc định search = "", page = 1.
-  const pageSize = 5; // ➡ Hiển thị 5 sản phẩm mỗi trang.
-  const offset = (page - 1) * pageSize; // ➡ offset là số sản phẩm cần bỏ qua.
-
-  let whereClause = {}; // ➡ Tạo điều kiện lọc (WHERE) cho câu truy vấn.
-  let attributeWhereClause = {}; // ➡ Tạo điều kiện lọc (WHERE) cho thuộc tính.
-
-  if (search.trim() !== "") {
-    // ↳ Nếu search không rỗng, thì lọc danh mục theo name chứa chuỗi search.
-    whereClause = {
-      [Op.and]: [
-        // ↳ Tạo điều kiện lọc theo AND cho nhiều cột.
-        { is_visible: true }, // ➡ Tìm sản phẩm cơ bản (is_visible = true).
-        {
-          [Op.or]: [
-            // ↳ Tạo điều kiện lọc theo OR cho nhiều cột.
-            { name: { [Op.like]: `%${search}%` } }, // ➡ Tìm sản phẩm có name chứa từ khóa search.
-            { description: { [Op.like]: `%${search}%` } }, // ➡ Hoặc description chứa search.
-          ],
-        },
-      ],
-    };
-
-    attributeWhereClause = {
-      // ↳ Tạo điều kiện lọc cho thuộc tính.
-      value: { [Op.like]: `%${search}%` }, // ➡ Tìm thuộc tính có name chứa từ khóa search.
-    };
-  } else {
-    // ↳ Nếu search rỗng, thì lọc danh mục theo is_visible = true.
-    whereClause = { is_visible: true }; // ➡ Tìm sản phẩm cơ bản (is_visible = true).
-  }
-
-  const [products, totalProducts] = await Promise.all([
-    // ↳ Chạy song song 2 truy vấn:
-    db.Product.findAll({
-      // ↳ Lấy danh sách sản phẩm (theo phân trang và lọc nếu có).
-      where: whereClause, // ➡ Tìm sản phẩm theo name, description chứa từ khóa search.
-      include: [
-        {
-          model: db.ProductAttributeValue, // ➡ Kết hợp với bảng ProductAttributeValue.
-          as: "attributes", // ➡ Đặt tên alias cho mối quan hệ này.
-          include: [{ model: db.Attribute, as: "attribute" }], // ➡ Kết hợp với bảng Attribute.
-          where: attributeWhereClause, // ➡ Tìm thuộc tính theo name chứa từ khóa search.
-          required: false, // ➡ Không bắt buộc phải có thuộc tính.
-        },
-      ],
-      limit: pageSize,
-      offset: offset,
-      // order: [["createdAt", "DESC"]], // ➡ Sắp xếp theo ngày tạo (createdAt) giảm dần (mới nhất trước).
-    }),
-    db.Product.count({
-      // ↳ Đếm tổng số sản phẩm (để tính tổng số trang).
-      where: whereClause, // ➡ Tìm sản phẩm theo name, description chứa từ khóa search.
-    }),
-  ]);
+  const { search, page } = req.query; // ➡ Lấy search và page từ query URL. Mặc định page = 1.
+  const result = await getProducts({ search, page, checkRole: UserRole.USER });
+  // ↳ Sử dụng hàm getProducts để lấy danh sách sản phẩm với phân trang và tìm kiếm.
 
   return res.status(200).json({
-    // ↳ Trả về phản hồi JSON với mã trạng thái HTTP 200 OK.
-    message: "Lấy danh sách sản phẩm thành công",
-    data: products.map((product) => ({
-      // ↳ Trả về mảng bài viết (mảng object) bao góc bảng product.
-      ...product.get({ plain: true }),
-      // ↳ .get({ plain: true }) sẽ chuyển instance đó thành một JavaScript object bình thường,
-      // ↳ chỉ chứa dữ liệu thực (không kèm các method và metadata của Sequelize).
-      image: getAvatarUrl(product.image), // ➡ Lấy URL hình ảnh bảng product.
-      attributes: (product.attributes || []).map((attr) => ({
-        // ↳ Lấy tất cả thống tính của sản phẩm (attributes).
-        // ↳ Với mỗi phần tử attr, tạo object mới.
-        name: attr.attribute?.name || "", // ➡ Lấy tên Attribute (nếu không có thì gán rỗng).
-        value: attr.value, // ➡ Lấy giá trị Attribute.
-      })),
-    })),
-    current_page: parseInt(page, 10), // ➡ trang hiện tại.
-    total_page: Math.ceil(totalProducts / pageSize), // ➡ tổng số trang (ceil để làm tròn lên).
-    total: totalProducts, // ➡ tổn số sản phẩm.
+    message: "Lấy danh sách sản phẩm thông",
+    data: result.product,
+    product_images: result.product_images,
+    attributes: result.attributes,
+    variants: result.variants,
   });
 };
 
@@ -253,90 +60,22 @@ exports.getProductByIdForPublic = async (req, res) => {
   // name, description, or description, constain "search"
 
   const { id } = req.params; // ➡ Lấy id từ params (đường dẫn).
-  const productById = await db.Product.findOne({
-    // ↳ Tìm sản phẩm theo id (khóa chính) trong database.
-    where: { id, is_visible: true },
-    include: [
-      // ↳ Kết hợp với bảng ProductImage, ProductAttributeValue, ProductVariantValue.
-      {
-        model: db.ProductImage, // ➡ Chỉ định model cần join.
-        as: "product_images", // ➡ Đặt tên alias cho mối quan hệ này.
-      },
-      {
-        model: db.ProductAttributeValue,
-        as: "attributes",
-        include: [
-          // ↳ Kết hợp với bảng Attribute.
-          {
-            model: db.Attribute,
-            as: "attribute",
-            attributes: ["id", "name"], // ➡ Lấy thống tin của model.
-          },
-        ],
-      },
-      {
-        model: db.ProductVariantValue,
-        as: "variants",
-        attributes: ["id", "price", "old_price", "stock", "sku"], // ➡ Lấy thống tin của model.
-      },
-    ],
-  });
-  if (!productById) {
-    // ↳ Nếu không tìm thấy sản phẩm.
+  const result = await getProductId({ id, checkRole: UserRole.USER });
+  // ↳ Sử dụng hàm getProducts để lấy danh sách sản phẩm với phân trang và tìm kiếm.
+
+  if (!result) {
     return res.status(404).json({
       // ↳ Trả về status 404 Not Found.
       message: "Sản phẩm không tìm thấy",
     });
   }
 
-  const variantValuesData = []; // ➡ Tạo mảng rỗng để lưu trữ các giá trị biến thể mới.
-  for (const variant of productById.variants) {
-    const variantValueIds = variant.sku.split("-").map(Number);
-    const variantValues = await db.VariantValue.findAll({
-      where: { id: variantValueIds },
-      include: [
-        // ↳ Kết hợp với bảng Variant.
-        {
-          model: db.Variant, // ➡ Chỉ định model cần join.
-          as: "variant", // ➡ Đặt tên alias cho mối quan hệ này.
-          attributes: ["id", "name"], // ➡ Lấy thống tin của model.
-        },
-      ],
-    });
-    variantValuesData.push({
-      id: variant.id,
-      price: variant.price,
-      old_price: variant.old_price,
-      stock: variant.stock,
-      sku: variant.sku,
-      values: variantValues.map((value) => ({
-        id: value.id,
-        name: value.variant?.name,
-        value: value.value,
-        image: value.image || null,
-      })),
-    });
-  }
-
   return res.status(200).json({
-    // ↳ Trả về status 200 OK.
     message: "Lấy thông tin sản phẩm thành công",
-    data: {
-      ...productById.get({ plain: true }),
-      // ↳ .get({ plain: true }) sẽ chuyển instance đó thành một JavaScript object bình thường,
-      // ↳ chỉ chứa dữ liệu thực (không kèm các method và metadata của Sequelize).
-      product_images: productById.product_images.map((img) =>
-        // ↳ Lấy tất cả các ảnh của sản phẩm.
-        getAvatarUrl(img.get({ plain: true }).image_url)
-      ),
-      attributes: productById.attributes.map((attr) => ({
-        // ↳ Lấy tất cả thống tính của sản phẩm (attributes).
-        // ↳ Với mỗi phần tử attr, tạo object mới.
-        name: attr.attribute?.name || "", // ➡ Lấy tên Attribute (nếu không có thì gán rỗng).
-        value: attr.value, // ➡ Lấy giá trị Attribute.
-      })),
-      variants: variantValuesData,
-    },
+    product: result.product,
+    product_images: result.product_images,
+    attributes: result.attributes,
+    variants: result.variants,
   });
 };
 

@@ -19,7 +19,6 @@ module.exports = async ({
   // ↳ Nếu search không rỗng, thì lọc banner theo name chứa chuỗi search.
 
   if (checkRole === UserRole.ADMIN) {
-    // ↳ Nếu là ADMIN, thì lấy tất cả banner (không phân biệt trạng thái).
     whereClause = {
       [Op.and]: [
         // ↳ Tạo điều kiện lọc theo AND cho nhiều cột.
@@ -27,7 +26,6 @@ module.exports = async ({
       ],
     };
   } else {
-    // ↳ Nếu không phải là ADMIN, thì chỉ lấy banner có trạng thái ACTIVE.
     whereClause = {
       [Op.and]: [
         // ↳ Tạo điều kiện lọc theo AND cho nhiều cột.
@@ -41,13 +39,13 @@ module.exports = async ({
     // ↳ Chạy song song 2 truy vấn:
     db.Banner.findAll({
       // ↳ Lấy danh sách banner (theo phân trang và lọc nếu có).
-      where: whereClause, // Tìm banner theo name chứa từ khóa search.
+      where: whereClause, 
       limit: pageSize,
       offset: offset,
     }),
     db.Banner.count({
       // ↳ Đếm tổng số banner (để tính tổng số trang).
-      where: whereClause, // Tìm banner theo name chứa từ khóa search.
+      where: whereClause,
     }),
   ]);
 

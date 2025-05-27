@@ -23,13 +23,13 @@ exports.getCategories = async (req, res) => {
     // ↳ Chạy song song 2 truy vấn:
     db.Category.findAll({
       // ↳ Lấy danh sách danh mục (theo phân trang và lọc nếu có).
-      where: whereClause, // ➡ Tìm danh mục theo name chứa từ khóa search.
+      where: whereClause, 
       limit: pageSize,
       offset: offset,
     }),
     db.Category.count({
       // ↳ Đếm tổng số danh mục (để tính tổng số trang).
-      where: whereClause, // ➡ Tìm danh mục theo name chứa từ khóa search.
+      where: whereClause, 
     }),
   ]);
 

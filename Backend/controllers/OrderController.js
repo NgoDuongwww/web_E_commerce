@@ -26,7 +26,7 @@ exports.getOrders = async (req, res) => {
     // ↳ Chạy song song 2 truy vấn.
     db.Order.findAll({
       // ↳ Lấy danh sách đơn hàng (theo phân trang và lọc nếu có).
-      where: whereClause, // ➡ Tìm đơn hàng theo name chứa từ khóa search.
+      where: whereClause, 
       limit: pageSize,
       offset: offset,
       order: [["created_at", "DESC"]], // ➡ Sắp xếp đơn hàng theo ngày tạo.

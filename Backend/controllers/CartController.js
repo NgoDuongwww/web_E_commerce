@@ -15,7 +15,7 @@ exports.getCarts = async (req, res) => {
     // ↳ Chạy song song 2 truy vấn:
     db.Cart.findAll({
       // ↳ Lấy danh sách giỏ hàng (theo phân trang và lọc nếu có).
-      where: whereClause, // ➡ Tìm giỏ hàng theo và user_id.
+      where: whereClause, 
       include: [
         // Kết nối với bảng CartItem.
         {
@@ -28,7 +28,7 @@ exports.getCarts = async (req, res) => {
     }),
     db.Cart.count({
       // ↳ Đếm tổng số giỏ hàng (để tính tổng số trang).
-      where: whereClause, // ➡ Tìm giỏ hàng theo và user_id.
+      where: whereClause, 
     }),
   ]);
 
