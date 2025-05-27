@@ -15,6 +15,13 @@ module.exports = (router) => {
   const InsertBannerRequest = require("../dto/requests/banner/InsertBannerRequest.js");
   const UpdateBannerRequest = require("../dto/requests/banner/UpdateBannerRequest.js");
 
+  // Public
+  router.get("/banners", asyncHandler(BannerController.getBannersForPublic));
+  router.get(
+    "/banners/:id",
+    asyncHandler(BannerController.getBannerByIdForPublic)
+  );
+
   // Admin
   router.get(
     "/admin/banners",
@@ -26,14 +33,6 @@ module.exports = (router) => {
     requireRoles([UserRole.ADMIN]),
     asyncHandler(BannerController.getBannerByIdForAdmin)
   );
-
-  // Public
-  router.get("/banners", asyncHandler(BannerController.getBannersForPublic));
-  router.get(
-    "/banners/:id",
-    asyncHandler(BannerController.getBannerByIdForPublic)
-  );
-
   router.post(
     "/banners",
     requireRoles([UserRole.ADMIN]),

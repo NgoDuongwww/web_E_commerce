@@ -15,16 +15,6 @@ module.exports = (router) => {
   const InsertBannerDetailRequest = require("../dto/requests/bannerdetail/InsertBannerDetailRequest.js");
   const UpdateBannerDetailRequest = require("../dto/requests/bannerdetail/UpdateBannerDetailRequest.js");
 
-  // Admin
-  router.get(
-    "/admin/banner-details",
-    asyncHandler(BannerDetailController.getBannerDetailsForAdmin)
-  );
-  router.get(
-    "/admin/banner-details/:id",
-    asyncHandler(BannerDetailController.getBannerDetailByIdForAdmin)
-  );
-
   // Public
   router.get(
     "/banner-details",
@@ -35,6 +25,17 @@ module.exports = (router) => {
     asyncHandler(BannerDetailController.getBannerDetailByIdForPublic)
   );
 
+  // Admin
+  router.get(
+    "/admin/banner-details",
+    requireRoles([UserRole.ADMIN]),
+    asyncHandler(BannerDetailController.getBannerDetailsForAdmin)
+  );
+  router.get(
+    "/admin/banner-details/:id",
+    requireRoles([UserRole.ADMIN]),
+    asyncHandler(BannerDetailController.getBannerDetailByIdForAdmin)
+  );
   router.post(
     "/banner-details",
     requireRoles([UserRole.ADMIN]),
