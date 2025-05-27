@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 24, 2025 at 03:43 PM
+-- Generation Time: May 27, 2025 at 05:15 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -101,7 +101,7 @@ CREATE TABLE `banners` (
   `id` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `image` text,
-  `status` int DEFAULT NULL,
+  `status` int DEFAULT NULL COMMENT '0: INACTIVE, 1: ACTIVE, 2: SCHEDULED, 3: EXPIRED',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -111,7 +111,7 @@ CREATE TABLE `banners` (
 --
 
 INSERT INTO `banners` (`id`, `name`, `image`, `status`, `created_at`, `updated_at`) VALUES
-(2, 'Ronaldo', '1745938789881-ronaldo-drinking.jpg', 1, '2025-05-13 15:48:53', '2025-05-13 16:05:52'),
+(2, 'Ronaldo', '1745938789881-ronaldo-drinking.jpg', 0, '2025-05-13 15:48:53', '2025-05-13 16:05:52'),
 (3, 'Ronaldoo', '1745938789881-ronaldo-drinking.jpg', 1, '2025-05-13 16:06:34', '2025-05-13 16:06:34');
 
 -- --------------------------------------------------------
