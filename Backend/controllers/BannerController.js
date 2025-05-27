@@ -5,8 +5,9 @@ const { BannerStatus, UserRole } = require("../constants");
 const { getAvatarUrl, getBanners } = require("../helpers");
 
 exports.getBannersForAdmin = async (req, res) => {
-  const { search, page } = req.query;
-  const result = await getBanners({ search, page, checkRole: UserRole.ADMIN  });
+  const { search, page } = req.query; // ➡ Lấy search và page từ query URL. Mặc định page = 1.
+  const result = await getBanners({ search, page, checkRole: UserRole.ADMIN });
+  // ↳ Sử dụng hàm getBanners để lấy danh sách banner với phân trang và tìm kiếm.
 
   return res.status(200).json({
     message: "Lấy danh sách banner thành công",
@@ -41,8 +42,9 @@ exports.getBannerByIdForAdmin = async (req, res) => {
 };
 
 exports.getBannersForPublic = async (req, res) => {
-  const { search, page } = req.query;
+  const { search, page } = req.query; // ➡ Lấy search và page từ query URL. Mặc định page = 1.
   const result = await getBanners({ search, page, checkRole: UserRole.USER });
+  // ↳ Sử dụng hàm getBanners để lấy danh sách banner với phân trang và tìm kiếm.
 
   return res.status(200).json({
     message: "Lấy danh sách banner thành công",
