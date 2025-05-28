@@ -1,6 +1,21 @@
 const db = require("../models");
 const { BannerStatus, UserRole } = require("../constants");
 
+/**
+ * Lấy danh sách chi tiết banner theo phân trang, có thể lọc theo quyền người dùng.
+ * 
+ * @param {Object} params - Tham số truyền vào.
+ * @param {number} [params.page=1] - Trang hiện tại cần lấy, mặc định là 1.
+ * @param {UserRole} [params.checkRole=UserRole.USER] - Quyền của người dùng, mặc định là USER.
+ * 
+ * @returns {Promise<{
+ *  bannerDetails: object[];
+ *  current_page: number;
+ *  total_page: number;
+ *  total: number;
+ * }>}
+ */
+
 module.exports = async ({ page = 1, checkRole = UserRole.USER }) => {
   const pageSize = 5; // ➡ Hiển thị 5 banner mỗi trang.
   const offset = (page - 1) * pageSize; // ➡ offset là số banner cần bỏ qua.

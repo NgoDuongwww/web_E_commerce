@@ -4,6 +4,28 @@ const db = require("../models");
 const getAvatarUrl = require("./imageHelper");
 const { UserRole } = require("../constants");
 
+/**
+ * Lấy thông tin chi tiết của sản phẩm theo id, kèm theo ảnh, thuộc tính và biến thể.
+ * 
+ * @param {Object} params - Tham số truyền vào.
+ * @param {number} params.id - Id của sản phẩm cần lấy.
+ * @param {UserRole} [params.checkRole=UserRole.USER] - Quyền của người dùng, mặc định là USER.
+ * 
+ * @returns {Promise<{
+ *  product: object;
+ *  product_images: string[];
+ *  attributes: { name: string; value: string }[];
+ *  variants: {
+ *    id: number;
+ *    price: number;
+ *    old_price: number;
+ *    stock: number;
+ *    sku: string;
+ *    values: { id: number; name: string; value: string; image: string | null }[];
+ *  }[];
+ * } | null>}
+ */
+
 module.exports = async ({ id, checkRole = UserRole.USER }) => {
   let whereClause = { id }; // ➡ Tạo điều kiện lọc (WHERE) cho câu truy vấn.
 

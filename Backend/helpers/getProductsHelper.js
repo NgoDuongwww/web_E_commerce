@@ -4,6 +4,31 @@ const db = require("../models");
 const getAvatarUrl = require("./imageHelper");
 const { UserRole } = require("../constants");
 
+/**
+ * Lấy danh sách sản phẩm theo phân trang, có thể tìm kiếm và lọc theo vai trò người dùng.
+ *
+ * @param {Object} params - Tham số truyền vào.
+ * @param {string} [params.search=""] - Từ khóa tìm kiếm sản phẩm theo tên, mô tả hoặc giá trị thuộc tính.
+ * @param {number} [params.page=1] - Trang hiện tại cần lấy, mặc định là 1.
+ * @param {UserRole} [params.checkRole=UserRole.USER] - Quyền của người dùng để lọc hiển thị sản phẩm (ví dụ: chỉ hiển thị sản phẩm có `is_visible=true` nếu là USER).
+ *
+ * @returns {Promise<{
+ *  products: {
+ *    id: number;
+ *    name: string;
+ *    description: string;
+ *    image: string;
+ *    is_visible: boolean;
+ *    createdAt: string;
+ *    updatedAt: string;
+ *    attributes: { name: string; value: string }[];
+ *  }[];
+ *  current_page: number;
+ *  total_page: number;
+ *  total: number;
+ * }>}
+ */
+
 module.exports = async ({
   search = "",
   page = 1,

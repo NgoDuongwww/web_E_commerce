@@ -4,6 +4,30 @@ const db = require("../models");
 const getAvatarUrl = require("./imageHelper");
 const { UserRole, BannerStatus } = require("../constants");
 
+/**
+ * Lấy danh sách banner theo phân trang, có thể tìm kiếm theo tên và lọc theo quyền người dùng.
+ *
+ * @param {Object} params - Tham số truyền vào.
+ * @param {string} [params.search=""] - Từ khóa tìm kiếm banner theo tên.
+ * @param {number} [params.page=1] - Trang hiện tại cần lấy, mặc định là 1.
+ * @param {UserRole} [params.checkRole=UserRole.USER] - Quyền của người dùng, mặc định là USER.
+ *
+ * @returns {Promise<{
+ *  banners: {
+ *    id: number;
+ *    name: string;
+ *    image: string;
+ *    status: string;
+ *    createdAt: string;
+ *    updatedAt: string;
+ *    // Các trường khác trong bảng Banner.
+ *  }[];
+ *  current_page: number;
+ *  total_page: number;
+ *  total: number;
+ * }>}
+ */
+
 module.exports = async ({
   search = "",
   page = 1,
@@ -39,7 +63,7 @@ module.exports = async ({
     // ↳ Chạy song song 2 truy vấn:
     db.Banner.findAll({
       // ↳ Lấy danh sách banner (theo phân trang và lọc nếu có).
-      where: whereClause, 
+      where: whereClause,
       limit: pageSize,
       offset: offset,
     }),

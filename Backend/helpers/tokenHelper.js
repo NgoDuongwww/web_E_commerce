@@ -1,23 +1,20 @@
-/**
- * Xác thực người dùng từ token trong header Authorization.
- * - Lấy token từ header Authorization.
- * - Nếu không có hoặc token không bắt đầu bằng "Bearer ", trả về lỗi "Không có token được cung cấp".
- * - Xác thực token với JWT_SECRET:
- *   + Nếu token hết hạn, trả về lỗi 401 với thông báo "Token đã hết hạn".
- *   + Nếu token không hợp lệ, trả về lỗi 401 với thông báo "Token không hợp lệ".
- * - Tìm người dùng theo id từ token trong database.
- *   + Nếu không tìm thấy người dùng, trả về lỗi 401 với thông báo "Người dùng không tồn tại".
- * - Kiểm tra nếu người dùng đã đổi mật khẩu sau thời điểm token được cấp:
- *   + Nếu có, trả về lỗi 401 với thông báo "Token không hợp lệ do mật khẩu đã đổi".
- * - Nếu hợp lệ, trả về đối tượng người dùng.
- * @param {object} req - Đối tượng request từ client.
- * @param {object} res - Đối tượng response để trả kết quả.
- * @returns {Promise<object>} Đối tượng người dùng sau xác thực.
- */
-
 const jwt = require("jsonwebtoken");
 const db = require("../models");
 const JWT_SECRET = process.env.JWT_SECRET;
+
+/**
+ * Middleware xác thực JWT từ header Authorization.
+ *
+ * - Kiểm tra xem header Authorization có tồn tại và đúng định dạng "Bearer <token>".
+ * - Giải mã token và kiểm tra tính hợp lệ.
+ * - Kiểm tra user tồn tại trong DB.
+ * - Kiểm tra token có bị invalid do user đổi mật khẩu sau khi token được cấp.
+ * - Trả về lỗi 401 kèm thông báo nếu không hợp lệ hoặc trả về user nếu hợp lệ.
+ *
+ * @param {import('express').Request} req - Đối tượng Request của Express.
+ * @param {import('express').Response} res - Đối tượng Response của Express.
+ * @returns {Promise<import('../models').User|void>} Trả về user nếu hợp lệ, hoặc trả response lỗi 401 nếu không hợp lệ.
+ */
 
 module.exports = async (req, res) => {
   // ↳ Lấy người dùng từ token.
