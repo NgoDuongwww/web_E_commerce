@@ -14,11 +14,8 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.3",
-    "autoprefixer": "^10.4.21",
-    "post": "^0.0.1",
     "sass": "^1.89.0",
     "sass-embedded": "^1.89.0",
-    "tailwindcss": "^4.1.8",
     "vite": "^6.3.5"
   }
 }
