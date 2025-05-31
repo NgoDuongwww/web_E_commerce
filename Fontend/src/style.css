@@ -15,15 +15,15 @@
   --color-bg-green: #97fd37;
   --color-bg-hover: #b0ff97;
 
-  /* Spacing scale */
-  --spacing-4: 4px;
-  --spacing-8: 8px;
-  --spacing-12: 12px;
-  --spacing-16: 16px;
-  --spacing-24: 24px;
-  --spacing-32: 32px;
-  --spacing-48: 48px;
-  --spacing-64: 64px;
+  /* Margin */
+  --margin-4: 4px;
+  --margin-8: 8px;
+  --margin-12: 12px;
+  --margin-16: 16px;
+  --margin-24: 24px;
+  --margin-32: 32px;
+  --margin-48: 48px;
+  --margin-64: 64px;
 
   /* Padding */
   --padding-4: 4px;

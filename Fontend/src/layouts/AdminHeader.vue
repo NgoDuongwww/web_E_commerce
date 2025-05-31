@@ -17,8 +17,8 @@
         <li>
           <router-link
             class="tab"
-            :class="{ activeTab: $route.path === '/admin/product' }"
-            to="/admin/product"
+            :class="{ activeTab: $route.path === '/admin/products' }"
+            to="/admin/products"
             >Product</router-link
           >
         </li>

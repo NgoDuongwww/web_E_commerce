@@ -32,6 +32,7 @@ import AdminHeader from "../../layouts/AdminHeader.vue";
 
   .admin__main {
     flex: 1;
+    padding: var(--padding-16);
   }
 }
 </style>
