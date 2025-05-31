@@ -7,9 +7,13 @@
       </div>
       <div class="Product-View__Top__Right">
         <ul>
-          <li>Add Product</li>
-          <li>Import Product</li>
-          <li>New Product</li>
+          <li><i class="fa fa-plus" aria-hidden="true"></i> Add Product</li>
+          <li>
+            <i class="fa fa-upload" aria-hidden="true"></i> Import Product
+          </li>
+          <li>
+            New Product <i class="fa fa-angle-down" aria-hidden="true"></i>
+          </li>
         </ul>
       </div>
     </div>
@@ -83,9 +87,7 @@
 .Product-View {
   width: 100%;
   height: 100%;
-  border: 1px solid red;
-  display: flex;
-  flex-direction: column;
+  @include display-flex-column;
 
   .Pro {
     width: 100%;
@@ -93,10 +95,8 @@
   }
 
   .Product-View__Top {
-    border: 1px solid blue;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    @include display-flex-row-between;
+    margin: 0px 0px var(--margin-32) 0px;
 
     .Product-View__Top__Left {
       display: flex;
@@ -111,29 +111,42 @@
 
     .Product-View__Top__Right {
       width: 25%;
-      border: 1px solid red;
 
       ul {
         width: 100%;
         height: 100%;
         list-style: none;
+        @include display-flex-row-between-center;
 
         li {
-          width: 27%;
-          border: 1px solid red;
+          width: 32%;
+          height: 100%;
+          cursor: pointer;
+          @include display-flex-row-evenly-center;
+          border-radius: var(--radius-lg);
+          background: var(--color-bg-li);
         }
       }
     }
   }
 
   .Product-View__Bottom {
-    display: flex;
-    flex-direction: column;
+    border: 1px solid red;
+    @include display-flex-column;
 
     .Product-View__Bottom__Top {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
+      @include display-flex-row-between;
+    }
+
+    .Product-View__Bottom__Bottom {
+      .Pagination {
+        ul {
+          width: 100%;
+          height: 100%;
+          list-style: none;
+          @include display-flex-row-between-center;
+        }
+      }
     }
   }
 }

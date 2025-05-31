@@ -1,0 +1,21 @@
+// Các mixin hỗ trợ hiển thị flex và căn giữa (ngang, dọc)
+
+@mixin display-flex {
+          display: flex;
+}
+
+@mixin display-flex-jus-center {
+          display: flex;
+          justify-content: center;
+}
+
+@mixin display-flex-ali-center {
+          display: flex;
+          align-items: center;
+}
+
+@mixin display-flex-center-center {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+}

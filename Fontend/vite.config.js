@@ -41,7 +41,11 @@ export default defineConfig({
        * }
        */
       scss: {
-        additionalData: `@import "@/src/assets/styles/_display-flex-row-between-center.scss";`,
+        additionalData: `
+          @import "@/assets/styles/_display-flex-column.scss";
+          @import "@/assets/styles/_display-flex-row.scss";
+          @import "@/assets/styles/_display-flex.scss";
+        `,
       },
     },
   },

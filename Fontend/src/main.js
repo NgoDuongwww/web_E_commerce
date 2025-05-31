@@ -9,7 +9,7 @@ import "./style.css";
 import App from "./App.vue";
 
 // Import SCSS file
-import "./assets/styles/_display-flex-row-between-center.scss";
+import "@/assets/styles/main.scss";
 /**
  * Tạo instance ứng dụng Vue mới, sử dụng router, rồi mount vào phần tử HTML có id="app".
  *

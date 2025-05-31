@@ -49,9 +49,7 @@ import toi from "@/assets/images/sang.png";
 .Admin-Header {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  @include display-flex-row-between;
 
   .Header {
     height: 100%;
@@ -83,10 +81,7 @@ import toi from "@/assets/images/sang.png";
     border-radius: var(--radius-lg);
 
     ul {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      align-items: center;
+      @include display-flex-row-around-center;
 
       li {
         width: 12%;
@@ -96,9 +91,7 @@ import toi from "@/assets/images/sang.png";
         .tab {
           width: 100%;
           height: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          @include display-flex-center-center;
           border-radius: var(--radius-xl);
           font-weight: 600;
           transition: var(--transition-md);
@@ -120,10 +113,7 @@ import toi from "@/assets/images/sang.png";
     font-size: var(--font-size-xl);
 
     ul {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-evenly;
-      align-items: center;
+      @include display-flex-row-evenly-center;
 
       li {
         background-color: var(--color-bg-li);
@@ -134,9 +124,7 @@ import toi from "@/assets/images/sang.png";
         .fa {
           width: 100%;
           height: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          @include display-flex-center-center;
           border-radius: var(--radius-xxl);
           cursor: pointer;
         }
