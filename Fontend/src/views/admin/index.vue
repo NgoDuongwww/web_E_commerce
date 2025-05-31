@@ -16,17 +16,18 @@ import AdminHeader from "../../layouts/AdminHeader.vue";
 <style lang="scss" scoped>
 .Admin {
   max-width: 1920px;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
-  background: var(--color-bg-body);
+  background: var(--bg-page);
 
   .AD {
     width: 100%;
   }
 
   .admin__header {
-    height: 80px;
+    height: var(--height-80);
     padding: var(--padding-16);
   }
 

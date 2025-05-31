@@ -2,6 +2,12 @@
   font-family: "inter", sans-serif;
   font-size: 16px;
 
+  /* Height */
+  --height-80: 80px;
+  --height-100: 100px;
+  --height-200: 200px;
+  --height-300: 300px;
+
   /* Font settings */
   --font-size-sm: 0.8rem;
   --font-size-md: 1rem;
@@ -10,10 +16,20 @@
   --font-size-xxl: 1.6rem;
 
   /* Color palette */
-  --color-bg-body: #fdf4f4;
-  --color-bg-li: #fff;
-  --color-bg-green: #97fd37;
-  --color-bg-hover: #b0ff97;
+  --bg-default: #ffffff;
+  --bg-page: #f1f5f9;
+  --border-default: #eeeeee;
+  --btn-primary-bg: #26dc8f;
+  --btn-primary-hover: #51d9a9;
+  --table-bg: #ffffff;
+  --table-header-bg: #f4f6f8;
+  --table-header-text: #333333;
+  --table-border-color: #e0e0e0;
+  --table-row-hover: #f9f9f9;
+  --table-text: #555555;
+  --table-icon-color: #888888;
+  --table-icon-hover: #000000;
+  --text-muted: #64748b;
 
   /* Margin */
   --margin-4: 4px;

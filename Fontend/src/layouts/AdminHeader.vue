@@ -77,7 +77,7 @@ import toi from "@/assets/images/sang.png";
 
   .Admin-Header__Menu {
     width: 50%;
-    background-color: var(--color-bg-li);
+    background-color: var(--bg-default);
     border-radius: var(--radius-lg);
 
     ul {
@@ -97,12 +97,12 @@ import toi from "@/assets/images/sang.png";
           transition: var(--transition-md);
 
           &:hover {
-            background-color: var(--color-bg-hover);
+            background-color: var(--btn-primary-hover);
           }
         }
 
         .activeTab {
-          background-color: var(--color-bg-green);
+          background-color: var(--btn-primary-bg);
         }
       }
     }
@@ -116,7 +116,7 @@ import toi from "@/assets/images/sang.png";
       @include display-flex-row-evenly-center;
 
       li {
-        background-color: var(--color-bg-li);
+        background-color: var(--bg-default);
         height: 100%;
         width: 18%;
         border-radius: var(--radius-xxl);
