@@ -3,10 +3,12 @@ const dotenv = require("dotenv"); // ➡ Thư viện dotenv để quản lý bi�
 dotenv.config();
 const os = require("os"); // ➡ Thư viện để lấy thông tin về hệ thống, CPU, bộ nhớ.
 const db = require("./models"); // ➡ Kết nối đến database thông qua Sequelize ORM.
+const cors = require("cors"); // ➡ Thư viện CORS (Cross-Origin Resource Sharing) cho phep người dùng truy cập với domain khác.
 
 const app = express();
+app.use(cors());
 app.use(express.json()); // middleware
-express.urlencoded({ extended: true }); // middleware
+app.use(express.urlencoded({ extended: true })); // middleware
 app.use(function (req, res, next) {
   // ↳ Đây là một middleware áp dụng cho tất cả các request.
   res.header("Access-Control-Allow-Origin", "*"); // ➡ Cho phép mọi domain (dấu *) truy cập API – không giới hạn nguồn gốc.

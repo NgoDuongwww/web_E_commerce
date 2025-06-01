@@ -48,19 +48,27 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Product 1</td>
-              <td>Image 1</td>
-              <td>Description 1</td>
-              <td>Buy Turn 1</td>
-              <td>Brand 1</td>
-              <td>Category 1</td>
-              <td>Rating 1</td>
-              <td>Total Ratings 1</td>
-              <td>Total Sold 1</td>
-              <td>Created At 1</td>
-              <td>Visible 1</td>
+            <tr v-if="loading">
+              <td colspan="14">Đang tải sản phẩm...</td>
+            </tr>
+
+            <tr v-else-if="products.length === 0">
+              <td colspan="14">Không tìm thấy sản phẩm nào</td>
+            </tr>
+
+            <tr v-for="product in products" :key="product.id">
+              <td>{{ product.id }}</td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.image }}</td>
+              <td>{{ product.description }}</td>
+              <td>{{ product.buyturn }}</td>
+              <td>{{ product.brand_id }}</td>
+              <td>{{ product.category_id }}</td>
+              <td>{{ product.rating }}</td>
+              <td>{{ product.total_ratings }}</td>
+              <td>{{ product.total_sold }}</td>
+              <td>{{ product.created_at }}</td>
+              <td>{{ product.is_visible }}</td>
               <td>
                 <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
               </td>
@@ -81,7 +89,25 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+
+const products = ref([]);
+const loading = ref(true);
+
+onMounted(async () => {
+  try {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
+    console.log(res.data);
+    products.value = res.data.data ?? [];
+  } catch (err) {
+    console.log("❌Lỗi:", err);
+  } finally {
+    loading.value = false;
+  }
+});
+</script>
 
 <style lang="scss" scoped>
 .Product-View {
@@ -133,6 +159,7 @@
     background-color: var(--bg-default);
     @include display-flex-column;
     padding: 0px var(--padding-24) 0px var(--padding-24);
+    border-radius: var(--radius-lg);
 
     .Product-View__Bottom__Top {
       width: 100%;
@@ -155,7 +182,7 @@
         width: 14%;
         border: 2px solid var(--border-default);
         @include display-flex-row-evenly-center;
-        border-radius: var(--radius-xl);
+        border-radius: var(--radius-lg);
 
         .fa {
           width: 15%;
@@ -239,9 +266,9 @@
           @include display-flex-ali-center;
           gap: 1.5rem;
           padding: var(--padding-12) var(--padding-16);
-          background-color: var(--bg-page); 
+          background-color: var(--bg-page);
           border: 1px solid var(--border-default);
-          border-radius: var(--radius-md);
+          border-radius: var(--radius-lg);
           font-size: var(--font-size-sm);
           color: var(--text-secondary); // #475569
         }

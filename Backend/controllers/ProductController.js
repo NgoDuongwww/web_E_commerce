@@ -45,8 +45,8 @@ exports.getProductsForPublic = async (req, res) => {
   // ↳ Sử dụng hàm getProducts để lấy danh sách sản phẩm với phân trang và tìm kiếm.
 
   return res.status(200).json({
-    message: "Lấy danh sách sản phẩm thông",
-    data: result.product,
+    message: "Lấy danh sách sản phẩm thành công",
+    data: result.products,
     product_images: result.product_images,
     attributes: result.attributes,
     variants: result.variants,
