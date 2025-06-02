@@ -48,6 +48,8 @@ exports.getProductsForPublic = async (req, res) => {
   return res.status(200).json({
     message: "Lấy danh sách sản phẩm thành công",
     products: result.products,
+    current_page: result.current_page,
+    total_page: result.total_page,
     total: result.total,
     product_images: result.product_images,
     attributes: result.attributes,

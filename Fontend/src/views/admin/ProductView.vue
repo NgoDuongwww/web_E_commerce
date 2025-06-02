@@ -3,29 +3,33 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 
 const products = ref([]);
+const current_page = ref(1);
+const total_page = ref(0);
 const total = ref(0);
-const currentPage = ref(1);
+const pageSize = 10;
 const loading = ref(true);
-const perPage = 10;
 
 const getProducts = async () => {
   const res = await axios.get(
-    `${import.meta.env.VITE_API_URL}/products?page=${currentPage.value}`
+    `${import.meta.env.VITE_API_URL}/products?page=${current_page.value}`
   );
   products.value = res.data.products ?? [];
+  current_page.value = res.data.current_page ?? 1;
+  total_page.value = res.data.total_pages ?? 1;
   total.value = res.data.total ?? 0;
+  loading.value = false;
 };
 
 const Previous = () => {
-  if (currentPage.value > 1) {
-    currentPage.value--;
+  if (current_page.value > 1) {
+    current_page.value--;
     getProducts();
   }
 };
 
 const Next = () => {
-  if (currentPage.value * perPage < total.value) {
-    currentPage.value++;
+  if (current_page.value * pageSize < total.value) {
+    current_page.value++;
     getProducts();
   }
 };
@@ -33,11 +37,11 @@ onMounted(getProducts);
 
 const Search = async (event) => {
   const query = event.target.value;
-  currentPage.value = 1;
+  current_page.value = 1;
   loading.value = true;
   try {
     const res = await axios.get(`${import.meta.env.VITE_API_URL}/products`, {
-      params: { page: currentPage.value, search: query },
+      params: { page: current_page.value, search: query },
     });
     products.value = res.data.products ?? [];
     total.value = res.data.total ?? 0;
@@ -53,8 +57,7 @@ const Search = async (event) => {
   <div class="Product-View">
     <div class="Pro Product-View__Top">
       <div class="Product-View__Top__Left">
-        <div class="Title">Products</div>
-        <div class="Text">An overview of recent data of products.</div>
+        <div class="Title">An overview of recent data of products.</div>
       </div>
       <div class="Product-View__Top__Right">
         <ul>
@@ -111,7 +114,10 @@ const Search = async (event) => {
               <td>{{ product.id }}</td>
               <td>{{ product.name }}</td>
               <td>{{ product.image }}</td>
-              <td>{{ product.description }}</td>
+              <td>
+                {{ product.description?.slice(0, 20)
+                }}{{ product.description?.length > 20 ? "..." : "" }}
+              </td>
               <td>{{ product.buyturn }}</td>
               <td>{{ product.brand_id }}</td>
               <td>{{ product.category_id }}</td>
@@ -134,18 +140,19 @@ const Search = async (event) => {
             </tr>
           </tbody>
         </table>
-        <div class="Pagination" v-if="total > perPage">
+        <div class="Pagination" v-if="total > pageSize">
           <ul>
-            <li @click="Previous" :class="{ disabled: currentPage === 1 }">
+            <li @click="Previous" :class="{ disabled: current_page === 1 }">
               <i class="fa fa-arrow-left" aria-hidden="true"></i> Previous
             </li>
             <li>
-              Showing entries {{ (currentPage - 1) * perPage + 1 }} to
-              {{ Math.min(currentPage * perPage, total) }} of {{ total }}
+              <span>
+                Page {{ current_page }} of {{ Math.ceil(total / pageSize) }}
+              </span>
             </li>
             <li
               @click="Next"
-              :class="{ disabled: currentPage * perPage >= total }"
+              :class="{ disabled: current_page * pageSize >= total }"
             >
               <i class="fa fa-arrow-right" aria-hidden="true"></i> Next
             </li>
@@ -158,8 +165,7 @@ const Search = async (event) => {
 
 <style lang="scss" scoped>
 .Product-View {
-  width: 100%;
-  height: 100%;
+  @include w-100-h-100;
   @include display-flex-column;
 
   .Pro {
@@ -167,17 +173,17 @@ const Search = async (event) => {
   }
 
   .Product-View__Top {
+    height: 5%;
     @include display-flex-row-between;
-    margin: 0px 0px var(--margin-32) 0px;
+    margin: 0px 0px var(--margin-8) 0px;
 
     .Product-View__Top__Left {
       width: auto;
-      @include display-flex-column;
+      @include display-flex-row;
 
       .Title {
-        font-size: var(--font-size-xxl);
+        font-size: var(--font-size-lg);
         font-weight: bold;
-        margin: 0px 0px var(--margin-4) 0px;
       }
     }
 
@@ -185,8 +191,7 @@ const Search = async (event) => {
       width: 25%;
 
       ul {
-        width: 100%;
-        height: 100%;
+        @include w-100-h-100;
         list-style: none;
         @include display-flex-row-between-center;
 
@@ -203,20 +208,19 @@ const Search = async (event) => {
   }
 
   .Product-View__Bottom {
+    height: 95%;
     background-color: var(--bg-default);
-    @include display-flex-column;
+    @include display-flex-column-between;
     padding: 0px var(--padding-24) 0px var(--padding-24);
     border-radius: var(--radius-lg);
 
     .Product-View__Bottom__Top {
       width: 100%;
-      height: auto;
-      height: var(--height-80);
+      height: 6%;
       @include display-flex-row-between-center;
 
       .Text {
-        width: auto;
-        height: 100%;
+        @include w-auto-h-100;
         @include display-flex-column-jusCenter;
 
         .Title {
@@ -226,14 +230,14 @@ const Search = async (event) => {
       }
 
       .Search {
-        height: 70%;
-        width: 14%;
+        height: 80%;
+        width: 13%;
         border: 2px solid var(--border-default);
         @include display-flex-row-evenly-center;
         border-radius: var(--radius-lg);
 
         .fa {
-          width: 15%;
+          width: 12%;
           height: 80%;
           border-radius: var(--radius-xxl);
           @include display-flex-center-center;
@@ -253,26 +257,25 @@ const Search = async (event) => {
     }
 
     .Product-View__Bottom__Bottom {
-      border: 1px solid red;
       width: 100%;
+      height: 93%;
 
       table {
-        height: 100%;
-        width: 100%;
+        @include w-100-h-100;
         border-collapse: collapse;
         background-color: var(--bg-surface);
-        box-shadow: var(--shadow-sm);
         border-radius: var(--radius-md);
-        overflow: hidden;
 
         thead {
-          height: auto;
           width: 100%;
+          height: 10%;
           background-color: var(--table-header-bg);
+          table-layout: fixed;
 
           th {
+            width: 3%;
+            padding: var(--padding-12) var(--padding-16);
             text-align: center;
-            padding: 12px 16px;
             font-weight: 600;
             color: var(--table-header-text);
             font-size: 14px;
@@ -281,10 +284,9 @@ const Search = async (event) => {
         }
 
         tbody {
-          width: 100%;
-          border: 1px solid red;
           tr {
             border-bottom: 1px solid var(--table-border-color);
+            table-layout: fixed;
 
             &:hover {
               background-color: var(--table-row-hover);

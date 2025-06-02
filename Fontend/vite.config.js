@@ -45,6 +45,7 @@ export default defineConfig({
           @import "@/assets/styles/_display-flex-column.scss";
           @import "@/assets/styles/_display-flex-row.scss";
           @import "@/assets/styles/_display-flex.scss";
+          @import "@/assets/styles/_width-n-height.scss";
         `,
       },
     },

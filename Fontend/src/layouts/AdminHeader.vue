@@ -47,8 +47,7 @@ import toi from "@/assets/images/sang.png";
 
 <style lang="scss" scoped>
 .Admin-Header {
-  width: 100%;
-  height: 100%;
+  @include w-100-h-100;
   @include display-flex-row-between;
 
   .Header {
@@ -67,16 +66,15 @@ import toi from "@/assets/images/sang.png";
   }
 
   .Admin-Header__img {
-    width: 20%;
+    width: auto;
 
     img {
-      width: auto;
-      height: 100%;
+      @include w-auto-h-100;
     }
   }
 
   .Admin-Header__Menu {
-    width: 50%;
+    flex: 0.5;
     background-color: var(--bg-default);
     border-radius: var(--radius-lg);
 
@@ -89,8 +87,7 @@ import toi from "@/assets/images/sang.png";
         border-radius: var(--radius-xl);
 
         .tab {
-          width: 100%;
-          height: 100%;
+          @include w-100-h-100;
           @include display-flex-center-center;
           border-radius: var(--radius-xl);
           font-weight: 600;
@@ -109,21 +106,20 @@ import toi from "@/assets/images/sang.png";
   }
 
   .Admin-Header__Other {
-    width: 15%;
+    width: 10%;
     font-size: var(--font-size-xl);
 
     ul {
-      @include display-flex-row-evenly-center;
+      @include display-flex-row-between-center;
 
       li {
         background-color: var(--bg-default);
         height: 100%;
-        width: 18%;
+        width: 25%;
         border-radius: var(--radius-xxl);
 
         .fa {
-          width: 100%;
-          height: 100%;
+          @include w-100-h-100;
           @include display-flex-center-center;
           border-radius: var(--radius-xxl);
           cursor: pointer;

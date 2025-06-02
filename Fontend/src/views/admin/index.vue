@@ -27,12 +27,13 @@ import AdminHeader from "../../layouts/AdminHeader.vue";
   }
 
   .admin__header {
-    height: var(--height-80);
-    padding: var(--padding-16);
+    height: 10%;
+    padding: var(--padding-24) var(--padding-16) var(--padding-24)
+      var(--padding-16);
   }
 
   .admin__main {
-    flex: 1;
+    height: 90%;
     padding: var(--padding-16);
   }
 }
