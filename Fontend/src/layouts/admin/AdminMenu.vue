@@ -1,0 +1,120 @@
+<script setup>
+import toi from "@/assets/images/sang.png";
+</script>
+
+<template>
+  <div class="Admin-Header">
+    <div class="Header Admin-Header__img">
+      <img :src="toi" alt="Logo" />
+    </div>
+
+    <div class="Header Admin-Header__Menu">
+      <ul>
+        <li>
+          <router-link
+            class="tab"
+            :class="{ activeTab: $route.path === '/admin/dashboard' }"
+            to="/admin/dashboard"
+            ><i class="fa fa-home"></i>Dashboard</router-link
+          >
+        </li>
+        <li>
+          <router-link
+            class="tab"
+            :class="{ activeTab: $route.path.startsWith('/admin/products') }"
+            to="/admin/products"
+            ><i class="fa fa-cube"></i> Product</router-link
+          >
+        </li>
+        <li>
+          <div class="tab"><i class="fa fa-cog"></i> Settings</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="Header Admin-Header__Logout">
+      <i class="fas fa-sign-out-alt"></i>Logout
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.Admin-Header {
+  @include w-100-h-100;
+  @include display-flex-column-between;
+
+  .Header {
+    width: 100%;
+
+    ul {
+      width: 100%;
+      list-style: none;
+
+      li {
+        .tab {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  .Admin-Header__img {
+    height: auto;
+
+    img {
+      @include w-100-h-auto;
+    }
+  }
+
+  .Admin-Header__Menu {
+    flex: 0.9;
+
+    ul {
+      @include w-100-h-100;
+      @include display-flex-column-flexStart;
+
+      li {
+        width: 100%;
+        height: 42px;
+        border-radius: var(--radius-md);
+        margin: 0px 0px var(--margin-8) 0px;
+
+        .tab {
+          @include w-100-h-100;
+          @include display-flex-left-center;
+          border-radius: var(--radius-md);
+          transition: var(--transition-md);
+
+          &:hover {
+            background-color: var(--btn-primary-hover);
+            color: var(--text-default);
+          }
+
+          .fa {
+            width: 20%;
+            height: 100%;
+            @include display-flex-center-center;
+          }
+        }
+
+        .activeTab {
+          background-color: var(--btn-primary-bg);
+          color: var(--text-default);
+        }
+      }
+    }
+  }
+
+  .Admin-Header__Logout {
+    width: 100%;
+    height: 5%;
+    @include display-flex-left-center;
+
+    .fas {
+      @include display-flex-center-center;
+      width: 20%;
+      height: 100%;
+    }
+  }
+}
+</style>

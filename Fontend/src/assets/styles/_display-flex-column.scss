@@ -62,3 +62,9 @@
           justify-content: center;
           align-items: center;
 }
+
+@mixin display-flex-column-flexStart {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+}

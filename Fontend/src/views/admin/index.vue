@@ -1,7 +1,11 @@
+<script setup>
+import AdminMenu from "../../layouts/admin/AdminMenu.vue";
+</script>
+
 <template>
   <div class="Admin">
     <div class="AD admin__header">
-      <AdminHeader />
+      <AdminMenu />
     </div>
     <div class="AD admin__main">
       <router-view />
@@ -9,31 +13,27 @@
   </div>
 </template>
 
-<script setup>
-import AdminHeader from "../../layouts/AdminHeader.vue";
-</script>
-
 <style lang="scss" scoped>
 .Admin {
   max-width: 1920px;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
+  @include display-flex-row;
   overflow-x: hidden;
   background: var(--bg-page);
 
   .AD {
-    width: 100%;
+    height: 100%;
   }
 
   .admin__header {
-    height: 10%;
+    background: var(--bg-default);
+    width: 12%;
     padding: var(--padding-24) var(--padding-16) var(--padding-24)
       var(--padding-16);
   }
 
   .admin__main {
-    height: 90%;
+    flex: 1;
     padding: var(--padding-16);
   }
 }
