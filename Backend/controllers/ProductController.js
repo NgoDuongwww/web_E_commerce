@@ -3,6 +3,7 @@ const { Op } = Sequelize;
 const db = require("../models");
 const { UserRole } = require("../constants");
 const { getProducts, getProductId } = require("../helpers");
+const { getAvatarUrl } = require("../helpers");
 
 exports.getProductsForAdmin = async (req, res) => {
   const { search, page } = req.query; // ➡ Lấy search và page từ query URL. Mặc định page = 1.
@@ -46,7 +47,8 @@ exports.getProductsForPublic = async (req, res) => {
 
   return res.status(200).json({
     message: "Lấy danh sách sản phẩm thành công",
-    data: result.products,
+    products: result.products,
+    total: result.total,
     product_images: result.product_images,
     attributes: result.attributes,
     variants: result.variants,

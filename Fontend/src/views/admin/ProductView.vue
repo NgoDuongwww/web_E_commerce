@@ -1,3 +1,54 @@
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+
+const products = ref([]);
+const total = ref(0);
+const currentPage = ref(1);
+const loading = ref(true);
+const perPage = 10;
+
+const getProducts = async () => {
+  const res = await axios.get(
+    `${import.meta.env.VITE_API_URL}/products?page=${currentPage.value}`
+  );
+  products.value = res.data.products ?? [];
+  total.value = res.data.total ?? 0;
+};
+
+const Previous = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+    getProducts();
+  }
+};
+
+const Next = () => {
+  if (currentPage.value * perPage < total.value) {
+    currentPage.value++;
+    getProducts();
+  }
+};
+onMounted(getProducts);
+
+const Search = async (event) => {
+  const query = event.target.value;
+  currentPage.value = 1;
+  loading.value = true;
+  try {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/products`, {
+      params: { page: currentPage.value, search: query },
+    });
+    products.value = res.data.products ?? [];
+    total.value = res.data.total ?? 0;
+  } catch (err) {
+    console.log("❌ Lỗi:", err);
+  } finally {
+    loading.value = false;
+  }
+};
+</script>
+
 <template>
   <div class="Product-View">
     <div class="Pro Product-View__Top">
@@ -25,7 +76,7 @@
         </div>
         <div class="Search">
           <i class="fa fa-search"></i>
-          <input type="text" placeholder="Search here..." />
+          <input type="text" placeholder="Tìm kiếm..." @input="Search" />
         </div>
       </div>
       <div class="Product-View__Bottom__Bottom">
@@ -53,7 +104,7 @@
             </tr>
 
             <tr v-else-if="products.length === 0">
-              <td colspan="14">Không tìm thấy sản phẩm nào</td>
+              <td colspan="14">Không tìm thấy sản phẩm nào.</td>
             </tr>
 
             <tr v-for="product in products" :key="product.id">
@@ -68,46 +119,42 @@
               <td>{{ product.total_ratings }}</td>
               <td>{{ product.total_sold }}</td>
               <td>{{ product.created_at }}</td>
-              <td>{{ product.is_visible }}</td>
+              <td>
+                <i
+                  :class="
+                    product.is_visible
+                      ? 'fa fa-eye text-green'
+                      : 'fa fa-eye-slash text-red'
+                  "
+                ></i>
+              </td>
               <td>
                 <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
               </td>
             </tr>
           </tbody>
         </table>
-        <div class="Pagination">
+        <div class="Pagination" v-if="total > perPage">
           <ul>
-            <li>
+            <li @click="Previous" :class="{ disabled: currentPage === 1 }">
               <i class="fa fa-arrow-left" aria-hidden="true"></i> Previous
             </li>
-            <li>Showing entries 1 to 10 of 100</li>
-            <li><i class="fa fa-arrow-right" aria-hidden="true"></i> Next</li>
+            <li>
+              Showing entries {{ (currentPage - 1) * perPage + 1 }} to
+              {{ Math.min(currentPage * perPage, total) }} of {{ total }}
+            </li>
+            <li
+              @click="Next"
+              :class="{ disabled: currentPage * perPage >= total }"
+            >
+              <i class="fa fa-arrow-right" aria-hidden="true"></i> Next
+            </li>
           </ul>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref, onMounted } from "vue";
-import axios from "axios";
-
-const products = ref([]);
-const loading = ref(true);
-
-onMounted(async () => {
-  try {
-    const res = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
-    console.log(res.data);
-    products.value = res.data.data ?? [];
-  } catch (err) {
-    console.log("❌Lỗi:", err);
-  } finally {
-    loading.value = false;
-  }
-});
-</script>
 
 <style lang="scss" scoped>
 .Product-View {
@@ -163,6 +210,7 @@ onMounted(async () => {
 
     .Product-View__Bottom__Top {
       width: 100%;
+      height: auto;
       height: var(--height-80);
       @include display-flex-row-between-center;
 
@@ -205,9 +253,11 @@ onMounted(async () => {
     }
 
     .Product-View__Bottom__Bottom {
+      border: 1px solid red;
       width: 100%;
 
       table {
+        height: 100%;
         width: 100%;
         border-collapse: collapse;
         background-color: var(--bg-surface);
@@ -216,6 +266,8 @@ onMounted(async () => {
         overflow: hidden;
 
         thead {
+          height: auto;
+          width: 100%;
           background-color: var(--table-header-bg);
 
           th {
@@ -229,6 +281,8 @@ onMounted(async () => {
         }
 
         tbody {
+          width: 100%;
+          border: 1px solid red;
           tr {
             border-bottom: 1px solid var(--table-border-color);
 

@@ -34,7 +34,7 @@ module.exports = async ({
   page = 1,
   checkRole = UserRole.USER,
 }) => {
-  const pageSize = 5; // Hiển thị 5 sản phẩm mỗi trang.
+  const pageSize = 10; // Hiển thị 10 sản phẩm mỗi trang.
   const offset = (page - 1) * pageSize; // offset là số sản phẩm cần bỏ qua.
 
   const searchs = search.trim(); // ➡ Lấy search (chuỗi tìm kiếm) và  trim (xóa khoảng trắng)
