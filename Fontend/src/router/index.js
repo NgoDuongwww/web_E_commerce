@@ -10,6 +10,7 @@ import { createWebHistory, createRouter } from "vue-router";
 // Admin import
 import Dashboard from "../views/admin/DashboardView.vue";
 import index from "../views/admin/index.vue";
+import LoginView from "../views/admin/LoginView.vue";
 import ProductView from "../views/admin/ProductView.vue";
 // Admin/Prodcut import
 import ProductList from "../views/admin/products/ProductList.vue";
@@ -32,6 +33,10 @@ const router = createRouter({
       path: "/admin",
       component: index,
       children: [
+        {
+          path: "login",
+          component: LoginView,
+        },
         {
           path: "",
           redirect: "/admin/dashboard", // ➡ Mặc định load dashboard

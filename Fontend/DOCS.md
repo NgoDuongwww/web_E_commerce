@@ -8,4 +8,7 @@
 
 4. Luôn sử dụng biến :root -var(--xxx)
 
-5.
+5.  - ref: Tạo biến phản ứng (reactive variable) để Vue theo dõi và tự động cập nhật khi thay đổi.
+    - onMounted: Lifecycle hook chạy một lần khi component được gắn vào DOM (đã hiển thị).
+    - watch: Theo dõi sự thay đổi của một biến reactive hoặc computed, và chạy hàm khi biến đó thay đổi.
+ 
