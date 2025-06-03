@@ -31,27 +31,45 @@ const router = createRouter({
         {
           path: "dashboard",
           component: () => import("@/views/admin/DashboardView.vue"),
+          meta: {
+            adminLayout: true, // ➡ Bật layout cho view admin
+          },
         },
         {
           path: "products", // ➡ lưu ý: KHÔNG có dấu `/` đầu
           component: () => import("@/views/admin/ProductView.vue"),
+          meta: {
+            adminLayout: true, // ➡ Bật layout cho view admin
+          },
           children: [
             {
               path: "",
               redirect: "/admin/products/product-list", // ➡ Mặc định load product-list
+              meta: {
+                adminLayout: true, // ➡ Bật layout cho view admin
+              },
             },
             {
               path: "product-list",
               component: () => import("@/views/admin/products/ProductList.vue"),
+              meta: {
+                adminLayout: true, // ➡ Bật layout cho view admin
+              },
             },
             {
               path: "brand-list",
               component: () => import("@/views/admin/brands/BrandList.vue"),
+              meta: {
+                adminLayout: true, // ➡ Bật layout cho view admin
+              },
             },
             {
               path: "category-list",
               component: () =>
                 import("@/views/admin/categories/CategoryList.vue"),
+              meta: {
+                adminLayout: true, // ➡ Bật layout cho view admin
+              },
             },
           ],
         },

@@ -42,6 +42,8 @@ import toi from "@/assets/images/sang.png";
 .Admin-Header {
   @include w-100-h-100;
   @include display-flex-column-between;
+  padding: var(--padding-24) var(--padding-16) var(--padding-24)
+    var(--padding-16);
 
   .Header {
     width: 100%;

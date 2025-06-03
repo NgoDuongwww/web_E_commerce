@@ -17,6 +17,8 @@ import ProductMenu from "../../components/admin/products/ProductMenu.vue";
 .Product-View {
   @include w-100-h-100;
   @include display-flex-column-between;
+  background: var(--bg-page);
+  padding: var(--padding-16);
 
   .Pro {
     width: 100%;

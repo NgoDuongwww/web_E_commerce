@@ -2,17 +2,14 @@
   font-family: "inter", sans-serif;
   font-size: 16px;
 
-  /* Height */
-  --height-80: 80px;
-  --height-100: 100px;
-  --height-200: 200px;
-  --height-300: 300px;
-
   /* Font settings */
   --font-size-sm: 0.8rem;
   --font-size-lg: 1.2rem;
   --font-size-xl: 1.4rem;
   --font-size-xxl: 1.6rem;
+  --font-size-3xl: 1.8rem;
+  --font-size-4xl: 2rem;
+  --font-size-5xl: 2.2rem;
 
   /* Color palette */
   --bg-default: #ffffff;
@@ -29,8 +26,9 @@
   --table-text: #555555;
   --table-icon-color: #888888;
   --table-icon-hover: #000000;
-  --text-default: #757B82;
+  --text-default: #757b82;
   --text-active: #ffffff;
+  --text-36px: #323343;
 
   /* Margin */
   --margin-4: 4px;
@@ -51,6 +49,9 @@
   --padding-32: 32px;
   --padding-48: 48px;
   --padding-64: 64px;
+  --padding-96: 96px;
+  --padding-128: 128px;
+  
 
   /* Border radius */
   --radius-sm: 4px;
