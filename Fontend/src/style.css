@@ -17,21 +17,21 @@
 
   /* Color palette */
   --bg-default: #ffffff;
-  --bg-page: #f5f5f5;
+  --bg-page: #e5e5e5;
   --border-default: #eeeeee;
   --btn-primary-bg: #5065f6;
   --btn-primary-hover: #7789fc;
-  --btn-primary-default: #DFDFDF;
+  --btn-primary-default: #dfdfdf;
   --table-bg: #ffffff;
   --table-header-bg: #f4f6f8;
   --table-header-text: #333333;
   --table-border-color: #e0e0e0;
-  --table-row-hover: #f9f9f9;
+  --table-row-hover: #dfdfdf;
   --table-text: #555555;
   --table-icon-color: #888888;
   --table-icon-hover: #000000;
-  --text-muted: #64748b;
-  --text-default: #ffffff;
+  --text-default: #757B82;
+  --text-active: #ffffff;
 
   /* Margin */
   --margin-4: 4px;

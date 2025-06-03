@@ -87,7 +87,7 @@ import toi from "@/assets/images/sang.png";
 
           &:hover {
             background-color: var(--btn-primary-hover);
-            color: var(--text-default);
+            color: var(--text-active);
           }
 
           .fa {
@@ -99,7 +99,7 @@ import toi from "@/assets/images/sang.png";
 
         .activeTab {
           background-color: var(--btn-primary-bg);
-          color: var(--text-default);
+          color: var(--text-active);
         }
       }
     }

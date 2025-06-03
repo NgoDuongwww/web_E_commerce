@@ -20,6 +20,7 @@ import AdminMenu from "../../layouts/admin/AdminMenu.vue";
   @include display-flex-row;
   overflow-x: hidden;
   background: var(--bg-page);
+  color: var(--text-default);
 
   .AD {
     height: 100%;

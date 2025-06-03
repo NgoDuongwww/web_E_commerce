@@ -46,7 +46,7 @@
     }
     .active {
       background: var(--btn-primary-bg);
-      color: var(--text-default);
+      color: var(--text-active);
     }
   }
 }

@@ -45,80 +45,95 @@ onMounted(getProducts);
       </ul>
     </div>
     <div class="Product-List__Bottom">
-      <table>
-        <thead>
-          <tr>
-            <th>Product ID</th>
-            <th>Name</th>
-            <th>Image</th>
-            <th>Description</th>
-            <th>Buy Turn</th>
-            <th>Brand</th>
-            <th>Category</th>
-            <th>Rating</th>
-            <th>Total Ratings</th>
-            <th>Total Sold</th>
-            <th>Created At</th>
-            <th>Visible</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-if="loading">
-            <td colspan="14">Đang tải sản phẩm...</td>
-          </tr>
+      <div class="Product Top">
+        <div class="Top__Left">
+          <div class="Show-up-to"></div>
+          <div class="Export"></div>
+        </div>
+        <div class="Top_Right"></div>
+      </div>
+      <div class="Product Bottom">
+        <table>
+          <thead>
+            <tr>
+              <th>Product ID</th>
+              <th>Name</th>
+              <th>Image</th>
+              <th>Description</th>
+              <th>Buy Turn</th>
+              <th>Brand</th>
+              <th>Category</th>
+              <th>Rating</th>
+              <th>Total Ratings</th>
+              <th>Total Sold</th>
+              <th>Created At</th>
+              <th>Visible</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-if="loading">
+              <td colspan="14">Đang tải sản phẩm...</td>
+            </tr>
 
-          <tr v-else-if="products.length === 0">
-            <td colspan="14">Không tìm thấy sản phẩm nào.</td>
-          </tr>
+            <tr v-else-if="products.length === 0">
+              <td colspan="14">Không tìm thấy sản phẩm nào.</td>
+            </tr>
 
-          <tr v-for="product in products" :key="product.id">
-            <td>{{ product.id }}</td>
-            <td>{{ product.name }}</td>
-            <td>{{ product.image }}</td>
-            <td>
-              {{ product.description?.slice(0, 20)
-              }}{{ product.description?.length > 20 ? "..." : "" }}
-            </td>
-            <td>{{ product.buyturn }}</td>
-            <td>{{ product.brand_id }}</td>
-            <td>{{ product.category_id }}</td>
-            <td>{{ product.rating }}</td>
-            <td>{{ product.total_ratings }}</td>
-            <td>{{ product.total_sold }}</td>
-            <td>{{ product.created_at }}</td>
-            <td>
-              <i
-                :class="
-                  product.is_visible
-                    ? 'fa fa-eye text-green'
-                    : 'fa fa-eye-slash text-red'
-                "
-              ></i>
-            </td>
-            <td>
-              <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="Pagination" v-if="total > pageSize">
-        <ul>
-          <li @click="Previous" :class="{ disabled: current_page === 1 }">
-            <i class="fa fa-arrow-left" aria-hidden="true"></i> Previous
-          </li>
-          <li>
-            <span>
-              Page {{ current_page }} of {{ Math.ceil(total / pageSize) }}
-            </span>
-          </li>
-          <li
-            @click="Next"
-            :class="{ disabled: current_page * pageSize >= total }"
-          >
-            <i class="fa fa-arrow-right" aria-hidden="true"></i> Next
-          </li>
-        </ul>
+            <tr v-for="product in products" :key="product.id">
+              <td>{{ product.id }}</td>
+              <td>
+                {{ product.name?.slice(0, 27) }}
+                {{ product.name?.length > 27 ? "..." : "" }}
+              </td>
+              <td>
+                {{ product.image?.slice(0, 22)
+                }}{{ product.image?.length > 22 ? "..." : "" }}
+              </td>
+              <td>
+                {{ product.description?.slice(0, 17)
+                }}{{ product.description?.length > 17 ? "..." : "" }}
+              </td>
+              <td>{{ product.buyturn }}</td>
+              <td>{{ product.brand_id }}</td>
+              <td>{{ product.category_id }}</td>
+              <td>{{ product.rating }}</td>
+              <td>{{ product.total_ratings }}</td>
+              <td>{{ product.total_sold }}</td>
+              <td>{{ product.created_at }}</td>
+              <td>
+                <i
+                  :class="
+                    product.is_visible
+                      ? 'fa fa-eye text-green'
+                      : 'fa fa-eye-slash text-red'
+                  "
+                ></i>
+              </td>
+              <td>
+                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="Pagination" v-if="total > pageSize">
+          <ul>
+            <li @click="Previous" :class="{ disabled: current_page === 1 }">
+              <i class="fa fa-arrow-left" aria-hidden="true"></i> Previous
+            </li>
+            <li>
+              <span>
+                Page {{ current_page }} of {{ Math.ceil(total / pageSize) }}
+              </span>
+            </li>
+            <li
+              @click="Next"
+              :class="{ disabled: current_page * pageSize >= total }"
+            >
+              <i class="fa fa-arrow-right" aria-hidden="true"></i> Next
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -150,11 +165,11 @@ onMounted(getProducts);
         cursor: pointer;
         transition: var(--transition-sm);
         background: var(--btn-primary-bg);
-        color: var(--text-default);
+        color: var(--text-active);
         transition: var(--transition-md);
 
         &:hover {
-          color: var(--text-default);
+          color: var(--text-active);
           background: var(--btn-primary-hover);
         }
 
@@ -168,91 +183,110 @@ onMounted(getProducts);
   }
 
   .Product-List__Bottom {
+    border-radius: var(--radius-md);
+    background: var(--bg-default);
     width: 100%;
     height: 92%;
+    @include display-flex-column-between-center;
 
-    table {
-      @include w-100-h-100;
-      border-collapse: collapse;
-      background-color: var(--bg-surface);
-      border-radius: var(--radius-md);
+    .Product {
+      width: 100%;
+    }
 
-      thead {
-        width: 100%;
-        height: 10%;
-        background-color: var(--table-header-bg);
-        table-layout: fixed;
+    .Top {
+      height: 8%;
+    }
 
-        th {
-          width: 3%;
-          padding: var(--padding-12) var(--padding-16);
-          text-align: center;
-          font-weight: 600;
-          color: var(--table-header-text);
-          font-size: 14px;
-          border-bottom: 1px solid var(--table-border-color);
-        }
-      }
+    .Bottom {
+      flex: 1;
+      @include display-flex-column-between-center;
 
-      tbody {
-        tr {
-          border-bottom: 1px solid var(--table-border-color);
+      table {
+        flex: 1;
+        border-collapse: collapse;
+
+        thead {
+          width: 100%;
+          height: 5%;
           table-layout: fixed;
 
-          &:hover {
-            background-color: var(--table-row-hover);
-          }
-
-          td {
-            text-align: center;
+          th {
+            width: 10%;
             padding: var(--padding-12) var(--padding-16);
-            font-size: var(--font-size-sm);
-            color: var(--table-text);
+            text-align: center;
+            font-weight: 600;
+            color: var(--table-header-text);
+            font-size: 14px;
+            border-bottom: 1px solid var(--table-border-color);
+          }
+        }
 
-            &:last-child {
-              i {
-                cursor: pointer;
-                color: var(--table-icon-color);
-                transition: var(--transition-sm);
+        tbody {
+          width: 100%;
+          height: auto;
 
-                &:hover {
-                  color: var(--table-icon-hover);
+          tr {
+            height: 20px;
+            border-bottom: 1px solid var(--table-border-color);
+            table-layout: fixed;
+
+            &:hover {
+              background-color: var(--table-row-hover);
+            }
+
+            td {
+              text-align: center;
+              padding: var(--padding-4) var(--padding-8);
+              font-size: var(--font-size-sm);
+              color: var(--table-text);
+              line-height: 1;
+
+              &:last-child {
+                i {
+                  cursor: pointer;
+                  color: var(--table-icon-color);
+                  transition: var(--transition-sm);
+
+                  &:hover {
+                    color: var(--table-icon-hover);
+                  }
                 }
               }
             }
           }
         }
       }
-    }
 
-    .Pagination {
-      margin-top: var(--margin-16);
-      @include display-flex-jus-center;
+      .Pagination {
+        width: 100%;
+        height: 5%;
+        margin-top: var(--margin-16);
+        @include display-flex-jus-center;
 
-      ul {
-        @include display-flex-ali-center;
-        gap: 1.5rem;
-        padding: var(--padding-12) var(--padding-16);
-        background-color: var(--bg-page);
-        border: 1px solid var(--border-default);
-        border-radius: var(--radius-lg);
-        font-size: var(--font-size-sm);
-        color: var(--text-secondary); // #475569
-      }
-
-      li {
-        @include display-flex-ali-center;
-        gap: 0.4rem;
-        cursor: pointer;
-        transition: var(--transition-sm);
-
-        &:hover {
-          color: var(--btn-primary-hover);
+        ul {
+          @include display-flex-ali-center;
+          gap: 1.5rem;
+          padding: var(--padding-12) var(--padding-16);
+          border: 1px solid var(--border-default);
+          border-radius: var(--radius-lg);
+          font-size: var(--font-size-sm);
+          color: var(--text-secondary);
         }
 
-        &:nth-child(2) {
-          cursor: default;
-          color: var(--text-muted);
+        li {
+          @include display-flex-ali-center;
+          gap: 0.4rem;
+          cursor: pointer;
+          transition: var(--transition-sm);
+
+          &:hover {
+            color: var(--btn-primary-hover);
+          }
+
+          &:nth-child(2) {
+            cursor: default;
+            color: var(--text-default);
+          }
         }
       }
     }

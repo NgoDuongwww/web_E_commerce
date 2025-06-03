@@ -27,7 +27,6 @@ import ProductMenu from "../../components/admin/products/ProductMenu.vue";
   }
 
   .Product-View__Bottom {
-    border: 1px solid red;
     height: 93%;
     @include display-flex-column-between;
   }
