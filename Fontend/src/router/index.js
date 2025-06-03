@@ -7,21 +7,6 @@ import { createWebHistory, createRouter } from "vue-router";
 // ↳ createRouter: Hàm để tạo một router instance.
 // ↳ createWebHistory: Hàm để tạo một history bộ nhớ, nghiệm cơ bản là URL hành đồng của trang web.
 
-// Admin import
-import Dashboard from "../views/admin/DashboardView.vue";
-import index from "../views/admin/index.vue";
-import LoginView from "../views/admin/LoginView.vue";
-import ProductView from "../views/admin/ProductView.vue";
-// Admin/Prodcut import
-import ProductList from "../views/admin/products/ProductList.vue";
-// Admin/Brand import
-import BrandList from "../views/admin/brands/BrandList.vue";
-// Admin/Category import
-import CategoryList from "../views/admin/categories/CategoryList.vue";
-
-// Public import
-import HomePage from "../views/HomePage.vue";
-
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -31,23 +16,25 @@ const router = createRouter({
     // Admin routes
     {
       path: "/admin",
-      component: index,
+      redirect: "/admin/dashboard", // ➡ Mặc định load dashboard
+      meta: {
+        adminLayout: true, // ➡ Bật layout cho view admin
+      },
       children: [
         {
           path: "login",
-          component: LoginView,
+          component: () => import("@/views/admin/LoginView.vue"),
+          meta: {
+            noLayout: true, // ➡ Tắt layout cho view login
+          },
         },
         {
-          path: "",
-          redirect: "/admin/dashboard", // ➡ Mặc định load dashboard
+          path: "dashboard",
+          component: () => import("@/views/admin/DashboardView.vue"),
         },
         {
-          path: "dashboard", // ➡ lưu ý: KHÔNG có dấu `/` đầu
-          component: Dashboard,
-        },
-        {
-          path: "products",
-          component: ProductView,
+          path: "products", // ➡ lưu ý: KHÔNG có dấu `/` đầu
+          component: () => import("@/views/admin/ProductView.vue"),
           children: [
             {
               path: "",
@@ -55,15 +42,16 @@ const router = createRouter({
             },
             {
               path: "product-list",
-              component: ProductList,
+              component: () => import("@/views/admin/products/ProductList.vue"),
             },
             {
               path: "brand-list",
-              component: BrandList,
+              component: () => import("@/views/admin/brands/BrandList.vue"),
             },
             {
               path: "category-list",
-              component: CategoryList,
+              component: () =>
+                import("@/views/admin/categories/CategoryList.vue"),
             },
           ],
         },
@@ -71,7 +59,13 @@ const router = createRouter({
     },
 
     // Public routes
-    { path: "/", component: HomePage },
+    {
+      path: "/",
+      component: () => import("@/views/HomePage.vue"),
+      meta: {
+        userLayout: true, // ➡ Bật layout cho view user
+      },
+    },
 
     // Page not found
     {
