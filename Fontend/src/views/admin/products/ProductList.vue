@@ -14,7 +14,7 @@ const select = ref(""); // ➡ Danh sách sản phẩm tìm kiếm
 const insertCode = ref(""); // ➡ Danh sách sản phân tìm kiếm theo id
 const insertDate = ref(""); // ➡ Danh sách sản phân tìm kiếm theo ngày tạo
 
-// ➡ Lấy danh sách sản phẩm
+// Lấy danh sách sản phẩm
 const getProducts = async () => {
   const res = await axios.get(
     // ↳ Gọi api từ server
@@ -22,7 +22,7 @@ const getProducts = async () => {
     // ↳ import.meta.env.VITE_API_URL: Lấy url api từ file .env
   );
 
-  // ➡ Nhận dữ liệu từ server
+  // Nhận dữ liệu từ server
   products.value = res.data.products ?? [];
   current_page.value = res.data.current_page ?? 1;
   total_page.value = res.data.total_pages ?? 1;
@@ -32,20 +32,20 @@ const getProducts = async () => {
   first_products.value = res.data.products ?? [];
 };
 
-// ➡ Lọc danh sách sản phẩm dựa trên các tiêu chí tìm kiếm
+// Lọc danh sách sản phẩm dựa trên các tiêu chí tìm kiếm
 const filter_products = () => {
   products.value = first_products.value.filter((product) => {
-    // ➡ Lọc sản phẩm theo tìm kiếm
+    // ↳ Lọc sản phẩm theo tìm kiếm
     const selectProduct =
       select.value === "all" ||
       select.value === "" ||
       product.is_visible === (select.value === "1" ? true : false);
 
-    // ➡ Lọc sản phẩm theo id
+    // Lọc sản phẩm theo id
     const insertProduct =
       insertCode.value === "" || String(product.id).includes(insertCode.value);
 
-    // ➡ Lọc sản phẩm theo ngày tạo
+    // Lọc sản phẩm theo ngày tạo
     const dateProduct =
       insertDate.value === "" ||
       product.created_at?.slice(0, 10).includes(insertDate.value);
@@ -54,10 +54,10 @@ const filter_products = () => {
   });
 };
 
-// ➡ Theo dõi các biến, tự động lọc lại dữ liệu khi thay đổi điều kiện tìm kiếm.
+// Theo dõi các biến, tự động lọc lại dữ liệu khi thay đổi điều kiện tìm kiếm.
 watch([select, insertCode, insertDate], filter_products);
 
-// ➡ Lùi trang hiện tại
+// Lùi trang hiện tại
 const Previous = () => {
   if (current_page.value > 1) {
     current_page.value--;
@@ -65,7 +65,7 @@ const Previous = () => {
   }
 };
 
-// ➡ Sang trang hiện tại
+// Sang trang hiện tại
 const Next = () => {
   if (current_page.value * pageSize < total.value) {
     current_page.value++;

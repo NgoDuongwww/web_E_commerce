@@ -19,8 +19,7 @@ const router = createRouter({
       redirect: "/admin/dashboard", // ➡ Mặc định load dashboard
       meta: {
         adminLayout: true, // ➡ Bật layout cho view admin
-        requiresAuth: true, // ➡ Route cần login
-        role: "admin", // ➡ Quyền admin
+        adminRequiresAuth: true, // ➡ Route cần login
       },
       children: [
         {
@@ -55,7 +54,7 @@ const router = createRouter({
 
     // Login admin routes
     {
-      path: "/login-admin",
+      path: "/admin/login",
       component: () => import("@/views/Auth/admin/LoginView.vue"),
       meta: {
         noLayout: true, // ➡ Tắt layout cho view login
@@ -88,16 +87,10 @@ const router = createRouter({
 
 // ➡ Gọi trước mỗi lần chuyển trang
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem("token"); // ➡ Kiểm tra xem người dùng đã đăng nhập.
-  const role = localStorage.getItem("role"); // ➡ Kiểm tra quyền người dùng.
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth); // ➡ Kiểm tra xem route cần login.
-  const matchRole = to.matched.find((record) => record.meta.role); // ➡ Tìm trong danh sách các route được kích hoạt.
-  const requiredRole = matchRole?.meta.role; // ➡ Kiểm tra xem route cần quyền người dùng.
+  const token = localStorage.getItem("token"); // ➡ Kiểm tra xem đã đăng nhập chưa.
 
-  if (requiresAuth && !token) {
-    next("/login-admin");
-  } else if (requiredRole && role !== to.meta.role) {
-    next("/404");
+  if (to.meta.adminRequiresAuth && !token) {
+    next("/admin/login");
   } else {
     next();
   }

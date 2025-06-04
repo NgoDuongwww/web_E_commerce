@@ -1,42 +1,37 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import axios from "axios";
+import api from "@/api/axios.js";
 import { useRouter } from "vue-router";
 
 const email = ref("");
 const password = ref("");
 const router = useRouter();
 
+const showPass = ref(false);
+
 const login = async () => {
-  const res = await axios.post(
-    // ↳ Gọi api từ server
-    `${import.meta.env.VITE_API_URL}/users/login`,
-    // ↳ import.meta.env.VITE_API_URL: Lý url api từ file .env
-    {
-      // ➡ Dữ liệu gửi đi
+  try {
+    const res = await api.post("/users/login", {
+      // Dữ liệu gửi đi
       email: email.value,
       password: password.value,
-    },
-    {
-      headers: {
-        // ↳ Khai báo header yêu cầu dữ liệu dạng JSON
-        "Content-Type": "application/json",
-      },
-    }
-  );
+    });
 
-  localStorage.setItem("token", res.value.token); // ➡ Lưu token vào localStorage để dùng sau
-  localStorage.setItem("role", res.value.user.role); // ➡ Lưu role vào localStorage để dùng sau
+    localStorage.setItem("token", res.data.token); // ➡ Lưu token vào localStorage để dùng sau
 
-  router.push("/admin/"); // ➡ Chuyển trang
-
-  onMounted(() => {
-    const token = localStorage.getItem("token"); // ➡ Lấy token từ localStorage
-    if (token) {
-      router.replace("/admin/"); // ➡ Để người dùng không quay lại được trang login bằng nút Back.
-    }
-  });
+    router.push("/admin"); // ➡ Chuyển trang
+  } catch (error) {
+    alert("Đăng nhập thất bại, vui lòng thử lại!");
+  }
 };
+
+// ➡ Hook chạy sau khi component render lần đầu.
+onMounted(() => {
+  const token = localStorage.getItem("token"); // ➡ Lấy token từ localStorage
+  if (token) {
+    router.replace("/admin/"); // ➡ Để người dùng không quay lại được trang login bằng nút Back.
+  }
+});
 </script>
 
 <template>
@@ -44,18 +39,28 @@ const login = async () => {
     <div class="Log-in">
       <div class="Log Top">
         <img src="@/assets/images/sang.png" alt="" />
-        <p>Welcome Back</p>
+        <p>Welcome Back Admin</p>
         <span>Please enter your email and password to log in.</span>
       </div>
       <div class="Log Bottom">
         <form action="" @submit.prevent="login" class="form-login">
           <label for="">Email</label>
-          <input type="Email" v-model="email" />
+          <input type="Email" v-model="email" placeholder="Email" required />
           <label for="">Password</label>
-          <input type="Password" v-model="password" />
-          <span>Forgot Password</span>
+          <div class="password-wrapper">
+            <input
+              :type="showPass ? 'text' : 'password'"
+              v-model="password"
+              placeholder="Password"
+              required
+              id="pwd"
+              class="password-input"
+            />
+            <span class="toggle-password" @click="showPass = !showPass">
+              {{ showPass ? "👁️" : "🙈" }}
+            </span>
+          </div>
           <button type="submit">Log In</button>
-          <span>Don't have an account?</span>
         </form>
       </div>
     </div>
@@ -70,8 +75,8 @@ const login = async () => {
   @include display-flex-center-center;
 
   .Log-in {
-    width: 33%;
-    height: 73%;
+    width: 30%;
+    height: 70%;
     background: var(--bg-default);
     border-radius: var(--radius-md);
     @include display-flex-column-around-center;
@@ -102,7 +107,7 @@ const login = async () => {
 
       .form-login {
         max-width: 400px;
-        padding: var(--padding-24);
+        padding: var(--padding-12);
         @include display-flex-column;
         font-family: inherit;
 
@@ -114,6 +119,7 @@ const login = async () => {
         }
 
         input {
+          width: 100%;
           padding: var(--padding-12);
           border: 1px solid var(--border-default);
           border-radius: var(--radius-md);
@@ -128,15 +134,17 @@ const login = async () => {
           }
         }
 
-        span {
-          font-size: var(--font-size-sm);
-          color: var(--text-default);
-          margin: var(--margin-8) 0;
-          cursor: pointer;
-          transition: color var(--transition-sm);
+        .password-wrapper {
+          width: 100%;
+          position: relative;
 
-          &:hover {
-            color: var(--btn-primary-bg);
+          .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 35%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: var(--font-size-lg);
           }
         }
 

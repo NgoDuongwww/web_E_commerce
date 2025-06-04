@@ -6,7 +6,7 @@ const router = useRouter();
 
 const logout = () => {
   localStorage.removeItem("token"); // Xóa token
-  router.push("/login-admin"); // Chuyển trang
+  router.push("/admin/login"); // Chuyển trang
 };
 </script>
 
