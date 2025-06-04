@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useRoute } from "vue-router";
-
+import router from "@/router";
+import { getToken, getTokenExpiration, clearAuthData } from "@/utils/auth.js";
 /**
  * @file api.js
  * @description Tạo một instance của Axios để sử dụng cho toàn bộ ứng dụng với cấu hình mặc định và interceptor xử lý lỗi.
@@ -33,20 +34,37 @@ const api = axios.create({
  * @param {import('axios').InternalAxiosRequestConfig} config - Cấu hình request trước khi gửi.
  * @returns {import('axios').InternalAxiosRequestConfig} - Cấu hình request đã được cập nhật (nếu cần).
  */
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+function checkTokenExpired() {
+  const expirationTime = getTokenExpiration(); // ➡ Lấy thời gian hết hạn token từ đâu đó
+  if (!expirationTime) return true; // ➡ Nếu không có thời gian hết hạn
+  return new Date().getTime() > parseInt(expirationTime, 10);
+  // ↳ So sánh thời gian hiện tại với thời gian hết hạn.
+  // ↳ Nếu hiện tại > thời gian hết hạn, tức là token đã hết hạn → trả về true.
+}
+
+api.interceptors.request.use(
+  (config) => {
+    const token = getToken(); // ➡ Lấy token từ localStorage
+    if (token) {
+      if (checkTokenExpired()) {
+        clearAuthData(); // ➡ Xóa token và thời gian hết hạn khỏi localStorage
+        alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+        router.push("/admin/login"); // ➡ Chuyển trang
+        return Promise.reject(new Error("Token đã hết hạn")); // ➡ Hủy request hiện tại
+      }
+      config.headers.Authorization = `Bearer ${token}`; // ➡ Gán token vào header
+    }
+    return config;
+  },
+  (error) => Promise.reject(error) // ➡ Nếu gặp lỗi
+);
 
 /**
  * Interceptor cho response:
  * - Trả lại response nếu thành công.
  * - Nếu gặp lỗi 401 (Unauthorized):
  *   - Xoá token khỏi localStorage.
- *   - Chuyển hướng người dùng về trang gốc với query `?expired=1` để thông báo phiên đăng nhập đã hết hạn.
+ *   - Chuyển hướng người dùng về trang đăng nhập.
  *
  * @param {import('axios').AxiosResponse} response - Đối tượng phản hồi từ server.
  * @returns {import('axios').AxiosResponse} - Trả lại nguyên response nếu không có lỗi.
@@ -58,11 +76,10 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem("token");
-
-      window.location.href = "/?expired=1";
+      clearAuthData(); // ➡ Xóa token và thời gian hết hạn khỏi localStorage
+      router.push("/admin/login"); // ➡ Chuyển trang
     }
-    return Promise.reject(error);
+    return Promise.reject(error); // ➡ Hủy request hiện tại
   }
 );
 

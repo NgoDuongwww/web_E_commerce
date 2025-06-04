@@ -31,7 +31,6 @@
     li {
       border-radius: var(--radius-md);
       margin: 0px var(--margin-8) 0px 0px;
-      padding: 0px var(--padding-24) 0px var(--padding-24);
       @include w-auto-h-100;
       list-style: none;
       @include display-flex-center-center;
@@ -41,6 +40,7 @@
         @include w-100-h-100;
         @include display-flex-center-center;
         text-decoration: none;
+        padding: 0px var(--padding-24) 0px var(--padding-24);
         color: var(--color-text-1);
       }
     }

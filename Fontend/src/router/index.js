@@ -6,6 +6,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 // ↳ createRouter: Hàm để tạo một router instance.
 // ↳ createWebHistory: Hàm để tạo một history bộ nhớ, nghiệm cơ bản là URL hành đồng của trang web.
+import { isAuthenticated, clearAuthData } from "@/utils/auth";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -85,11 +86,25 @@ const router = createRouter({
   ],
 });
 
-// ➡ Gọi trước mỗi lần chuyển trang
+/**
+ * Hàm chặn điều hướng toàn cục của Vue Router.
+ *
+ * Hàm này kiểm tra xem route sắp truy cập có yêu cầu xác thực admin không.
+ * Nếu có và người dùng chưa đăng nhập, nó sẽ xóa dữ liệu xác thực hiện tại
+ * và chuyển hướng người dùng đến trang đăng nhập admin.
+ * Ngược lại, cho phép tiếp tục điều hướng như bình thường.
+ *
+ * @param {Route} to - Route đích mà người dùng muốn truy cập.
+ * @param {Route} from - Route hiện tại mà người dùng điều hướng đi.
+ * @param {Function} next - Hàm được gọi để tiếp tục (hoặc chuyển hướng) quá trình điều hướng.
+ */
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem("token"); // ➡ Kiểm tra xem đã đăng nhập chưa.
+  const requiresAuth = to.matched.some(
+    (record) => record.meta.adminRequiresAuth
+  );
 
-  if (to.meta.adminRequiresAuth && !token) {
+  if (requiresAuth && !isAuthenticated()) {
+    clearAuthData();
     next("/admin/login");
   } else {
     next();

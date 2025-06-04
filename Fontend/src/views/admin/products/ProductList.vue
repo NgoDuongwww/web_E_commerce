@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
-import axios from "axios";
+import api from "@/api/axios.js";
 
 const products = ref([]); // ➡ Danh sách toàn bộ sản phẩm đang hiển thị (đã lọc)
 const current_page = ref(1); // ➡ Trang hiện tại
@@ -16,20 +16,23 @@ const insertDate = ref(""); // ➡ Danh sách sản phân tìm kiếm theo ngày
 
 // Lấy danh sách sản phẩm
 const getProducts = async () => {
-  const res = await axios.get(
-    // ↳ Gọi api từ server
-    `${import.meta.env.VITE_API_URL}/admin/products?page=${current_page.value}`
-    // ↳ import.meta.env.VITE_API_URL: Lấy url api từ file .env
+  const res = await api.get(
+    `/admin/products`,
+    // ↳ Yêu cầu api tới server
+    {
+      params: {
+        // ↳ Tham số tìm kiếm (truyền query parameters)
+        page: current_page.value ?? 1, // "/admin/products?page=1"
+      },
+    }
   );
 
-  // Nhận dữ liệu từ server
-  products.value = res.data.products ?? [];
-  current_page.value = res.data.current_page ?? 1;
-  total_page.value = res.data.total_pages ?? 1;
-  total.value = res.data.total ?? 0;
-  loading.value = false;
-
-  first_products.value = res.data.products ?? [];
+  // Sau khi gọi API thành công, cập nhật dữ liệu
+  products.value = res.data.products;
+  current_page.value = res.data.current_page;
+  total_page.value = res.data.total_page;
+  total.value = res.data.total;
+  first_products.value = res.data.first_products;
 };
 
 // Lọc danh sách sản phẩm dựa trên các tiêu chí tìm kiếm
