@@ -1,5 +1,13 @@
 <script setup>
 import toi from "@/assets/images/sang.png";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const logout = () => {
+  localStorage.removeItem("token"); // Xóa token
+  router.push("/login-admin"); // Chuyển trang
+};
 </script>
 
 <template>
@@ -33,7 +41,7 @@ import toi from "@/assets/images/sang.png";
     </div>
 
     <div class="Header Admin-Header__Logout">
-      <i class="fas fa-sign-out-alt"></i>Logout
+      <button @click="logout"><i class="fas fa-sign-out-alt"></i>Logout</button>
     </div>
   </div>
 </template>

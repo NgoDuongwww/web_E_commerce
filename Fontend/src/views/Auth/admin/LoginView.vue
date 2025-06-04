@@ -1,3 +1,44 @@
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+
+const email = ref("");
+const password = ref("");
+const router = useRouter();
+
+const login = async () => {
+  const res = await axios.post(
+    // ↳ Gọi api từ server
+    `${import.meta.env.VITE_API_URL}/users/login`,
+    // ↳ import.meta.env.VITE_API_URL: Lý url api từ file .env
+    {
+      // ➡ Dữ liệu gửi đi
+      email: email.value,
+      password: password.value,
+    },
+    {
+      headers: {
+        // ↳ Khai báo header yêu cầu dữ liệu dạng JSON
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  localStorage.setItem("token", res.value.token); // ➡ Lưu token vào localStorage để dùng sau
+  localStorage.setItem("role", res.value.user.role); // ➡ Lưu role vào localStorage để dùng sau
+
+  router.push("/admin/"); // ➡ Chuyển trang
+
+  onMounted(() => {
+    const token = localStorage.getItem("token"); // ➡ Lấy token từ localStorage
+    if (token) {
+      router.replace("/admin/"); // ➡ Để người dùng không quay lại được trang login bằng nút Back.
+    }
+  });
+};
+</script>
+
 <template>
   <div class="Login">
     <div class="Log-in">
@@ -7,11 +48,11 @@
         <span>Please enter your email and password to log in.</span>
       </div>
       <div class="Log Bottom">
-        <form action="" class="form-login">
+        <form action="" @submit.prevent="login" class="form-login">
           <label for="">Email</label>
-          <input type="Email" />
+          <input type="Email" v-model="email" />
           <label for="">Password</label>
-          <input type="Password" />
+          <input type="Password" v-model="password" />
           <span>Forgot Password</span>
           <button type="submit">Log In</button>
           <span>Don't have an account?</span>
