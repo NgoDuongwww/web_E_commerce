@@ -1,5 +1,14 @@
 <script setup>
 import AdminMenu from "@/layouts/admin/AdminMenu.vue";
+import { onMounted } from "vue";
+import { handleToken } from "@/utils/auth.js";
+
+onMounted(() => {
+  const isExpired = handleToken(true);
+  if (isExpired) {
+    return;
+  }
+});
 </script>
 
 <template>

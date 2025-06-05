@@ -1,15 +1,4 @@
-/**
- * Lưu token và thời gian hết hạn vào localStorage.
- *
- * @param {string} token - Token xác thực (JWT hoặc tương tự).
- * @param {number} expiresIn - Thời gian sống của token (tính bằng milliseconds).
- */
-export function saveAuthData(token, expiresIn) {
-  localStorage.setItem("token", token);
-  const expirationTime = new Date().getTime() + expiresIn;
-  localStorage.setItem("expirationTime", expirationTime); // ⚠️ Lưu ý: sai chính tả từ "expirationTime"
-}
-
+import router from "@/router";
 /**
  * Lấy token xác thực từ localStorage.
  *
@@ -41,10 +30,9 @@ export function clearAuthData() {
  *
  * @returns {boolean} `true` nếu token đã hết hạn hoặc không tồn tại, ngược lại là `false`.
  */
-export function isTokenExpired() {
-  const expirationTime = getTokenExpiration();
-  if (!expirationTime) return true;
-  return new Date().getTime() > parseInt(expirationTime, 10);
+export function tokenExpired() {
+  if (!getTokenExpiration()) return true;
+  return new Date().getTime() > parseInt(getTokenExpiration(), 10);
 }
 
 /**
@@ -53,9 +41,20 @@ export function isTokenExpired() {
  * @returns {boolean} `true` nếu người dùng đã xác thực và token còn hiệu lực, ngược lại là `false`.
  */
 export function isAuthenticated() {
-  const token = getToken();
-  if (!token) {
+  if (!getToken()) {
     return false;
   }
-  return !isTokenExpired();
+  return !tokenExpired();
+}
+
+export function handleToken(showAlert = true) {
+  if (getToken() && tokenExpired()) {
+    clearAuthData();
+    if (showAlert) {
+      alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.3333");
+    }
+    router.push("/admin/login");
+    return true;
+  }
+  return false;
 }

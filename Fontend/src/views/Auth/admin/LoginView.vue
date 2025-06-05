@@ -1,9 +1,9 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import api from "@/api/axios.js";
+import api from "@/api/axios";
 import { useRouter, useRoute } from "vue-router";
 import { jwtDecode } from "jwt-decode";
-import { getToken } from "@/utils/auth.js";
+import { getToken, handleToken } from "@/utils/auth.js";
 
 const email = ref("");
 const password = ref("");
@@ -38,8 +38,7 @@ const login = async () => {
 
 // ➡ Hook chạy sau khi component render lần đầu.
 onMounted(() => {
-  const token = getToken(); // ➡ Lấy token từ localStorage
-  if (token) {
+  if (getToken()) {
     router.replace("/admin/"); // ➡ Để người dùng không quay lại được trang login bằng nút Back.
   }
 });
