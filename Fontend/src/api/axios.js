@@ -1,11 +1,6 @@
 import axios from "axios";
 import router from "@/router";
-import {
-  getToken,
-  clearAuthData,
-  tokenExpired,
-  handleToken,
-} from "@/utils/auth";
+import { getToken, tokenExpired, handleToken } from "@/utils/auth";
 
 /**
  * @file api.js
@@ -29,16 +24,6 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-});
-
-api.interceptors.request.use((config) => {
-  if (getToken() && tokenExpired()) {
-    clearAuthData();
-    alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.2222");
-    router.push("/admin/login");
-    config.headers.Authorization = `Bearer ${getToken()}`;
-  }
-  return config;
 });
 
 export default api;
