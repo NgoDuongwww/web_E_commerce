@@ -1,4 +1,6 @@
 import router from "@/router";
+import { ref } from "vue";
+
 /**
  * Lấy token xác thực từ localStorage.
  *
@@ -15,6 +17,10 @@ export function getToken() {
  */
 export function getTokenExpiration() {
   return localStorage.getItem("expirationTime");
+}
+
+export function getStatusToken() {
+  return localStorage.getItem("statusToken");
 }
 
 /**
@@ -47,12 +53,16 @@ export function isAuthenticated() {
   return !tokenExpired();
 }
 
+/**
+ * Xử lý token và điều hướng nếu token đã hết hạn.
+ *
+ * @param {boolean} [showAlert=true] - Cờ để hiển thị thông báo nếu phiên đăng nhập đã hết hạn.
+ * @returns {boolean} `true` nếu token đã hết hạn và người dùng bị điều hướng đến trang đăng nhập, ngược lại là `false`.
+ */
 export function handleToken(showAlert = true) {
   if (getToken() && tokenExpired()) {
     clearAuthData();
-    if (showAlert) {
-      alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.3333");
-    }
+    if (showAlert) alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
     router.push("/admin/login");
     return true;
   }

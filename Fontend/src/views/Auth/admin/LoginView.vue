@@ -26,13 +26,14 @@ const login = async () => {
     const token = res.data.token; // ➡ Lấy token từ response
     const decoded = jwtDecode(token); // ➡ Giải mã token
     const expTime = decoded.exp * 1000; // ➡ Thời gian hết hạn token
+
     localStorage.setItem("token", token); // ➡ Lưu token vào localStorage
     localStorage.setItem("expirationTime", expTime); // ➡ Lưu thời gian hết hạn token vào localStorage
 
     router.push("/admin"); // ➡ Chuyển trang
   } catch (error) {
     alert("Đăng nhập thất bại, vui lòng thử lại!");
-    // console.error(error);
+    console.error(error);
   }
 };
 
