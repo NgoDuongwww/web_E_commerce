@@ -1,5 +1,5 @@
 <script setup>
-import ProductMenu from '../../components/admin/products/ProductMenu.vue'
+import ProductMenu from '@/components/admin/products/product-menu.vue'
 </script>
 
 <template>

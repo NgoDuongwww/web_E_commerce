@@ -20,7 +20,7 @@ const login = async () => {
         // Dữ liệu từ request body
         email: email.value,
         password: password.value,
-      },
+      }
     )
 
     const token = res.data.token // ➡ Lấy token từ response

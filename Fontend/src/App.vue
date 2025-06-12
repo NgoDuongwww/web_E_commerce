@@ -14,10 +14,8 @@ onMounted(() => {
 
 <template>
   <div class="wrapper">
-    <!-- Thông báo -->
-    <Toaster position="top-right" />
+    <Toaster />
 
-    <!-- Layout Admin -->
     <template v-if="!$route.meta.noLayout && $route.meta.adminLayout">
       <div class="Admin">
         <div class="AD admin__header">
@@ -29,12 +27,10 @@ onMounted(() => {
       </div>
     </template>
 
-    <!-- Layout User -->
     <template v-if="!$route.meta.noLayout && $route.meta.userLayout">
       <router-view />
     </template>
 
-    <!-- Layout Auth -->
     <template v-if="$route.meta.noLayout">
       <router-view />
     </template>
@@ -47,22 +43,26 @@ onMounted(() => {
   height: 100vh;
   color: var(--text-default);
   margin: 0 auto;
-}
 
-.Admin {
-  @include w-100-h-100;
-  @include display-flex-row;
-
-  .AD {
-    height: 100%;
+  section[aria-label='Notifications alt+T'] {
+    position: absolute !important;
   }
 
-  .admin__header {
-    width: 12%;
-  }
+  .Admin {
+    @include w-100-h-100;
+    @include display-flex-row;
 
-  .admin__main {
-    flex: 1;
+    .AD {
+      height: 100%;
+    }
+
+    .admin__header {
+      width: 12%;
+    }
+
+    .admin__main {
+      flex: 1;
+    }
   }
 }
 </style>
