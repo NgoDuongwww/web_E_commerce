@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Variant extends Model {
     /**
@@ -11,9 +11,9 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Variant.hasMany(models.VariantValue, {
         // ↳ Một Variant có nhiều VariantValue, liên kết qua khóa ngoại variant_id.
-        foreignKey: "variant_id",
-        as: "variant",
-      });
+        foreignKey: 'variant_id',
+        as: 'variant',
+      })
     }
   }
   Variant.init(
@@ -22,12 +22,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize, // ➡ Truyền đối tượng kết nối Sequelize.
-      modelName: "Variant", // ➡ Tên model trong sequelize.
-      tableName: "variants", // ➡ Tên bảng trong database.
+      modelName: 'Variant', // ➡ Tên model trong sequelize.
+      tableName: 'variants', // ➡ Tên bảng trong database.
       underscored: true, //➡ Tự động dùng created_at thay vì createdAt trong database.
-      createdAt: "created_at", // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
-      updatedAt: "updated_at", // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
-    }
-  );
-  return Variant;
-};
+      createdAt: 'created_at', // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
+      updatedAt: 'updated_at', // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
+    },
+  )
+  return Variant
+}

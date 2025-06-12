@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Discount extends Model {
     /**
@@ -10,15 +10,15 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Discount.belongsTo(models.Brand, {
-        foreignKey: "brand_id", // ➡ Khóa ngoại trong bảng discounts.
-      });
+        foreignKey: 'brand_id', // ➡ Khóa ngoại trong bảng discounts.
+      })
       Discount.belongsTo(models.Category, {
-        foreignKey: "category_id", // ➡ Khóa ngoại trong bảng discounts.
-      });
-      
+        foreignKey: 'category_id', // ➡ Khóa ngoại trong bảng discounts.
+      })
+
       Discount.hasMany(models.Order, {
-        foreignKey: "discount_id", // ➡ Khóa ngoại trong bảng orders.
-      });
+        foreignKey: 'discount_id', // ➡ Khóa ngoại trong bảng orders.
+      })
     }
   }
   Discount.init(
@@ -33,12 +33,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize, // ➡ Truyền đối tượng kết nối Sequelize.
-      modelName: "Discount", // ➡ Tên model trong sequelize.
-      tableName: "discounts", // ➡ Tên bảng trong database.
+      modelName: 'Discount', // ➡ Tên model trong sequelize.
+      tableName: 'discounts', // ➡ Tên bảng trong database.
       underscored: true, //➡ Tự động dùng created_at thay vì createdAt trong database.
-      createdAt: "created_at", // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
-      updatedAt: "updated_at", // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
-    }
-  );
-  return Discount;
-};
+      createdAt: 'created_at', // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
+      updatedAt: 'updated_at', // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
+    },
+  )
+  return Discount
+}

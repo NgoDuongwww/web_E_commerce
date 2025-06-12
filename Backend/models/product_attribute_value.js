@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class ProductAttributeValue extends Model {
     /**
@@ -12,13 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       ProductAttributeValue.belongsTo(models.Product, {
         // ↳ Một ProductAttributeValue thuộc về một Product, liên kết qua khóa ngoại product_id.
-        foreignKey: "product_id",
-      });
+        foreignKey: 'product_id',
+      })
       ProductAttributeValue.belongsTo(models.Attribute, {
         // ↳ Một ProductAttributeValue thuộc về một Attribute, liên kết qua khóa ngoại attribute_id.
-        foreignKey: "attribute_id",
-        as: "attribute",
-      });
+        foreignKey: 'attribute_id',
+        as: 'attribute',
+      })
     }
   }
   ProductAttributeValue.init(
@@ -29,12 +29,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "ProductAttributeValue",
-      tableName: "product_attribute_values", // ➡ Tên bảng trong database là product_attribute_values.
+      modelName: 'ProductAttributeValue',
+      tableName: 'product_attribute_values', // ➡ Tên bảng trong database là product_attribute_values.
       underscored: true, //➡ Tự động dùng created_at thay vì createdAt trong database.
-      createdAt: "created_at", // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
-      updatedAt: "updated_at", // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
-    }
-  );
-  return ProductAttributeValue;
-};
+      createdAt: 'created_at', // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
+      updatedAt: 'updated_at', // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
+    },
+  )
+  return ProductAttributeValue
+}

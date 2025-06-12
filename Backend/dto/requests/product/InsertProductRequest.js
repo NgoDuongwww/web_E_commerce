@@ -1,17 +1,17 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 class insertProductRequest {
   // ↳ Tạo một class để đại diện cho yêu cầu thêm sản phẩm.
   constructor(data) {
     // ↳ Hàm khởi tạo (constructor), nhận dữ liệu từ client gửi lên (thường là req.body).
-    this.name = data.name; // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng.
-    this.image = data.image;
-    this.description = data.description;
-    this.brand_id = data.brand_id;
-    this.category_id = data.category_id;
-    this.attributes = data.attributes;
-    this.variants = data.variants;
-    this.variant_values = data.variant_values;
+    this.name = data.name // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng.
+    this.image = data.image
+    this.description = data.description
+    this.brand_id = data.brand_id
+    this.category_id = data.category_id
+    this.attributes = data.attributes
+    this.variants = data.variants
+    this.variant_values = data.variant_values
   }
 
   static validate(data) {
@@ -30,7 +30,7 @@ class insertProductRequest {
       // ➡ items() yêu cầu xác định kiểu và điều kiện của một phần tử mảng.
       // ➡ object() yêu cầu giá trị phải là một đối tượng.
       name: Joi.string().required(), // ➡ Mỗi dòng là một trường dữ liệu cần kiểm tra.
-      image: Joi.string().allow(""),
+      image: Joi.string().allow(''),
       description: Joi.string().optional(),
       brand_id: Joi.number().integer().required(),
       category_id: Joi.number().integer().required(),
@@ -39,7 +39,7 @@ class insertProductRequest {
           Joi.object({
             name: Joi.string().required(),
             value: Joi.string().required(),
-          })
+          }),
         )
         .optional(),
       variants: Joi.array()
@@ -47,7 +47,7 @@ class insertProductRequest {
           Joi.object({
             name: Joi.string().required(),
             values: Joi.array().items(Joi.string().required()).required(),
-          })
+          }),
         )
         .optional(),
       variant_values: Joi.array()
@@ -59,14 +59,14 @@ class insertProductRequest {
             price: Joi.number().positive().required(),
             old_price: Joi.number().positive().optional(),
             stock: Joi.number().integer().min(0).default(0),
-            sku: Joi.string().allow(""),
-          })
+            sku: Joi.string().allow(''),
+          }),
         )
         .optional(),
-    });
+    })
 
-    return schema.validate(data); // ➡ Thực hiện kiểm tra dữ liệu và trả về kết quả (có thể có error nếu không hợp lệ).
+    return schema.validate(data) // ➡ Thực hiện kiểm tra dữ liệu và trả về kết quả (có thể có error nếu không hợp lệ).
   }
 }
 
-module.exports = insertProductRequest;
+module.exports = insertProductRequest

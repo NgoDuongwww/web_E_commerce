@@ -1,42 +1,42 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require("../constants/UserRole.js");
+  const UserRole = require('../constants/UserRole.js')
 
   // Controller import
-  const ProductImageController = require("../controllers/ProductImageController.js");
+  const ProductImageController = require('../controllers/ProductImageController.js')
 
   // Middleware import
-  const asyncHandler = require("../middlewares/asyncHandler.js");
-  const validate = require("../middlewares/validate.js");
-  const validateImageExists = require("../middlewares/validateImageExists.js");
-  const requireRoles = require("../middlewares/jwtMiddleware.js");
+  const asyncHandler = require('../middlewares/asyncHandler.js')
+  const validate = require('../middlewares/validate.js')
+  const validateImageExists = require('../middlewares/validateImageExists.js')
+  const requireRoles = require('../middlewares/jwtMiddleware.js')
 
   // DTO import
-  const insertProductImageRequest = require("../dto/requests/product_image/InsertProductImageRequest.js");
+  const insertProductImageRequest = require('../dto/requests/product_image/InsertProductImageRequest.js')
 
   router.get(
-    "/product-images",
-    asyncHandler(ProductImageController.getProductImages)
-  );
+    '/product-images',
+    asyncHandler(ProductImageController.getProductImages),
+  )
   router.get(
-    "/product-images/:id",
-    asyncHandler(ProductImageController.getProductImageById)
-  );
+    '/product-images/:id',
+    asyncHandler(ProductImageController.getProductImageById),
+  )
   router.post(
-    "/product-images",
+    '/product-images',
     requireRoles([UserRole.ADMIN]),
     validate(insertProductImageRequest),
-    asyncHandler(ProductImageController.insertProductImage)
-  );
+    asyncHandler(ProductImageController.insertProductImage),
+  )
   router.put(
-    "/product-images/:id",
+    '/product-images/:id',
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
-    asyncHandler(ProductImageController.updateProductImage)
-  );
+    asyncHandler(ProductImageController.updateProductImage),
+  )
   router.delete(
-    "/product-images/:id",
+    '/product-images/:id',
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(ProductImageController.deleteProductImage)
-  );
-};
+    asyncHandler(ProductImageController.deleteProductImage),
+  )
+}

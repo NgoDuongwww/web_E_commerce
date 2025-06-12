@@ -8,4 +8,4 @@ module.exports = {
   CANCELLED: 5, // ⮕ 5: Đơn hàng đã bị huỷ (khách hoặc shop huỷ).
   REFUNDED: 6, // ⮕ 6: Đơn hàng đã hoàn tiền cho khách.
   FAILED: 7, // ⮕ 7: Đơn hàng giao thất bại (ví dụ khách không nhận hàng).
-};
+}

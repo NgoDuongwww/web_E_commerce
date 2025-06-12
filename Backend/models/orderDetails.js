@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class OrderDetail extends Model {
     /**
@@ -12,12 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       OrderDetail.belongsTo(models.Order, {
         // ↳ Một OrderDetail thuộc về một Order, liên kết qua khóa ngoại order_id.
-        foreignKey: "order_id",
-      });
+        foreignKey: 'order_id',
+      })
       OrderDetail.belongsTo(models.ProductVariantValue, {
         // ↳ Một OrderDetail thuộc về một ProductVariantValue, liên kết qua khóa ngoại product_id.
-        foreignKey: "product_variant_id",
-      });
+        foreignKey: 'product_variant_id',
+      })
     }
   }
   OrderDetail.init(
@@ -29,12 +29,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize, // ➡ Truyền đối tượng kết nối Sequelize.
-      modelName: "OrderDetail", // ➡ Đặt tên model là OrderDetail.
-      tableName: "orderDetails", // ➡ Tên bảng trong database là orderDetails.
+      modelName: 'OrderDetail', // ➡ Đặt tên model là OrderDetail.
+      tableName: 'orderDetails', // ➡ Tên bảng trong database là orderDetails.
       underscored: true, //➡ Tự động dùng created_at thay vì createdAt trong database.
-      createdAt: "created_at", // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
-      updatedAt: "updated_at", // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
-    }
-  );
-  return OrderDetail;
-};
+      createdAt: 'created_at', // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
+      updatedAt: 'updated_at', // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
+    },
+  )
+  return OrderDetail
+}

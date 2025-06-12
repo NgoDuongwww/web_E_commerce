@@ -1,14 +1,14 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 class InsertFeedbackRequest {
   // ↳ Tạo một class để đại diện cho yêu cầu thêm tin tức.
   constructor(data) {
     // ↳ Hàm khởi tạo (constructor), nhận dữ liệu từ client gửi lên (thường là req.body).
-    this.product_variant_id = data.product_variant_id; // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng.
-    this.user_id = data.user_id;
-    this.order_id = data.order_id;
-    this.star = data.star;
-    this.content = data.content;
+    this.product_variant_id = data.product_variant_id // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng.
+    this.user_id = data.user_id
+    this.order_id = data.order_id
+    this.star = data.star
+    this.content = data.content
   }
 
   static validate(data) {
@@ -27,10 +27,10 @@ class InsertFeedbackRequest {
       order_id: Joi.number().integer().required(),
       star: Joi.number().integer().min(0).max(5).required(),
       content: Joi.string().optional(),
-    });
+    })
 
-    return schema.validate(data); // ➡ Thực hiện kiểm tra dữ liệu và trả về kết quả (có thể có error nếu không hợp lệ).
+    return schema.validate(data) // ➡ Thực hiện kiểm tra dữ liệu và trả về kết quả (có thể có error nếu không hợp lệ).
   }
 }
 
-module.exports = InsertFeedbackRequest;
+module.exports = InsertFeedbackRequest

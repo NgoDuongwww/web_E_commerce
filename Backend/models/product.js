@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     /**
@@ -12,40 +12,40 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Product.belongsTo(models.Brand, {
         // ↳ Một Product thuộc về một Brand, liên kết qua khóa ngoại brand_id.
-        foreignKey: "brand_id",
-      });
+        foreignKey: 'brand_id',
+      })
       Product.belongsTo(models.Category, {
         // ↳ Một Product thuộc về một Category, liên kết qua khóa ngoại category_id.
-        foreignKey: "category_id",
-      });
+        foreignKey: 'category_id',
+      })
 
       Product.hasMany(models.ProductVariantValue, {
         // ↳ Một Product thuộc về một ProductVariantValue, liên kết qua khóa ngoại product_id.
-        foreignKey: "product_id",
-        as: "variants",
-      });
+        foreignKey: 'product_id',
+        as: 'variants',
+      })
       Product.hasMany(models.ProductAttributeValue, {
         // ↳ Một Product có nhiều ProductAttributeValue, liên kết qua khóa ngoại product_id.
-        foreignKey: "product_id",
-        as: "attributes",
-      });
+        foreignKey: 'product_id',
+        as: 'attributes',
+      })
       Product.hasMany(models.BannerDetail, {
         // ↳ Một Product có nhiều BannerDetail, liên kết qua khóa ngoại product_id.
-        foreignKey: "product_id",
-      });
+        foreignKey: 'product_id',
+      })
       Product.hasMany(models.FeedBack, {
         // ↳ Một Product có nhiều FeedBack, liên kết qua khóa ngoại product_id.
-        foreignKey: "product_id",
-      });
+        foreignKey: 'product_id',
+      })
       Product.hasMany(models.NewsDetail, {
         // ↳ Một Product có nhiều NewsDetail, liên kết qua khóa ngoại product_id.
-        foreignKey: "product_id",
-      });
+        foreignKey: 'product_id',
+      })
       Product.hasMany(models.ProductImage, {
         // ↳ Một Product có nhiều ProductImage, liên kết qua khóa ngoại product_id.
-        foreignKey: "product_id",
-        as: "product_images",
-      });
+        foreignKey: 'product_id',
+        as: 'product_images',
+      })
     }
   }
   Product.init(
@@ -63,12 +63,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize, // ➡ Truyền đối tượng kết nối Sequelize.
-      modelName: "Product", // ➡ Đặt tên model là Product.
-      tableName: "products", // ➡ Tên bảng trong database là products.
+      modelName: 'Product', // ➡ Đặt tên model là Product.
+      tableName: 'products', // ➡ Tên bảng trong database là products.
       underscored: true, //➡ Tự động dùng created_at thay vì createdAt trong database.
-      createdAt: "created_at", // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
-      updatedAt: "updated_at", // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
-    }
-  );
-  return Product;
-};
+      createdAt: 'created_at', // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
+      updatedAt: 'updated_at', // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
+    },
+  )
+  return Product
+}

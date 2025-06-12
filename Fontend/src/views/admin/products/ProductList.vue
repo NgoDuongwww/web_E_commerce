@@ -1,18 +1,18 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
-import api from "@/api/axios.js";
+import { ref, onMounted, watch } from 'vue'
+import api from '@/api/axios.js'
 
-const products = ref([]); // ➡ Danh sách toàn bộ sản phẩm đang hiển thị (đã lọc)
-const current_page = ref(1); // ➡ Trang hiện tại
-const total_page = ref(0); // ➡ Tổng số trang
-const total = ref(0); // ➡ Tổng số sản phân
-const pageSize = 10; // ➡ Số sản phẩm trên 1 trang
-const loading = ref(true); // ➡ Loading
+const products = ref([]) // ➡ Danh sách toàn bộ sản phẩm đang hiển thị (đã lọc)
+const current_page = ref(1) // ➡ Trang hiện tại
+const total_page = ref(0) // ➡ Tổng số trang
+const total = ref(0) // ➡ Tổng số sản phân
+const pageSize = 10 // ➡ Số sản phẩm trên 1 trang
+const loading = ref(true) // ➡ Loading
 
-const first_products = ref([]); // ➡ Danh sách toàn bộ sản phẩm ban đầu
-const select = ref(""); // ➡ Danh sách sản phẩm tìm kiếm
-const insertCode = ref(""); // ➡ Danh sách sản phân tìm kiếm theo id
-const insertDate = ref(""); // ➡ Danh sách sản phân tìm kiếm theo ngày tạo
+const first_products = ref([]) // ➡ Danh sách toàn bộ sản phẩm ban đầu
+const select = ref('') // ➡ Danh sách sản phẩm tìm kiếm
+const insertCode = ref('') // ➡ Danh sách sản phân tìm kiếm theo id
+const insertDate = ref('') // ➡ Danh sách sản phân tìm kiếm theo ngày tạo
 
 // Lấy danh sách sản phẩm
 const getProducts = async () => {
@@ -24,59 +24,59 @@ const getProducts = async () => {
         // ↳ Tham số tìm kiếm (truyền query parameters)
         page: current_page.value ?? 1, // "/admin/products?page=1"
       },
-    }
-  );
+    },
+  )
 
   // Sau khi gọi API thành công, cập nhật dữ liệu
-  products.value = res.data.products;
-  current_page.value = res.data.current_page;
-  total_page.value = res.data.total_page;
-  total.value = res.data.total;
-  first_products.value = res.data.first_products;
-};
+  products.value = res.data.products
+  current_page.value = res.data.current_page
+  total_page.value = res.data.total_page
+  total.value = res.data.total
+  first_products.value = res.data.first_products
+}
 
 // Lọc danh sách sản phẩm dựa trên các tiêu chí tìm kiếm
 const filter_products = () => {
   products.value = first_products.value.filter((product) => {
     // ↳ Lọc sản phẩm theo tìm kiếm
     const selectProduct =
-      select.value === "all" ||
-      select.value === "" ||
-      product.is_visible === (select.value === "1" ? true : false);
+      select.value === 'all' ||
+      select.value === '' ||
+      product.is_visible === (select.value === '1' ? true : false)
 
     // Lọc sản phẩm theo id
     const insertProduct =
-      insertCode.value === "" || String(product.id).includes(insertCode.value);
+      insertCode.value === '' || String(product.id).includes(insertCode.value)
 
     // Lọc sản phẩm theo ngày tạo
     const dateProduct =
-      insertDate.value === "" ||
-      product.created_at?.slice(0, 10).includes(insertDate.value);
+      insertDate.value === '' ||
+      product.created_at?.slice(0, 10).includes(insertDate.value)
 
-    return selectProduct && insertProduct && dateProduct;
-  });
-};
+    return selectProduct && insertProduct && dateProduct
+  })
+}
 
 // Theo dõi các biến, tự động lọc lại dữ liệu khi thay đổi điều kiện tìm kiếm.
-watch([select, insertCode, insertDate], filter_products);
+watch([select, insertCode, insertDate], filter_products)
 
 // Lùi trang hiện tại
 const Previous = () => {
   if (current_page.value > 1) {
-    current_page.value--;
-    getProducts();
+    current_page.value--
+    getProducts()
   }
-};
+}
 
 // Sang trang hiện tại
 const Next = () => {
   if (current_page.value * pageSize < total.value) {
-    current_page.value++;
-    getProducts();
+    current_page.value++
+    getProducts()
   }
-};
+}
 
-onMounted(getProducts); // ➡ Hook chạy sau khi component render lần đầu.
+onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
 </script>
 
 <template>
@@ -151,7 +151,7 @@ onMounted(getProducts); // ➡ Hook chạy sau khi component render lần đầu
               </td>
               <td>
                 {{ product.description?.slice(0, 70) }}
-                {{ product.description?.length > 70 ? "..." : "" }}
+                {{ product.description?.length > 70 ? '...' : '' }}
               </td>
               <td>{{ product.buyturn }}</td>
               <td>{{ product.brand_id }}</td>

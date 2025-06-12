@@ -1,34 +1,34 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require("../constants/UserRole.js");
+  const UserRole = require('../constants/UserRole.js')
 
   // Controller import
-  const CartController = require("../controllers/CartController.js");
+  const CartController = require('../controllers/CartController.js')
 
   // Middleware import
-  const asyncHandler = require("../middlewares/asyncHandler.js");
-  const validate = require("../middlewares/validate.js");
-  const requireRoles = require("../middlewares/jwtMiddleware.js");
+  const asyncHandler = require('../middlewares/asyncHandler.js')
+  const validate = require('../middlewares/validate.js')
+  const requireRoles = require('../middlewares/jwtMiddleware.js')
 
   // DTO import
-  const InsertCartRequest = require("../dto/requests/cart/InsertCartRequest.js");
+  const InsertCartRequest = require('../dto/requests/cart/InsertCartRequest.js')
 
-  router.get("/carts", asyncHandler(CartController.getCarts));
-  router.get("/carts/:id", asyncHandler(CartController.getCartById));
+  router.get('/carts', asyncHandler(CartController.getCarts))
+  router.get('/carts/:id', asyncHandler(CartController.getCartById))
   router.post(
-    "/carts",
+    '/carts',
     requireRoles([UserRole.ADMIN, UserRole.USER]),
     validate(InsertCartRequest),
-    asyncHandler(CartController.insertCart)
-  );
+    asyncHandler(CartController.insertCart),
+  )
   router.post(
-    "/checkout",
+    '/checkout',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
-    asyncHandler(CartController.checkoutCart)
-  );
+    asyncHandler(CartController.checkoutCart),
+  )
   router.delete(
-    "/carts/:id",
+    '/carts/:id',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
-    asyncHandler(CartController.deleteCart)
-  );
-};
+    asyncHandler(CartController.deleteCart),
+  )
+}

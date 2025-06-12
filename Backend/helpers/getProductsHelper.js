@@ -1,8 +1,8 @@
-const Sequelize = require("sequelize");
-const { Op } = Sequelize;
-const db = require("../models");
-const getAvatarUrl = require("./imageHelper");
-const { UserRole } = require("../constants");
+const Sequelize = require('sequelize')
+const { Op } = Sequelize
+const db = require('../models')
+const getAvatarUrl = require('./imageHelper')
+const { UserRole } = require('../constants')
 
 /**
  * Lấy danh sách sản phẩm theo phân trang, có thể tìm kiếm và lọc theo vai trò người dùng.
@@ -30,17 +30,17 @@ const { UserRole } = require("../constants");
  */
 
 module.exports = async ({
-  search = "",
+  search = '',
   page = 1,
   checkRole = UserRole.USER,
 }) => {
-  const pageSize = 10; // Hiển thị 10 sản phẩm mỗi trang.
-  const offset = (page - 1) * pageSize; // offset là số sản phẩm cần bỏ qua.
+  const pageSize = 10 // Hiển thị 10 sản phẩm mỗi trang.
+  const offset = (page - 1) * pageSize // offset là số sản phẩm cần bỏ qua.
 
-  const searchs = search.trim(); // ➡ Lấy search (chuỗi tìm kiếm) và  trim (xóa khoảng trắng)
-  const isSearching = searchs !== ""; // ➡ Kiểm tra xem search rỗng hay không.
+  const searchs = search.trim() // ➡ Lấy search (chuỗi tìm kiếm) và  trim (xóa khoảng trắng)
+  const isSearching = searchs !== '' // ➡ Kiểm tra xem search rỗng hay không.
 
-  let whereClause = {}; // Tạo điều kiện lọc (WHERE) cho câu truy vấn.
+  let whereClause = {} // Tạo điều kiện lọc (WHERE) cho câu truy vấn.
   if (checkRole === UserRole.USER) {
     whereClause = {
       is_visible: true,
@@ -51,7 +51,7 @@ module.exports = async ({
           { description: { [Op.like]: `%${searchs}%` } }, // ➡ Hoặc description chứa search.
         ],
       }),
-    };
+    }
   } else {
     if (isSearching) {
       whereClause = {
@@ -60,18 +60,18 @@ module.exports = async ({
           { name: { [Op.like]: `%${searchs}%` } }, // ➡ Tìm sản phẩm có name chứa từ khóa search.
           { description: { [Op.like]: `%${searchs}%` } }, // ➡ Hoặc description chứa search.
         ],
-      };
+      }
     }
   }
 
   const attributeInclude = {
     model: db.ProductAttributeValue, // ➡ Chị định model cần join.
-    as: "attributes",
+    as: 'attributes',
     include: [
       // ↳ Kết hợp với bảng Attribute.
       {
         model: db.Attribute, // ➡ Chị định model cần join.
-        as: "attribute",
+        as: 'attribute',
       },
     ],
     required: false,
@@ -80,7 +80,7 @@ module.exports = async ({
         value: { [Op.like]: `%${searchs}%` }, // ➡ Tìm thuộc tính có name chứa từ khóa search.
       },
     }),
-  };
+  }
 
   const [products, totalProducts] = await Promise.all([
     // ↳ Chạy song song 2 truy vấn:
@@ -95,7 +95,7 @@ module.exports = async ({
       // ↳ Đếm tổng số sản phẩm (để tính tổng số trang).
       where: whereClause,
     }),
-  ]);
+  ])
 
   return {
     products: products.map((product) => ({
@@ -107,12 +107,12 @@ module.exports = async ({
       attributes: (product.attributes || []).map((attr) => ({
         // ↳ Lấy tất cả thống tính của sản phẩm (attributes).
         // ↳ Với mỗi phần tử attr, tạo object mới.
-        name: attr.attribute?.name || "", // ➡ Lấy tên Attribute (nếu không có thì gán rỗng).
+        name: attr.attribute?.name || '', // ➡ Lấy tên Attribute (nếu không có thì gán rỗng).
         value: attr.value, // ➡ Lấy giá trị Attribute.
       })),
     })),
     current_page: parseInt(page, 10), // ➡ trang hiện tại.
     total_page: Math.ceil(totalProducts / pageSize), // ➡ tổng số trang (ceil để làm tròn lên).
     total: totalProducts, // ➡ tổn số sản phẩm.
-  };
-};
+  }
+}

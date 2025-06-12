@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     /**
@@ -12,23 +12,23 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Order.belongsTo(models.Discount, {
         // ↳ Một Order thuộc về một Discount, liên kết qua khóa ngoại discount_id.
-        foreignKey: "discount_id",
-      });
+        foreignKey: 'discount_id',
+      })
       Order.belongsTo(models.User, {
         // ↳ Một Order thuộc về một User, liên kết qua khóa ngoại user_id.
-        foreignKey: "user_id",
-      });
-      
+        foreignKey: 'user_id',
+      })
+
       Order.hasMany(models.OrderDetail, {
         // ↳ Một Order có nhiều OrderDetail, liên kết qua khóa ngoại order_id.
-        foreignKey: "order_id",
-        as: "order_Details",
-      });
+        foreignKey: 'order_id',
+        as: 'order_Details',
+      })
       Order.hasMany(models.FeedBack, {
         // ↳ Một Order có nhiều FeedBack, liên kết qua khóa ngoại order_id.
-        foreignKey: "order_id",
-        as: "feed_Backs",
-      });
+        foreignKey: 'order_id',
+        as: 'feed_Backs',
+      })
     }
   }
   Order.init(
@@ -44,12 +44,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize, // ➡ Truyền đối tượng kết nối Sequelize.
-      modelName: "Order", // ➡ Đặt tên model là Order.
-      tableName: "orders", // ➡ Tên bảng trong database là orders.
+      modelName: 'Order', // ➡ Đặt tên model là Order.
+      tableName: 'orders', // ➡ Tên bảng trong database là orders.
       underscored: true, //➡ Tự động dùng created_at thay vì createdAt trong database.
-      createdAt: "created_at", // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
-      updatedAt: "updated_at", // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
-    }
-  );
-  return Order;
-};
+      createdAt: 'created_at', // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
+      updatedAt: 'updated_at', // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
+    },
+  )
+  return Order
+}

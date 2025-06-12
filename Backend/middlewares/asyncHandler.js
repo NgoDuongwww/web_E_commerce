@@ -21,26 +21,26 @@ const asyncHandler = (fn) => {
   return async (req, res, next) => {
     // ↳ Trả về một hàm middleware async dùng trong Express, nhận req, res, next.
     try {
-      await fn(req, res, next); // ➡ Dùng await để chờ hàm fn thực hiện xong.
+      await fn(req, res, next) // ➡ Dùng await để chờ hàm fn thực hiện xong.
     } catch (error) {
-      console.log("Detail error: ", error); // ➡ In thông tin lỗi ra console để dễ dàng theo dõi.
-      console.log("Error Detail: ", {
+      console.log('Detail error: ', error) // ➡ In thông tin lỗi ra console để dễ dàng theo dõi.
+      console.log('Error Detail: ', {
         message: error.message,
         stack: error.stack,
-      });
+      })
       // ↳ In thông tin lỗi chi tiết ra console để dễ dàng theo dõi.
       return res.status(500).json({
         // ↳ Trả về mã trạng thái HTTP 500 (Internal Server Error) nếu có lỗi.
-        message: error.message || "Internal server error",
+        message: error.message || 'Internal server error',
         // ↳ Gửi thông điệp lỗi từ đối tượng error nếu có, nếu không có thì gửi "Internal server error".
         // Including the error message can help with debugging.
         // You might include more details based on the enviroment.
-        error: process.env.NODE_ENV === "development" ? error : "",
+        error: process.env.NODE_ENV === 'development' ? error : '',
         // ↳ Nếu đang ở môi trường phát triển (development), gửi thêm thông tin lỗi.
         // Nếu không thì không gửi gì để bảo mật.
-      });
+      })
     }
-  };
-};
+  }
+}
 
-module.exports = asyncHandler;
+module.exports = asyncHandler

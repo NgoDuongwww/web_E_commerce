@@ -1,12 +1,12 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 class InsertCartItemRequest {
   // ↳ Tạo một class để đại diện cho yêu cầu thêm chi tiết giỏ hàng.
   constructor(data) {
     // ↳ Hàm khởi tạo (constructor), nhận dữ liệu từ client gửi lên (thường là req.body).
-    this.cart_id = data.cart_id; // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng.
-    this.product_variant_id = data.product_variant_id;
-    this.quantity = data.quantity;
+    this.cart_id = data.cart_id // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng.
+    this.product_variant_id = data.product_variant_id
+    this.quantity = data.quantity
   }
 
   static validate(data) {
@@ -20,10 +20,10 @@ class InsertCartItemRequest {
       cart_id: Joi.number().integer().required(), // ➡ Mỗi dòng là một trường dữ liệu cần kiểm tra.
       product_variant_id: Joi.number().integer().required(),
       quantity: Joi.number().integer().min(1).required(),
-    });
+    })
 
-    return schema.validate(data); // ➡ Thực hiện kiểm tra dữ liệu và trả về kết quả (có thể có error nếu không hợp lệ).
+    return schema.validate(data) // ➡ Thực hiện kiểm tra dữ liệu và trả về kết quả (có thể có error nếu không hợp lệ).
   }
 }
 
-module.exports = InsertCartItemRequest;
+module.exports = InsertCartItemRequest

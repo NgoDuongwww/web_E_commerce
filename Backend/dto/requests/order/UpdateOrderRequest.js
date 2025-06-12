@@ -1,11 +1,11 @@
-const Joi = require("joi");
-const { OrderStatus } = require("../../../constants");
+const Joi = require('joi')
+const { OrderStatus } = require('../../../constants')
 
 class UpdateOrderRequest {
   // ↳ Tạo một class để đại diện cho yêu cầu cập nhật đơn hàng.
   constructor(data) {
     // ↳ Hàm khởi tạo (constructor), nhận dữ liệu từ client gửi lên (thường là req.body).
-    this.status = data.status; // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng.
+    this.status = data.status // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng.
   }
 
   static validate(data) {
@@ -24,10 +24,10 @@ class UpdateOrderRequest {
         .integer()
         .valid(...Object.values(OrderStatus))
         .optional(), // ➡ Mỗi dòng là một trường dữ liệu cần kiểm tra.
-    });
+    })
 
-    return schema.validate(data); // ➡ Thực hiện kiểm tra dữ liệu và trả về kết quả (có thể có error nếu không hợp lệ).
+    return schema.validate(data) // ➡ Thực hiện kiểm tra dữ liệu và trả về kết quả (có thể có error nếu không hợp lệ).
   }
 }
 
-module.exports = UpdateOrderRequest;
+module.exports = UpdateOrderRequest

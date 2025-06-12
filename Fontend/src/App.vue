@@ -1,19 +1,22 @@
 <script setup>
-import AdminMenu from "@/layouts/admin/AdminMenu.vue";
-import { onMounted } from "vue";
-import { handleToken } from "@/utils/auth.js";
+import AdminMenu from '@/layouts/admin/AdminMenu.vue'
+import { onMounted } from 'vue'
+import { handleToken } from '@/utils/auth.js'
 
 // ➡ Hook chạy sau khi component render lần đầu.
 onMounted(() => {
-  const isExpired = handleToken(true);
+  const isExpired = handleToken(true)
   if (isExpired) {
-    return;
+    return
   }
-});
+})
 </script>
 
 <template>
   <div class="wrapper">
+    <!-- Thông báo -->
+    <Toaster position="top-right" />
+
     <!-- Layout Admin -->
     <template v-if="!$route.meta.noLayout && $route.meta.adminLayout">
       <div class="Admin">

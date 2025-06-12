@@ -1,26 +1,26 @@
-const Sequelize = require("sequelize");
-const { Op } = Sequelize;
-const db = require("../models");
-const { OrderStatus } = require("../constants");
+const Sequelize = require('sequelize')
+const { Op } = Sequelize
+const db = require('../models')
+const { OrderStatus } = require('../constants')
 
 exports.getCarts = async (req, res) => {
-  const { user_id, page = 1 } = req.query; // ➡ Lấy user_id và page (trang hiện tại) từ query URL. Mặc định page = 1.
-  const pageSize = 5; // ➡ Hiển thị 5 giỏ hàng mỗi trang.
-  const offset = (page - 1) * pageSize; // ➡ offset là số giỏ hàng cần bỏ qua.
+  const { user_id, page = 1 } = req.query // ➡ Lấy user_id và page (trang hiện tại) từ query URL. Mặc định page = 1.
+  const pageSize = 5 // ➡ Hiển thị 5 giỏ hàng mỗi trang.
+  const offset = (page - 1) * pageSize // ➡ offset là số giỏ hàng cần bỏ qua.
 
-  let whereClause = {}; // ➡ Tạo điều kiện lọc (WHERE) cho câu truy vấn.
-  if (user_id) whereClause.user_id = user_id; // ➡ Tìm giỏ hàng theo user_id.
+  let whereClause = {} // ➡ Tạo điều kiện lọc (WHERE) cho câu truy vấn.
+  if (user_id) whereClause.user_id = user_id // ➡ Tìm giỏ hàng theo user_id.
 
   const [carts, totalCarts] = await Promise.all([
     // ↳ Chạy song song 2 truy vấn:
     db.Cart.findAll({
       // ↳ Lấy danh sách giỏ hàng (theo phân trang và lọc nếu có).
-      where: whereClause, 
+      where: whereClause,
       include: [
         // Kết nối với bảng CartItem.
         {
           model: db.CartItem, // ➡ Chỉ định model cần join.
-          as: "cart_Items", // ➡ Đặt tên alias cho mối quan hệ này.
+          as: 'cart_Items', // ➡ Đặt tên alias cho mối quan hệ này.
         },
       ],
       limit: pageSize,
@@ -28,55 +28,55 @@ exports.getCarts = async (req, res) => {
     }),
     db.Cart.count({
       // ↳ Đếm tổng số giỏ hàng (để tính tổng số trang).
-      where: whereClause, 
+      where: whereClause,
     }),
-  ]);
+  ])
 
   return res.status(200).json({
     // ↳ Trả về status 200 OK.
-    message: "Lấy danh sách giỏ hàng thành công",
+    message: 'Lấy danh sách giỏ hàng thành công',
     data: carts, // ↳ danh sách giỏ hàng.
     current_page: parseInt(page, 10), // ➡ trang hiện tại.
     total_page: Math.ceil(totalCarts / pageSize), // ➡ tổng số trang (ceil để làm tròn lên).
     total: totalCarts, // ➡ tổng số giỏ hàng.
-  });
-};
+  })
+}
 
 exports.getCartById = async (req, res) => {
-  const { id } = req.params; // ➡ Lấy id từ params (đường dẫn).
+  const { id } = req.params // ➡ Lấy id từ params (đường dẫn).
   const cart = await db.Cart.findByPk(id, {
     // ↳ Tìm giỏ hàng theo id (khóa chính) trong database.
     include: [
       // ↳ Kết hợp với bảng CartItem.
       {
         model: db.CartItem, // ➡ Chỉ định model cần join.
-        as: "cart_Items", // ➡ Đặt tên alias cho mối quan hệ này.
+        as: 'cart_Items', // ➡ Đặt tên alias cho mối quan hệ này.
       },
     ],
-  });
+  })
 
   if (!cart) {
     return res.status(404).json({
       // ↳ Trả về status 404 Not Found.
-      message: "Giỏ hàng không tìm thấy",
-    });
+      message: 'Giỏ hàng không tìm thấy',
+    })
   }
 
   return res.status(200).json({
     // ↳ Trả về status 200 OK.
-    message: "Lấy thông tin giỏ hàng thành công",
+    message: 'Lấy thông tin giỏ hàng thành công',
     data: cart, // ➡ Thong tin giỏ hàng.
-  });
-};
+  })
+}
 
 exports.insertCart = async (req, res) => {
-  const { user_id } = req.body; // ➡ Lấy dữ liệu từ body.
+  const { user_id } = req.body // ➡ Lấy dữ liệu từ body.
 
   if (user_id === undefined) {
     return res.status(400).json({
       // ↳ Trả về status 400 Bad Request.
-      message: "Cần cung cấp một giá trị user_id",
-    });
+      message: 'Cần cung cấp một giá trị user_id',
+    })
   }
 
   const existingCart = await db.Cart.findOne({
@@ -86,25 +86,25 @@ exports.insertCart = async (req, res) => {
         user_id: user_id ? user_id : null, // ➡ Tìm giỏ hàng theo user_id hoặc user_id null.
       },
     },
-  });
+  })
   if (existingCart) {
     return res.status(409).json({
       // ↳ Trả về status 409 Conflict.
-      message: "Một giỏ hàng cùng user_id này đã tổn tại",
-    });
+      message: 'Một giỏ hàng cùng user_id này đã tổn tại',
+    })
   }
 
-  const newCart = await db.Cart.create(req.body); // ➡ Tạo giỏ hàng.
+  const newCart = await db.Cart.create(req.body) // ➡ Tạo giỏ hàng.
   return res.status(201).json({
     // ↳ Trả về status 201 Created.
-    message: "Tạo giỏ hàng thành công",
+    message: 'Tạo giỏ hàng thành công',
     data: newCart, // ➡ Thông tin giỏ hàng.
-  });
-};
+  })
+}
 
 exports.checkoutCart = async (req, res) => {
-  const { cart_id, total, note, discount_id } = req.body; // ➡ Lấy dữ liệu từ body.
-  const transaction = await db.sequelize.transaction(); // ➡ Tạo giao dịch.
+  const { cart_id, total, note, discount_id } = req.body // ➡ Lấy dữ liệu từ body.
+  const transaction = await db.sequelize.transaction() // ➡ Tạo giao dịch.
 
   try {
     const cart = await db.Cart.findByPk(cart_id, {
@@ -113,7 +113,7 @@ exports.checkoutCart = async (req, res) => {
         // ↳ Kết hợp với bảng CartItem.
         {
           model: db.CartItem, // ➡ Chỉ định model cần join.
-          as: "cart_Items", // ➡ Đặt tên alias cho mối quan hệ này.
+          as: 'cart_Items', // ➡ Đặt tên alias cho mối quan hệ này.
           required: true, // ➡ Là bắt buộc phải có trong dữ liệu gửi lên.
           include: [
             // ↳ Kết hợp với bảng ProductVariantValue.
@@ -130,16 +130,16 @@ exports.checkoutCart = async (req, res) => {
           ],
         },
       ],
-    });
+    })
     if (!cart || !cart.cart_Items.length) {
       return res.status(404).json({
         // ↳ Trả về status 404 Not Found.
-        message: "Không tìm thấy giỏ hàng",
-      });
+        message: 'Không tìm thấy giỏ hàng',
+      })
     }
 
-    let discountAmount = 0; // ➡ Khởi tạo discountAmount bằng 0.
-    let discountRecord = null; // ➡ Khởi tạo discountRecord bằng null.
+    let discountAmount = 0 // ➡ Khởi tạo discountAmount bằng 0.
+    let discountRecord = null // ➡ Khởi tạo discountRecord bằng null.
     if (discount_id) {
       discountRecord = await db.Discount.findOne({
         // ↳ Tìm discount theo discount_id trong database.
@@ -147,25 +147,25 @@ exports.checkoutCart = async (req, res) => {
         // ↳ id: discount_id: Lọc bản ghi theo ID khuyến mãi.
         // ↳ [Op.gt]: new Date(): 'ấy những bản ghi có expires_at lớn hơn (tức là sau) thời điểm hiện tại.
         // ↳ [Op.gt] là toán tử "greater than" (>).
-      });
+      })
       if (!discountRecord) {
         return res.status(400).json({
           // ↳ Trả về status 400 Bad Request.
-          message: "Không tìm thấy mã giảm giá",
-        });
+          message: 'Không tìm thấy mã giảm giá',
+        })
       }
 
       const validItems = cart.cart_Items.filter((item) => {
         // ↳ Lọc ra các sản phẩm hợp lệ trong giỏ hàng và lưu vào biến validItems.
         // ↳ cart.cart_Items: là một mảng chứa các sản phẩm trong giỏ hàng.
         // Mỗi phần tử (gọi là item) đại diện cho một sản phẩm.
-        const product = item.ProductVariantValue.Product; // ➡ Truy cập sâu vào từng sản phẩm để lấy thông tin gốc của sản phẩm.
-        if (!product) return false; // ➡ Nếu không có sản phẩm thì trả về false (không hợp lệ).
+        const product = item.ProductVariantValue.Product // ➡ Truy cập sâu vào từng sản phẩm để lấy thông tin gốc của sản phẩm.
+        if (!product) return false // ➡ Nếu không có sản phẩm thì trả về false (không hợp lệ).
         return (
           product.brand_id === discountRecord.brand_id && // ➡ Kiểm tra xem brand_id của sản phẩm có trùng với brand_id của mã giảm giá hay không.
           product.category_id === discountRecord.category_id // ➡ Kiểm tra xem category_id của sản phẩm có trùng với category_id của mã giảm giá hay không.
-        );
-      });
+        )
+      })
 
       const validTotal = validItems.reduce(
         // ↳ Tính tổng giá trị của các sản phẩm hợp lệ.
@@ -173,8 +173,8 @@ exports.checkoutCart = async (req, res) => {
         // ↳ item.quantity: Số lượng sản phẩm trong giỏ hàng.
         // ↳ item.ProductVariantValue.price: Giá của sản phẩm.
         // ↳ item.ProductVariantValue: Là một đối tượng chứa thông tin về biến thể của sản phẩm (như kích thước, màu sắc, v.v.).
-        0 // ➡ Giá trị khởi tạo của biến sum là 0.
-      );
+        0, // ➡ Giá trị khởi tạo của biến sum là 0.
+      )
 
       if (validTotal < discountRecord.min_total) {
         return res.status(400).json({
@@ -182,14 +182,14 @@ exports.checkoutCart = async (req, res) => {
           message: `Mã giảm giá chỉ áp dụng khi mua sản phẩm hợp lệ từ ${discountRecord.min_total.toLocaleString()}₫`,
           // ↳ discountRecord.min_total: Giá trị tối thiểu (số) để được giảm giá.
           // ↳ .toLocaleString(): Chuyển số thành chuỗi có định dạng theo ngôn ngữ địa phương (thêm dấu phân cách hàng nghìn).
-        });
+        })
       }
 
       discountAmount = Math.min(
         // ↳ Tính toán số tiền giảm giá.
         validTotal * (discountRecord.percent_value / 100), // ➡ Tính số tiền giảm dựa trên phần trăm (%).
-        discountRecord.max_discount // ➡ Mức giảm giá tối đa được phép.
-      );
+        discountRecord.max_discount, // ➡ Mức giảm giá tối đa được phép.
+      )
     }
 
     // Tổng tiền ban đầu (tự tính nếu client không gửi)
@@ -199,10 +199,10 @@ exports.checkoutCart = async (req, res) => {
       // ↳ item.quantity: Số lượng sản phẩm trong giỏ hàng.
       // ↳ item.ProductVariantValue.price: Giá của sản phẩm.
       // ↳ item.ProductVariantValue: Là một đối tượng chứa thông tin về biến thể của sản phẩm (như kích thước, màu sắc, v.v.).
-      0 // ➡ Giá trị khởi tạo của biến sum là 0.
-    );
+      0, // ➡ Giá trị khởi tạo của biến sum là 0.
+    )
 
-    const finalTotal = (total || firstTotal) - discountAmount; // ➡ Tính tổng tiền cuối cùng sau khi giảm giá.
+    const finalTotal = (total || firstTotal) - discountAmount // ➡ Tính tổng tiền cuối cùng sau khi giảm giá.
 
     const newOrder = await db.Order.create(
       // ↳ Tạo đơn hàng mới trong database.
@@ -214,8 +214,8 @@ exports.checkoutCart = async (req, res) => {
         discount_id: discountRecord ? discountRecord.id : null,
         discount_amount: discountAmount,
       },
-      { transaction: transaction } // ➡ Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu.
-    );
+      { transaction: transaction }, // ➡ Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu.
+    )
 
     for (let item of cart.cart_Items) {
       // ↳ Duyệt qua từng sản phẩm trong giỏ hàng.
@@ -224,8 +224,8 @@ exports.checkoutCart = async (req, res) => {
         // ↳ item.ProductVariantValue.stock: Số lượng sản phẩm trong kho.
         // ↳ item.quantity: Số lượng sản phẩm trong giỏ hàng.
         throw new Error(
-          `Sản phẩm "${item.ProductVariantValue.id}" không đủ hàng.`
-        );
+          `Sản phẩm "${item.ProductVariantValue.id}" không đủ hàng.`,
+        )
       }
 
       await db.OrderDetail.create(
@@ -236,8 +236,8 @@ exports.checkoutCart = async (req, res) => {
           quantity: item.quantity,
           price: item.ProductVariantValue.price,
         },
-        { transaction: transaction } // ➡ Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu.
-      );
+        { transaction: transaction }, // ➡ Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu.
+      )
 
       await db.Product.increment(
         // ↳ Tăng số lượng sản phẩm đã bán trong bảng Product.
@@ -248,8 +248,8 @@ exports.checkoutCart = async (req, res) => {
         {
           transaction: transaction, // ➡ Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu.
           where: { id: item.ProductVariantValue.product_id }, // ➡ Tìm sản phẩm theo product_id trong bảng ProductVariantValue.
-        }
-      );
+        },
+      )
 
       await db.ProductVariantValue.decrement(
         // ↳ Giảm số lượng sản phẩm trong kho trong bảng ProductVariantValue.
@@ -259,8 +259,8 @@ exports.checkoutCart = async (req, res) => {
         {
           transaction: transaction, // ➡ Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu.
           where: { id: item.ProductVariantValue.id }, // ➡ Tìm sản phẩm theo id trong bảng ProductVariantValue.
-        }
-      );
+        },
+      )
     }
 
     await db.CartItem.destroy(
@@ -268,15 +268,15 @@ exports.checkoutCart = async (req, res) => {
       {
         where: { cart_id: cart_id },
       },
-      { transaction: transaction } // ➡ Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu.
-    );
+      { transaction: transaction }, // ➡ Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu.
+    )
 
-    await cart.destroy({ transaction: transaction }); // ➡ Xóa giỏ hàng.
+    await cart.destroy({ transaction: transaction }) // ➡ Xóa giỏ hàng.
 
-    await transaction.commit(); // ➡ Cam kết giao dịch.
+    await transaction.commit() // ➡ Cam kết giao dịch.
     return res.status(201).json({
       // ↳ Trả về status 201 Created.
-      message: "Thanh toán giỏ hàng thành công",
+      message: 'Thanh toán giỏ hàng thành công',
       data: {
         // ➡ Trả về thông tin đơn hàng đã tạo.
         order_id: newOrder.id,
@@ -289,33 +289,33 @@ exports.checkoutCart = async (req, res) => {
         created_at: newOrder.created_at,
         updated_at: newOrder.updated_at,
       },
-    });
+    })
   } catch (error) {
-    await transaction.rollback(); // ➡ Hoàn tác giao dịch.
-    console.error("❌ Lỗi chi tiết:", error);
+    await transaction.rollback() // ➡ Hoàn tác giao dịch.
+    console.error('❌ Lỗi chi tiết:', error)
     return res.status(500).json({
       // ↳ Trả về status 500 Internal Server Error.
-      message: "Đã xảy ra lỗi khi tạo sản phẩm",
+      message: 'Đã xảy ra lỗi khi tạo sản phẩm',
       error: error.message, // ➡ Trả về thông báo lỗi.
-    });
+    })
   }
-};
+}
 
 exports.deleteCart = async (req, res) => {
-  const { id } = req.params; // ➡ Lấy id từ params (đường dẫn).
+  const { id } = req.params // ➡ Lấy id từ params (đường dẫn).
   const deleted = await db.Cart.destroy({
     where: { id }, // ➡ Xóa giỏ hàng theo id trong database.
-  });
+  })
 
   if (deleted) {
     return res.status(200).json({
       // ↳ Trả về status 200 OK.
-      message: "Xóa giỏ hàng thành công",
-    });
+      message: 'Xóa giỏ hàng thành công',
+    })
   } else {
     return res.status(404).json({
       // ↳ Trả về status 404 Not Found.
-      message: "Giỏ hàng không tồn tại",
-    });
+      message: 'Giỏ hàng không tồn tại',
+    })
   }
-};
+}

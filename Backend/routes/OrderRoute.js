@@ -1,29 +1,29 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require("../constants/UserRole.js");
+  const UserRole = require('../constants/UserRole.js')
 
   // Controller import
-  const OrderController = require("../controllers/OrderController.js");
+  const OrderController = require('../controllers/OrderController.js')
 
   // Middleware import
-  const asyncHandler = require("../middlewares/asyncHandler.js");
-  const validate = require("../middlewares/validate.js");
-  const requireRoles = require("../middlewares/jwtMiddleware.js");
+  const asyncHandler = require('../middlewares/asyncHandler.js')
+  const validate = require('../middlewares/validate.js')
+  const requireRoles = require('../middlewares/jwtMiddleware.js')
 
   // DTO import
-  const UpdateOrderRequest = require("../dto/requests/order/UpdateOrderRequest.js");
+  const UpdateOrderRequest = require('../dto/requests/order/UpdateOrderRequest.js')
 
-  router.get("/orders", asyncHandler(OrderController.getOrders));
-  router.get("/orders/:id", asyncHandler(OrderController.getOrderById));
+  router.get('/orders', asyncHandler(OrderController.getOrders))
+  router.get('/orders/:id', asyncHandler(OrderController.getOrderById))
   router.put(
-    "/orders/:id",
+    '/orders/:id',
     requireRoles([UserRole.ADMIN, UserRole.USER]),
     validate(UpdateOrderRequest),
-    asyncHandler(OrderController.updateOrder)
-  );
+    asyncHandler(OrderController.updateOrder),
+  )
   router.delete(
-    "/orders/:id",
+    '/orders/:id',
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(OrderController.deleteOrder)
-  );
-};
+    asyncHandler(OrderController.deleteOrder),
+  )
+}

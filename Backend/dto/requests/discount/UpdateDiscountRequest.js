@@ -1,16 +1,16 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 class UpdateDiscountRequest {
   // ↳ Tạo một class để đại diện cho yêu cầu thêm tin tức.
   constructor(data) {
     // ↳ Hàm khởi tạo (constructor), nhận dữ liệu từ client gửi lên (thường là req.body).
-    this.code = data.code; // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng.
-    this.percent_value = data.percent_value;
-    this.max_discount = data.max_discount;
-    this.min_total = data.min_total;
-    this.brand_id = data.brand_id;
-    this.category_id = data.category_id;
-    this.expires_at = data.expires_at;
+    this.code = data.code // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng.
+    this.percent_value = data.percent_value
+    this.max_discount = data.max_discount
+    this.min_total = data.min_total
+    this.brand_id = data.brand_id
+    this.category_id = data.category_id
+    this.expires_at = data.expires_at
   }
 
   static validate(data) {
@@ -31,11 +31,11 @@ class UpdateDiscountRequest {
       min_total: Joi.number().min(0).optional(),
       brand_id: Joi.number().integer().optional(),
       category_id: Joi.number().integer().optional(),
-      expires_at: Joi.date().greater("now").optional(),
-    });
+      expires_at: Joi.date().greater('now').optional(),
+    })
 
-    return schema.validate(data); // ➡ Thực hiện kiểm tra dữ liệu và trả về kết quả (có thể có error nếu không hợp lệ).
+    return schema.validate(data) // ➡ Thực hiện kiểm tra dữ liệu và trả về kết quả (có thể có error nếu không hợp lệ).
   }
 }
 
-module.exports = UpdateDiscountRequest;
+module.exports = UpdateDiscountRequest

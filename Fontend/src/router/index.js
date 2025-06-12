@@ -3,10 +3,10 @@
  * @description Cấu hình Vue Router cho ứng dụng, bao gồm các route cho phần admin và public.
  */
 
-import { createWebHistory, createRouter } from "vue-router";
+import { createWebHistory, createRouter } from 'vue-router'
 // ↳ createRouter: Hàm để tạo một router instance.
 // ↳ createWebHistory: Hàm để tạo một history bộ nhớ, nghiệm cơ bản là URL hành đồng của trang web.
-import { isAuthenticated, clearAuthData } from "@/utils/auth";
+import { isAuthenticated, clearAuthData } from '@/utils/auth'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -16,37 +16,37 @@ const router = createRouter({
 
     // Admin routes
     {
-      path: "/admin",
-      redirect: "/admin/dashboard", // ➡ Mặc định load dashboard
+      path: '/admin',
+      redirect: '/admin/dashboard', // ➡ Mặc định load dashboard
       meta: {
         adminLayout: true, // ➡ Bật layout cho view admin
         adminRequiresAuth: true, // ➡ Route cần login
       },
       children: [
         {
-          path: "dashboard",
-          component: () => import("@/views/admin/DashboardView.vue"),
+          path: 'dashboard',
+          component: () => import('@/views/admin/DashboardView.vue'),
         },
         {
-          path: "products", // ➡ lưu ý: KHÔNG có dấu `/` đầu
-          component: () => import("@/views/admin/ProductView.vue"),
+          path: 'products', // ➡ lưu ý: KHÔNG có dấu `/` đầu
+          component: () => import('@/views/admin/ProductView.vue'),
           children: [
             {
-              path: "",
-              redirect: "/admin/products/product-list", // ➡ Mặc định load product-list
+              path: '',
+              redirect: '/admin/products/product-list', // ➡ Mặc định load product-list
             },
             {
-              path: "product-list",
-              component: () => import("@/views/admin/products/ProductList.vue"),
+              path: 'product-list',
+              component: () => import('@/views/admin/products/ProductList.vue'),
             },
             {
-              path: "brand-list",
-              component: () => import("@/views/admin/brands/BrandList.vue"),
+              path: 'brand-list',
+              component: () => import('@/views/admin/brands/BrandList.vue'),
             },
             {
-              path: "category-list",
+              path: 'category-list',
               component: () =>
-                import("@/views/admin/categories/CategoryList.vue"),
+                import('@/views/admin/categories/CategoryList.vue'),
             },
           ],
         },
@@ -55,8 +55,8 @@ const router = createRouter({
 
     // Login admin routes
     {
-      path: "/admin/login",
-      component: () => import("@/views/Auth/admin/LoginView.vue"),
+      path: '/admin/login',
+      component: () => import('@/views/Auth/admin/LoginView.vue'),
       meta: {
         noLayout: true, // ➡ Tắt layout cho view login
       },
@@ -64,8 +64,8 @@ const router = createRouter({
 
     // Public routes
     {
-      path: "/",
-      component: () => import("@/views/HomePage.vue"),
+      path: '/',
+      component: () => import('@/views/HomePage.vue'),
       meta: {
         userLayout: true, // ➡ Bật layout cho view user
       },
@@ -73,18 +73,18 @@ const router = createRouter({
 
     // Page not found
     {
-      path: "/:pathMatch(.*)*",
-      redirect: "/404",
+      path: '/:pathMatch(.*)*',
+      redirect: '/404',
     },
     {
-      path: "/404",
-      component: () => import("@/views/NotFoundView.vue"),
+      path: '/404',
+      component: () => import('@/views/NotFoundView.vue'),
       meta: {
         userLayout: true, // ➡ Bật layout cho view user
       },
     },
   ],
-});
+})
 
 /**
  * Hàm chặn điều hướng toàn cục của Vue Router.
@@ -100,15 +100,15 @@ const router = createRouter({
  */
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(
-    (record) => record.meta.adminRequiresAuth
-  );
+    (record) => record.meta.adminRequiresAuth,
+  )
 
   if (requiresAuth && !isAuthenticated()) {
-    clearAuthData();
-    next("/admin/login");
+    clearAuthData()
+    next('/admin/login')
   } else {
-    next();
+    next()
   }
-});
+})
 
-export default router;
+export default router

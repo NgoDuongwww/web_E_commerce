@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Brand extends Model {
     /**
@@ -12,12 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Brand.hasMany(models.Product, {
         // ↳ Một Brand có nhiều Product, liên kết qua khóa ngoại brand_id.
-        foreignKey: "brand_id",
-      });
+        foreignKey: 'brand_id',
+      })
       Brand.hasMany(models.Discount, {
         // ↳ Một Brand có nhiều Discount, liên kết qua khóa ngoại brand_id.
-        foreignKey: "brand_id",
-      });
+        foreignKey: 'brand_id',
+      })
     }
   }
   Brand.init(
@@ -27,12 +27,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize, // ➡ Truyền đối tượng kết nối Sequelize.
-      modelName: "Brand", // ➡ Đặt tên model là Brand.
-      tableName: "brands", // ➡ Tên bảng trong database là brands.
+      modelName: 'Brand', // ➡ Đặt tên model là Brand.
+      tableName: 'brands', // ➡ Tên bảng trong database là brands.
       underscored: true, //➡ Tự động dùng created_at thay vì createdAt trong database.
-      createdAt: "created_at", // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
-      updatedAt: "updated_at", // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
-    }
-  );
-  return Brand;
-};
+      createdAt: 'created_at', // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
+      updatedAt: 'updated_at', // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
+    },
+  )
+  return Brand
+}

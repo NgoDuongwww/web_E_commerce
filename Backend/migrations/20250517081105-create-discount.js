@@ -1,8 +1,8 @@
-"use strict";
+'use strict'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("discounts", {
+    await queryInterface.createTable('discounts', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -33,20 +33,20 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "brands",
-          key: "id",
-          onUpdate: "CASCADE",
-          onDelete: "CASCADE",
+          model: 'brands',
+          key: 'id',
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
         },
       },
       category_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "categories",
-          key: "id",
-          onUpdate: "CASCADE",
-          onDelete: "CASCADE",
+          model: 'categories',
+          key: 'id',
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
         },
       },
       expires_at: {
@@ -60,9 +60,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    });
+    })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("discounts");
+    await queryInterface.dropTable('discounts')
   },
-};
+}

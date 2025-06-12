@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class ProductVariantValue extends Model {
     /**
@@ -11,17 +11,17 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       ProductVariantValue.belongsTo(models.Product, {
         // ↳ Một ProductVariantValue thuộc về một Product, liên kết qua khóa ngoại product_id.
-        foreignKey: "product_id",
-      });
+        foreignKey: 'product_id',
+      })
 
       ProductVariantValue.hasMany(models.OrderDetail, {
         // ↳ Một ProductVariantValue có nhiều OrderDetail, liên kết qua khóa ngoại product_variant_id.
-        foreignKey: "product_variant_id",
-      });
+        foreignKey: 'product_variant_id',
+      })
       ProductVariantValue.hasMany(models.CartItem, {
         // ↳ Một ProductVariantValue có nhiều CartItem, liên kết qua khóa ngoại product_variant_id.
-        foreignKey: "product_variant_id",
-      });
+        foreignKey: 'product_variant_id',
+      })
     }
   }
   ProductVariantValue.init(
@@ -35,12 +35,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize, // ➡ Truyền đối tượng kết nối Sequelize.
-      modelName: "ProductVariantValue", // ➡ Tên model trong sequelize.
-      tableName: "product_variant_values", // ➡ Tên bảng trong database.
+      modelName: 'ProductVariantValue', // ➡ Tên model trong sequelize.
+      tableName: 'product_variant_values', // ➡ Tên bảng trong database.
       underscored: true, //➡ Tự động dùng created_at thay vì createdAt trong database.
-      createdAt: "created_at", // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
-      updatedAt: "updated_at", // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
-    }
-  );
-  return ProductVariantValue;
-};
+      createdAt: 'created_at', // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
+      updatedAt: 'updated_at', // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
+    },
+  )
+  return ProductVariantValue
+}

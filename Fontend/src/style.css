@@ -1,5 +1,5 @@
 :root {
-  font-family: "inter", sans-serif;
+  font-family: 'inter', sans-serif;
   font-size: 16px;
 
   /* Font settings */
@@ -51,7 +51,6 @@
   --padding-64: 64px;
   --padding-96: 96px;
   --padding-128: 128px;
-  
 
   /* Border radius */
   --radius-sm: 4px;

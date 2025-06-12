@@ -1,11 +1,11 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 class UpdateBannerDetailRequest {
   // ↳ Tạo một class để đại diện cho yêu cầu thêm chi tiết tin tức.
   constructor(data) {
     // ↳ Hàm khởi tạo (constructor), nhận dữ liệu từ client gửi lên (thường là req.body).
-    this.product_id = data.product_id; // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng.
-    this.banner_id = data.banner_id;
+    this.product_id = data.product_id // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng.
+    this.banner_id = data.banner_id
   }
 
   static validate(data) {
@@ -17,10 +17,10 @@ class UpdateBannerDetailRequest {
       // ➡ optional() yêu cầu trường này là không bắt buộc (có thể để trống).
       product_id: Joi.number().integer().optional(), // ➡ Mỗi dòng là một trường dữ liệu cần kiểm tra.
       banner_id: Joi.number().integer().optional(),
-    });
+    })
 
-    return schema.validate(data); // ➡ Thực hiện kiểm tra dữ liệu và trả về kết quả (có thể có error nếu không hợp lệ).
+    return schema.validate(data) // ➡ Thực hiện kiểm tra dữ liệu và trả về kết quả (có thể có error nếu không hợp lệ).
   }
 }
 
-module.exports = UpdateBannerDetailRequest;
+module.exports = UpdateBannerDetailRequest

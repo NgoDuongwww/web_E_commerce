@@ -1,6 +1,6 @@
-import axios from "axios";
-import router from "@/router";
-import { getToken, tokenExpired, handleToken } from "@/utils/auth";
+import axios from 'axios'
+import router from '@/router'
+import { getToken, tokenExpired, handleToken } from '@/utils/auth'
 
 /**
  * @file api.js
@@ -22,8 +22,8 @@ import { getToken, tokenExpired, handleToken } from "@/utils/auth";
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
-});
+})
 
-export default api;
+export default api

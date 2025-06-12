@@ -5,4 +5,4 @@ module.exports = {
   ACTIVE: 1, // ⮕ 1: Banner đang hiển thị
   SCHEDULED: 2, // ⮕ 2: Banner được lên lịch sẵn để hiển thị
   EXPIRED: 3, // ⮕ 3: Banner đã hết hạn
-};
+}

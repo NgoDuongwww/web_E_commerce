@@ -1,8 +1,8 @@
-"use strict";
+'use strict'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("variant_values", {
+    await queryInterface.createTable('variant_values', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,8 +12,8 @@ module.exports = {
       variant_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: "variants",
-          key: "id",
+          model: 'variants',
+          key: 'id',
         },
       },
       value: {
@@ -30,9 +30,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    });
+    })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("variant_values");
+    await queryInterface.dropTable('variant_values')
   },
-};
+}

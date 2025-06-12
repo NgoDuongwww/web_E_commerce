@@ -1,11 +1,11 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 class insertProductImageRequest {
   // ↳ Tạo một class để đại diện cho yêu cầu thêm ảnh sản phẩm.
   constructor(data) {
     // ↳ Hàm khởi tạo (constructor), nhận dữ liệu từ client gửi lên (thường là req.body).
-    this.image_url = data.image_url; // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng.
-    this.product_id = data.product_id;
+    this.image_url = data.image_url // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng.
+    this.product_id = data.product_id
   }
 
   static validate(data) {
@@ -18,10 +18,10 @@ class insertProductImageRequest {
       // integer() yêu cầu giá trị phải là số nguyên.
       image_url: Joi.string().required(),
       product_id: Joi.number().integer().required(),
-    });
+    })
 
-    return schema.validate(data); // ➡ Thực hiện kiểm tra dữ liệu và trả về kết quả (có thể có error nếu không hợp lệ).
+    return schema.validate(data) // ➡ Thực hiện kiểm tra dữ liệu và trả về kết quả (có thể có error nếu không hợp lệ).
   }
 }
 
-module.exports = insertProductImageRequest;
+module.exports = insertProductImageRequest

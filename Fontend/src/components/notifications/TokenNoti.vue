@@ -1,3 +1,3 @@
 <template>
-          <h1>Token</h1>
+  <h1>Token</h1>
 </template>

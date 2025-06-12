@@ -1,8 +1,8 @@
-"use strict";
+'use strict'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("product_attribute_values", {
+    await queryInterface.createTable('product_attribute_values', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,18 +13,18 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "products",
-          key: "id",
+          model: 'products',
+          key: 'id',
         },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       attribute_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "attributes",
-          key: "id",
+          model: 'attributes',
+          key: 'id',
         },
       },
       value: {
@@ -38,9 +38,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    });
+    })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("product_attribute_values");
+    await queryInterface.dropTable('product_attribute_values')
   },
-};
+}

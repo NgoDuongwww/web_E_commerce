@@ -1,5 +1,6 @@
-import router from "@/router";
-import { ref } from "vue";
+import router from '@/router'
+import { ref } from 'vue'
+import { Error } from '@/utils/toast'
 
 /**
  * Lấy token xác thực từ localStorage.
@@ -7,7 +8,7 @@ import { ref } from "vue";
  * @returns {string|null} Token hoặc null nếu không tồn tại.
  */
 export function getToken() {
-  return localStorage.getItem("token");
+  return localStorage.getItem('token')
 }
 
 /**
@@ -16,19 +17,19 @@ export function getToken() {
  * @returns {string|null} Giá trị thời gian hết hạn (epoch) hoặc null nếu không có.
  */
 export function getTokenExpiration() {
-  return localStorage.getItem("expirationTime");
+  return localStorage.getItem('expirationTime')
 }
 
 export function getStatusToken() {
-  return localStorage.getItem("statusToken");
+  return localStorage.getItem('statusToken')
 }
 
 /**
  * Xoá token và thời gian hết hạn khỏi localStorage.
  */
 export function clearAuthData() {
-  localStorage.removeItem("token");
-  localStorage.removeItem("expirationTime");
+  localStorage.removeItem('token')
+  localStorage.removeItem('expirationTime')
 }
 
 /**
@@ -37,8 +38,8 @@ export function clearAuthData() {
  * @returns {boolean} `true` nếu token đã hết hạn hoặc không tồn tại, ngược lại là `false`.
  */
 export function tokenExpired() {
-  if (!getTokenExpiration()) return true;
-  return new Date().getTime() > parseInt(getTokenExpiration(), 10);
+  if (!getTokenExpiration()) return true
+  return new Date().getTime() > parseInt(getTokenExpiration(), 10)
 }
 
 /**
@@ -48,9 +49,9 @@ export function tokenExpired() {
  */
 export function isAuthenticated() {
   if (!getToken()) {
-    return false;
+    return false
   }
-  return !tokenExpired();
+  return !tokenExpired()
 }
 
 /**
@@ -61,10 +62,12 @@ export function isAuthenticated() {
  */
 export function handleToken(showAlert = true) {
   if (getToken() && tokenExpired()) {
-    clearAuthData();
-    if (showAlert) alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
-    router.push("/admin/login");
-    return true;
+    clearAuthData()
+    if (showAlert) {
+      Error('Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.')
+    }
+    router.push('/admin/login')
+    return true
   }
-  return false;
+  return false
 }

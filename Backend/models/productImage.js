@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class ProductImage extends Model {
     /**
@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       ProductImage.belongsTo(models.Product, {
         // ↳ Một ProductImage thuộc về một Product, liên kết qua khóa ngoại product_id.
-        foreignKey: "product_id",
-      });
+        foreignKey: 'product_id',
+      })
     }
   }
   ProductImage.init(
@@ -23,12 +23,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize, // ➡ Truyền đối tượng kết nối Sequelize.
-      modelName: "ProductImage", // ➡ Đặt tên model là ProductImage.
-      tableName: "productImages", // ➡ Tên bảng trong database là productImages.
+      modelName: 'ProductImage', // ➡ Đặt tên model là ProductImage.
+      tableName: 'productImages', // ➡ Tên bảng trong database là productImages.
       underscored: true, //➡ Tự động dùng created_at thay vì createdAt trong database.
-      createdAt: "created_at", // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
-      updatedAt: "updated_at", // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
-    }
-  );
-  return ProductImage;
-};
+      createdAt: 'created_at', // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
+      updatedAt: 'updated_at', // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
+    },
+  )
+  return ProductImage
+}

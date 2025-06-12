@@ -1,13 +1,13 @@
 <script setup>
-import toi from "@/assets/images/sang.png";
-import { useRouter } from "vue-router";
+import toi from '@/assets/images/sang.png'
+import { useRouter } from 'vue-router'
 
-const router = useRouter();
+const router = useRouter()
 
 const logout = () => {
-  localStorage.removeItem("token"); // Xóa token
-  router.push("/admin/login"); // Chuyển trang
-};
+  localStorage.removeItem('token') // Xóa token
+  router.push('/admin/login') // Chuyển trang
+}
 </script>
 
 <template>

@@ -1,58 +1,58 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require("../constants/UserRole.js");
+  const UserRole = require('../constants/UserRole.js')
 
   // Controller import
-  const BannerDetailController = require("../controllers/BannerDetailController.js");
+  const BannerDetailController = require('../controllers/BannerDetailController.js')
 
   // Middleware import
-  const asyncHandler = require("../middlewares/asyncHandler.js");
-  const validate = require("../middlewares/validate.js");
-  const validateImageExists = require("../middlewares/validateImageExists.js");
-  const requireRoles = require("../middlewares/jwtMiddleware.js");
+  const asyncHandler = require('../middlewares/asyncHandler.js')
+  const validate = require('../middlewares/validate.js')
+  const validateImageExists = require('../middlewares/validateImageExists.js')
+  const requireRoles = require('../middlewares/jwtMiddleware.js')
 
   // DTO import
-  const InsertBannerDetailRequest = require("../dto/requests/bannerdetail/InsertBannerDetailRequest.js");
-  const UpdateBannerDetailRequest = require("../dto/requests/bannerdetail/UpdateBannerDetailRequest.js");
+  const InsertBannerDetailRequest = require('../dto/requests/bannerdetail/InsertBannerDetailRequest.js')
+  const UpdateBannerDetailRequest = require('../dto/requests/bannerdetail/UpdateBannerDetailRequest.js')
 
   // Public
   router.get(
-    "/banner-details",
-    asyncHandler(BannerDetailController.getBannerDetailsForPublic)
-  );
+    '/banner-details',
+    asyncHandler(BannerDetailController.getBannerDetailsForPublic),
+  )
   router.get(
-    "/banner-details/:id",
-    asyncHandler(BannerDetailController.getBannerDetailByIdForPublic)
-  );
+    '/banner-details/:id',
+    asyncHandler(BannerDetailController.getBannerDetailByIdForPublic),
+  )
 
   // Admin
   router.get(
-    "/admin/banner-details",
+    '/admin/banner-details',
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(BannerDetailController.getBannerDetailsForAdmin)
-  );
+    asyncHandler(BannerDetailController.getBannerDetailsForAdmin),
+  )
   router.get(
-    "/admin/banner-details/:id",
+    '/admin/banner-details/:id',
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(BannerDetailController.getBannerDetailByIdForAdmin)
-  );
+    asyncHandler(BannerDetailController.getBannerDetailByIdForAdmin),
+  )
   router.post(
-    "/banner-details",
+    '/banner-details',
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
     validate(InsertBannerDetailRequest),
-    asyncHandler(BannerDetailController.insertBannerDetail)
-  );
+    asyncHandler(BannerDetailController.insertBannerDetail),
+  )
   router.put(
-    "/banner-details/:id",
+    '/banner-details/:id',
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
     validate(UpdateBannerDetailRequest),
-    asyncHandler(BannerDetailController.updateBannerDetail)
-  );
+    asyncHandler(BannerDetailController.updateBannerDetail),
+  )
   router.delete(
-    "/banner-details/:id",
+    '/banner-details/:id',
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(BannerDetailController.deleteBannerDetail)
-  );
-};
+    asyncHandler(BannerDetailController.deleteBannerDetail),
+  )
+}

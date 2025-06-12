@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Cart extends Model {
     /**
@@ -12,14 +12,14 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Cart.hasMany(models.CartItem, {
         // ↳ Một Cart có nhiều CartItem, liên kết qua khóa ngoại cart_id.
-        foreignKey: "cart_id",
-        as: "cart_Items",
-      });
+        foreignKey: 'cart_id',
+        as: 'cart_Items',
+      })
       Cart.belongsTo(models.User, {
         // ↳ Một Cart thuộc về một User, liên kết qua khóa ngoại user_id.
-        foreignKey: "user_id",
-        as: "user",
-      });
+        foreignKey: 'user_id',
+        as: 'user',
+      })
     }
   }
   Cart.init(
@@ -28,12 +28,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize, // ➡ Truyền đối tượng kết nối Sequelize.
-      modelName: "Cart", // ➡ Đặt tên model là Cart.
-      tableName: "carts", // ➡ Tên bảng trong database là carts.
+      modelName: 'Cart', // ➡ Đặt tên model là Cart.
+      tableName: 'carts', // ➡ Tên bảng trong database là carts.
       underscored: true, //➡ Tự động dùng created_at thay vì createdAt trong database.
-      createdAt: "created_at", // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
-      updatedAt: "updated_at", // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
-    }
-  );
-  return Cart;
-};
+      createdAt: 'created_at', // ➡ Tự động dùng created_at thay vì createdAt sau khi Response data trong API.
+      updatedAt: 'updated_at', // ➡ Tự động dùng updated_at thay vì updatedAt sau khi Response data trong API.
+    },
+  )
+  return Cart
+}

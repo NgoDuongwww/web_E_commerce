@@ -1,48 +1,48 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import api from "@/api/axios";
-import { useRouter, useRoute } from "vue-router";
-import { jwtDecode } from "jwt-decode";
-import { getToken, handleToken } from "@/utils/auth.js";
+import { ref, onMounted } from 'vue'
+import api from '@/api/axios'
+import { useRouter, useRoute } from 'vue-router'
+import { jwtDecode } from 'jwt-decode'
+import { getToken, handleToken } from '@/utils/auth.js'
 
-const email = ref("");
-const password = ref("");
-const router = useRouter();
+const email = ref('')
+const password = ref('')
+const router = useRouter()
 
-const showPass = ref(false);
+const showPass = ref(false)
 
 const login = async () => {
   try {
     const res = await api.post(
-      "/users/login",
+      '/users/login',
       // ↳ Yêu cầu api tới server
       {
         // Dữ liệu từ request body
         email: email.value,
         password: password.value,
-      }
-    );
+      },
+    )
 
-    const token = res.data.token; // ➡ Lấy token từ response
-    const decoded = jwtDecode(token); // ➡ Giải mã token
-    const expTime = decoded.exp * 1000; // ➡ Thời gian hết hạn token
+    const token = res.data.token // ➡ Lấy token từ response
+    const decoded = jwtDecode(token) // ➡ Giải mã token
+    const expTime = decoded.exp * 1000 // ➡ Thời gian hết hạn token
 
-    localStorage.setItem("token", token); // ➡ Lưu token vào localStorage
-    localStorage.setItem("expirationTime", expTime); // ➡ Lưu thời gian hết hạn token vào localStorage
+    localStorage.setItem('token', token) // ➡ Lưu token vào localStorage
+    localStorage.setItem('expirationTime', expTime) // ➡ Lưu thời gian hết hạn token vào localStorage
 
-    router.push("/admin"); // ➡ Chuyển trang
+    router.push('/admin') // ➡ Chuyển trang
   } catch (error) {
-    alert("Đăng nhập thất bại, vui lòng thử lại!");
-    console.error(error);
+    alert('Đăng nhập thất bại, vui lòng thử lại!')
+    console.error(error)
   }
-};
+}
 
 // ➡ Hook chạy sau khi component render lần đầu.
 onMounted(() => {
   if (getToken()) {
-    router.replace("/admin/"); // ➡ Để người dùng không quay lại được trang login bằng nút Back.
+    router.replace('/admin/') // ➡ Để người dùng không quay lại được trang login bằng nút Back.
   }
-});
+})
 </script>
 
 <template>
@@ -68,7 +68,7 @@ onMounted(() => {
               class="password-input"
             />
             <span class="toggle-password" @click="showPass = !showPass">
-              {{ showPass ? "👁️" : "🙈" }}
+              {{ showPass ? '👁️' : '🙈' }}
             </span>
           </div>
           <button type="submit">Log In</button>
@@ -81,7 +81,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .Login {
   @include w-100-h-100;
-  background: url("@/assets/images/bg_login_amin.jpg") no-repeat center center /
+  background: url('@/assets/images/bg_login_amin.jpg') no-repeat center center /
     cover;
   @include display-flex-center-center;
 

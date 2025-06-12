@@ -1,4 +1,4 @@
-const os = require("os"); // ➡ (Operating System) Thư viện để lấy thông tin về hệ thống, CPU, bộ nhớ.
+const os = require('os') // ➡ (Operating System) Thư viện để lấy thông tin về hệ thống, CPU, bộ nhớ.
 
 /**
  * Lấy URL đầy đủ của hình ảnh dựa trên tên ảnh.
@@ -12,15 +12,13 @@ const os = require("os"); // ➡ (Operating System) Thư viện để lấy thô
  */
 module.exports = (imageName) => {
   if (!imageName) {
-    return "";
+    return ''
   }
 
-  if (!imageName.includes("http")) {
-    const API_PREFIX = `http://${os.hostname()}:${
-      process.env.PORT || 3000
-    }/api`;
-    return `${API_PREFIX}/images/${imageName}`;
+  if (!imageName.includes('http')) {
+    const API_PREFIX = `http://${os.hostname()}:${process.env.PORT || 3000}/api`
+    return `${API_PREFIX}/images/${imageName}`
   }
 
-  return imageName;
-};
+  return imageName
+}
