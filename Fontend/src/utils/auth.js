@@ -64,7 +64,7 @@ export function handleToken(showAlert = true) {
   if (getToken() && tokenExpired()) {
     clearAuthData()
     if (showAlert) {
-      Error('Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.')
+      Error('Your session has expired. Please log in again.')
     }
     router.push('/admin/login')
     return true

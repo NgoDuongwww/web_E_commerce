@@ -41,14 +41,17 @@ onMounted(() => {
 .wrapper {
   max-width: 1920px;
   height: 100vh;
-  color: var(--text-default);
   margin: 0 auto;
 
   section[aria-label='Notifications alt+T'] {
     position: absolute !important;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
   }
 
   .Admin {
+    color: var(--text-default);
     @include w-100-h-100;
     @include display-flex-row;
 

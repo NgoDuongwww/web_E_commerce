@@ -14,7 +14,9 @@
   /* Color palette */
   --bg-default: #ffffff;
   --bg-page: #e5e5e5;
+  --bg-error-notification: #fef2f2;
   --border-default: #bababa;
+  --boder-error-notification: #f87171;
   --btn-primary-bg: #5065f6;
   --btn-primary-hover: #7789fc;
   --btn-primary-default: #dfdfdf;
@@ -29,6 +31,7 @@
   --text-default: #757b82;
   --text-active: #ffffff;
   --text-36px: #323343;
+  --text-error-notification: #991b1b;
 
   /* Margin */
   --margin-4: 4px;

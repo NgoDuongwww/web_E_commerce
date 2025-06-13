@@ -42,10 +42,10 @@ export default defineConfig({
        */
       scss: {
         additionalData: `
-          @import "@/assets/styles/_display-flex-column.scss";
-          @import "@/assets/styles/_display-flex-row.scss";
-          @import "@/assets/styles/_display-flex.scss";
-          @import "@/assets/styles/_width-n-height.scss";
+          @import "@/styles/_display-flex-column.scss";
+          @import "@/styles/_display-flex-row.scss";
+          @import "@/styles/_display-flex.scss";
+          @import "@/styles/_width-n-height.scss";
         `,
       },
     },

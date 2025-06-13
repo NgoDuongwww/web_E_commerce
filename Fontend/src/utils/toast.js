@@ -2,6 +2,9 @@ import { h, markRaw } from 'vue'
 import { toast } from 'vue-sonner'
 import ErrorNotification from '@/components/notification/error-notification.vue'
 
+let activeMessage = 0 // ➡ Số lượng thông báo hiện thị
+const maxMessages = 5 // ➡ Số lượng thông báo hiển thị tối đa
+
 /**
  * Hiển thị thông báo thành công
  *
@@ -35,6 +38,38 @@ export const Error = (message) => {
       duration: Infinity,
     }
   )
+}
+
+/**
+ * Hiển thị một toast thông báo lỗi khi đăng nhập thất bại.
+ *
+ * Nếu đã có đủ số lượng toast ({maxMessages}), hàm sẽ không hiển thị toast nữa.
+ *
+ * Hàm này tạo một toast bằng `toast.custom` và hiển thị component `ErrorNotification`.
+ * Component này nhận `message` (thông điệp lỗi) và một hàm `close` để đóng toast khi người dùng bấm nút đóng.
+ *
+ * - `toast.custom` trả về một `toastId` — ID duy nhất của toast.
+ * - Hàm `close` sử dụng `toast.dismiss(toastId)` để đóng toast tương ứng khi được gọi.
+ * - `duration: 5000` đảm bảo toast sẽ tự động biến mất sau 5 giây.
+ * - `onAutoClose: () => activeMessage--` giảm số lượng toast đang hiển thị xuống 1 khi toast tự động biến mất.
+ *
+ * @param {string} message - Thông điệp lỗi cần hiển thị trong toast.
+ */
+export const errorLogin = (message) => {
+  if (activeMessage >= maxMessages) return
+
+  const toastId = toast.custom(
+    () =>
+      h(markRaw(ErrorNotification), {
+        message,
+        close: () => toast.dismiss(toastId),
+      }),
+    {
+      duration: 5000,
+      onAutoClose: () => activeMessage--,
+    }
+  )
+  activeMessage++
 }
 
 /**

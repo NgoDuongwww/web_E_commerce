@@ -5,12 +5,12 @@
 
 import { createApp } from 'vue'
 import router from './router'
-import './style.css'
+import '@/styles/style.css'
 import App from './App.vue'
 import { Toaster } from 'vue-sonner'
 
 // Import SCSS file
-import '@/assets/styles/main.scss'
+import '@/styles/main.scss'
 /**
  * Tạo instance ứng dụng Vue mới, sử dụng router, rồi mount vào phần tử HTML có id="app".
  *

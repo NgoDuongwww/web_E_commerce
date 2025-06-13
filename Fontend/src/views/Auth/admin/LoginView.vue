@@ -1,9 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import api from '@/api/axios'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { jwtDecode } from 'jwt-decode'
-import { getToken, handleToken } from '@/utils/auth.js'
+import { getToken } from '@/utils/auth.js'
+import { errorLogin } from '@/utils/toast.js'
 
 const email = ref('')
 const password = ref('')
@@ -32,8 +33,8 @@ const login = async () => {
 
     router.push('/admin') // ➡ Chuyển trang
   } catch (error) {
-    alert('Đăng nhập thất bại, vui lòng thử lại!')
-    console.error(error)
+    errorLogin('Login failed. Please try again!')
+    // console.error(error)
   }
 }
 
