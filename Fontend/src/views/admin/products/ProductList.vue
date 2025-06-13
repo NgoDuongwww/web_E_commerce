@@ -24,7 +24,7 @@ const getProducts = async () => {
         // ↳ Tham số tìm kiếm (truyền query parameters)
         page: current_page.value ?? 1, // "/admin/products?page=1"
       },
-    },
+    }
   )
 
   // Sau khi gọi API thành công, cập nhật dữ liệu
@@ -32,7 +32,9 @@ const getProducts = async () => {
   current_page.value = res.data.current_page
   total_page.value = res.data.total_page
   total.value = res.data.total
-  first_products.value = res.data.first_products
+  first_products.value = res.data.products
+
+  loading.value = false
 }
 
 // Lọc danh sách sản phẩm dựa trên các tiêu chí tìm kiếm
@@ -55,12 +57,15 @@ const filter_products = () => {
 
     return selectProduct && insertProduct && dateProduct
   })
+
+  total.value = products.value.length
+  current_page.value = 1
 }
 
 // Theo dõi các biến, tự động lọc lại dữ liệu khi thay đổi điều kiện tìm kiếm.
 watch([select, insertCode, insertDate], filter_products)
 
-// Lùi trang hiện tại
+// Lùi trang
 const Previous = () => {
   if (current_page.value > 1) {
     current_page.value--
@@ -68,7 +73,7 @@ const Previous = () => {
   }
 }
 
-// Sang trang hiện tại
+// Sang trang
 const Next = () => {
   if (current_page.value * pageSize < total.value) {
     current_page.value++

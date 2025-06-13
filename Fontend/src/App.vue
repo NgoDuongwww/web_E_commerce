@@ -50,6 +50,11 @@ onMounted(() => {
     z-index: 1000;
   }
 
+  :deep(section[aria-label='Notifications alt+T'] li) {
+    list-style: none;
+    display: block;
+  }
+
   .Admin {
     color: var(--text-default);
     @include w-100-h-100;

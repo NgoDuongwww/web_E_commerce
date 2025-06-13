@@ -13,6 +13,14 @@ const router = useRouter()
 const showPass = ref(false)
 
 const login = async () => {
+  if (!email.value && !password.value) {
+    return errorLogin('Please enter email and password!')
+  } else if (!email.value) {
+    return errorLogin('Please enter email!')
+  } else if (!password.value) {
+    return errorLogin('Please enter password!')
+  }
+
   try {
     const res = await api.post(
       '/users/login',
@@ -57,14 +65,13 @@ onMounted(() => {
       <div class="Log Bottom">
         <form action="" @submit.prevent="login" class="form-login">
           <label for="">Email</label>
-          <input type="Email" v-model="email" placeholder="Email" required />
+          <input type="Email" v-model="email" placeholder="Enter your email" />
           <label for="">Password</label>
           <div class="password-wrapper">
             <input
               :type="showPass ? 'text' : 'password'"
               v-model="password"
-              placeholder="Password"
-              required
+              placeholder="Enter your password"
               id="pwd"
               class="password-input"
             />
@@ -82,8 +89,9 @@ onMounted(() => {
 <style lang="scss" scoped>
 .Login {
   @include w-100-h-100;
-  background: url('@/assets/images/bg_login_amin.jpg') no-repeat center center /
-    cover;
+  // background: url('@/assets/images/bg_login_amin.jpg') no-repeat center center /
+  //   cover;
+  background: var(--bg-page);
   @include display-flex-center-center;
 
   .Log-in {
@@ -93,6 +101,7 @@ onMounted(() => {
     border-radius: var(--radius-md);
     @include display-flex-column-around-center;
     padding: var(--padding-96) 0px;
+    box-shadow: var(--shadow-lg);
 
     .Log {
       width: 60%;
