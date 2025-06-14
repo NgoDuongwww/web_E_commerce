@@ -27,7 +27,7 @@ export const Success = (message) => {
  *
  * @param {string} message - Thông điệp lỗi cần hiển thị trong toast.
  */
-export const Error = (message) => {
+export const manualError = (message) => {
   const toastId = toast.custom(
     () =>
       h(markRaw(ErrorNotification), {
@@ -55,7 +55,7 @@ export const Error = (message) => {
  *
  * @param {string} message - Thông điệp lỗi cần hiển thị trong toast.
  */
-export const errorLogin = (message) => {
+export const autoError = (message) => {
   if (activeMessage >= maxMessages) return
 
   const toastId = toast.custom(

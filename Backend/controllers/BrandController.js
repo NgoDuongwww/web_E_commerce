@@ -5,7 +5,7 @@ const { getAvatarUrl } = require('../helpers')
 
 exports.getBrands = async (req, res) => {
   const { search = '', page = 1 } = req.query // ➡ Lấy search (chuỗi tìm kiếm) và page (trang hiện tại) từ query URL. Mặc định search = "", page = 1.
-  const pageSize = 5 // ➡ Hiển thị 5 thương hiệu mỗi trang.
+  const pageSize = 10 // ➡ Hiển thị 5 thương hiệu mỗi trang.
   const offset = (page - 1) * pageSize // ➡ offset là số thương hiệu cần bỏ qua.
 
   let whereClause = {} // ➡ Tạo điều kiện lọc (WHERE) cho câu truy vấn.
@@ -35,7 +35,7 @@ exports.getBrands = async (req, res) => {
   return res.status(200).json({
     // ↳ Trả về status 200 OK.
     message: 'Lấy danh sách thương hiệu thành công',
-    data: brands.map((brand) => ({
+    brands: brands.map((brand) => ({
       // ↳ Trả về mảng bài viết (mảng object) bao góc bảng thương hiệu.
       ...brand.get({ plain: true }),
       // ↳ .get({ plain: true }) sẽ chuyển instance đó thành một JavaScript object bình thường,

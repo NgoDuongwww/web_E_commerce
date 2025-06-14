@@ -23,6 +23,9 @@ const getProducts = async () => {
       params: {
         // ↳ Tham số tìm kiếm (truyền query parameters)
         page: current_page.value ?? 1, // "/admin/products?page=1"
+        select: select.value,
+        insertCode: insertCode.value,
+        insertDate: insertDate.value,
       },
     }
   )
@@ -38,32 +41,44 @@ const getProducts = async () => {
 }
 
 // Lọc danh sách sản phẩm dựa trên các tiêu chí tìm kiếm
-const filter_products = () => {
-  products.value = first_products.value.filter((product) => {
-    // ↳ Lọc sản phẩm theo tìm kiếm
-    const selectProduct =
-      select.value === 'all' ||
-      select.value === '' ||
-      product.is_visible === (select.value === '1' ? true : false)
+// const filter_products = () => {
+//   products.value = first_products.value.filter((product) => {
+//     // ↳ Lọc sản phẩm theo tìm kiếm
+//     const selectProduct =
+//       select.value === 'all' ||
+//       select.value === '' ||
+//       product.is_visible === (select.value === '1' ? true : false)
 
-    // Lọc sản phẩm theo id
-    const insertProduct =
-      insertCode.value === '' || String(product.id).includes(insertCode.value)
+//     // Lọc sản phẩm theo id
+//     const insertProduct =
+//       insertCode.value === '' || String(product.id).includes(insertCode.value)
 
-    // Lọc sản phẩm theo ngày tạo
-    const dateProduct =
-      insertDate.value === '' ||
-      product.created_at?.slice(0, 10).includes(insertDate.value)
+//     // Lọc sản phẩm theo ngày tạo
+//     const dateProduct =
+//       insertDate.value === '' ||
+//       product.created_at?.slice(0, 10).includes(insertDate.value)
 
-    return selectProduct && insertProduct && dateProduct
-  })
+//     return selectProduct && insertProduct && dateProduct
+//   })
 
-  total.value = products.value.length
-  current_page.value = 1
-}
+//   total.value = products.value.length
+//   current_page.value = 1
+// }
 
 // Theo dõi các biến, tự động lọc lại dữ liệu khi thay đổi điều kiện tìm kiếm.
-watch([select, insertCode, insertDate], filter_products)
+watch([select, insertCode, insertDate], () => {
+  current_page.value = 1 // Reset về trang đầu khi filter thay đổi
+  getProducts()
+})
+
+// Hệ thống reset filters
+const resetFilters = () => {
+  select.value = ''
+  insertCode.value = ''
+  insertDate.value = ''
+  current_page.value = 1
+  getProducts()
+}
 
 // Lùi trang
 const Previous = () => {
@@ -91,7 +106,7 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
         <div class="Left Select-Product">
           <span>Select Product</span>
           <select v-model="select">
-            <option value="" disabled selected>Select One</option>
+            <option value="" disabled>Select One</option>
             <option value="all">All</option>
             <option value="1">Visible</option>
             <option value="0">Invisible</option>
@@ -104,6 +119,12 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
         <div class="Left Date-Time">
           <span>Date Time</span>
           <input v-model="insertDate" type="date" />
+        </div>
+        <div class="Left Reset-Filters">
+          <span></span>
+          <button @click="resetFilters" class="reset-button">
+            <i class="fas fa-undo-alt"></i> Reset Filters
+          </button>
         </div>
       </div>
       <div class="Top__Right">
@@ -164,7 +185,7 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
               <td>{{ product.rating }}</td>
               <td>{{ product.total_ratings }}</td>
               <td>{{ product.total_sold }}</td>
-              <td>{{ product.created_at }}</td>
+              <td>{{ product.created_at?.slice(0, 10) }}</td>
               <td>
                 <i
                   :class="
@@ -186,14 +207,9 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
               <i class="fa fa-arrow-left" aria-hidden="true"></i> Previous
             </li>
             <li>
-              <span>
-                Page {{ current_page }} of {{ Math.ceil(total / pageSize) }}
-              </span>
+              <span> Page {{ current_page }} of {{ total_page }} </span>
             </li>
-            <li
-              @click="Next"
-              :class="{ disabled: current_page * pageSize >= total }"
-            >
+            <li @click="Next" :class="{ disabled: current_page >= total }">
               <i class="fa fa-arrow-right" aria-hidden="true"></i> Next
             </li>
           </ul>
@@ -219,7 +235,7 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
       @include display-flex-row-between-center;
 
       .Left {
-        width: 30%;
+        width: 24%;
         height: 100%;
         @include display-flex-column-flexStart;
 
@@ -273,6 +289,25 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
 
           &:focus {
             outline: none;
+          }
+        }
+      }
+
+      .Reset-Filters {
+        .reset-button {
+          width: 100%;
+          height: 65%;
+          border-radius: var(--radius-md);
+          padding: 0px var(--padding-8);
+          border: none;
+          flex: 1;
+          background: var(--bg-default);
+          cursor: pointer;
+          color: var(--text-default);
+          font-size: var(--font-size-sm);
+
+          &:hover {
+            background-color: var(--bg-page);
           }
         }
       }

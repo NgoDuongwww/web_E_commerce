@@ -120,10 +120,25 @@ const logout = () => {
     height: 5%;
     @include display-flex-left-center;
 
-    .fas {
-      @include display-flex-center-center;
-      width: 20%;
-      height: 100%;
+    button {
+      @include w-100-h-100;
+      border-radius: var(--radius-md);
+      transition: var(--transition-md);
+      @include display-flex-ali-center;
+      border: none;
+      background: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--btn-primary-hover);
+        color: var(--text-active);
+      }
+
+      .fas {
+        @include display-flex-center-center;
+        width: 20%;
+        height: 100%;
+      }
     }
   }
 }

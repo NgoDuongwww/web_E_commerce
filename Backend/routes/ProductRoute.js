@@ -28,7 +28,7 @@ module.exports = (router) => {
   // Admin
   router.get(
     '/admin/products', // ➡ tạo routes GET /admin/products.
-    // requireRoles([UserRole.ADMIN]),
+    requireRoles([UserRole.ADMIN]),
     asyncHandler(ProductController.getProductsForAdmin), // ➡ asyncHandler để tự động bắt lỗi trong getProductsForAdmin.
   )
   router.get(

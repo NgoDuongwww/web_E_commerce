@@ -4,7 +4,7 @@ import api from '@/api/axios'
 import { useRouter } from 'vue-router'
 import { jwtDecode } from 'jwt-decode'
 import { getToken } from '@/utils/auth.js'
-import { errorLogin } from '@/utils/toast.js'
+import { autoError } from '@/utils/toast.js'
 
 const email = ref('')
 const password = ref('')
@@ -14,11 +14,11 @@ const showPass = ref(false)
 
 const login = async () => {
   if (!email.value && !password.value) {
-    return errorLogin('Please enter email and password!')
+    return autoError('Please enter email and password!')
   } else if (!email.value) {
-    return errorLogin('Please enter email!')
+    return autoError('Please enter email!')
   } else if (!password.value) {
-    return errorLogin('Please enter password!')
+    return autoError('Please enter password!')
   }
 
   try {
@@ -41,7 +41,7 @@ const login = async () => {
 
     router.push('/admin') // ➡ Chuyển trang
   } catch (error) {
-    errorLogin('Login failed. Please try again!')
+    autoError('Login failed. Please try again!')
     // console.error(error)
   }
 }

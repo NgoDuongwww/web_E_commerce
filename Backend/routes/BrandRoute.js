@@ -15,8 +15,11 @@ module.exports = (router) => {
   const InsertBrandRequest = require('../dto/requests/brand/InsertBrandRequest.js')
   const UpdateBrandRequest = require('../dto/requests/brand/UpdateBrandRequest.js')
 
+  // Public
   router.get('/brands', asyncHandler(BrandController.getBrands))
   router.get('/brands/:id', asyncHandler(BrandController.getBrandById))
+
+  // Admin
   router.post(
     '/admin/brands',
     requireRoles([UserRole.ADMIN]),

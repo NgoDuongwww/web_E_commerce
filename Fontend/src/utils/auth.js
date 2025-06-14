@@ -1,6 +1,6 @@
 import router from '@/router'
 import { ref } from 'vue'
-import { Error } from '@/utils/toast'
+import { manualError } from '@/utils/toast'
 
 /**
  * Lấy token xác thực từ localStorage.
@@ -64,7 +64,7 @@ export function handleToken(showAlert = true) {
   if (getToken() && tokenExpired()) {
     clearAuthData()
     if (showAlert) {
-      Error('Your session has expired. Please log in again.')
+      manualError('Your session has expired. Please log in again.')
     }
     router.push('/admin/login')
     return true
