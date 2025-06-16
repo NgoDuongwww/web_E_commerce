@@ -297,7 +297,7 @@ onMounted(getBrands)
             font-weight: 600;
             color: var(--table-header-text);
             font-size: 14px;
-            border-bottom: 1px solid var(--table-border-color);
+            border-bottom: 1px solid var(--table-border);
           }
         }
 
@@ -307,7 +307,7 @@ onMounted(getBrands)
 
           tr {
             height: 48px !important;
-            border-bottom: 1px solid var(--table-border-color);
+            border-bottom: 1px solid var(--table-border);
             table-layout: fixed;
 
             &:hover {
@@ -327,7 +327,7 @@ onMounted(getBrands)
               &:last-child {
                 i {
                   cursor: pointer;
-                  color: var(--table-icon-color);
+                  color: var(--table-icon);
                   transition: var(--transition-sm);
 
                   &:hover {

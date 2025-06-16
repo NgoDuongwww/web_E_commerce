@@ -138,9 +138,9 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
       </div>
       <div class="Top__Right">
         <ul>
-          <li>
+          <li @click="add_product = true">
             <i class="fa fa-plus" aria-hidden="true"></i>
-            <span @click="add_product = true">Add Product</span>
+            <span>Add Product</span>
           </li>
           <li><i class="fas fa-upload"></i> <span>Import Product</span></li>
           <li><i class="fas fa-download"></i> <span>Export Product</span></li>
@@ -391,7 +391,7 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
             font-weight: 600;
             color: var(--table-header-text);
             font-size: 14px;
-            border-bottom: 1px solid var(--table-border-color);
+            border-bottom: 1px solid var(--table-border);
           }
         }
 
@@ -401,7 +401,7 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
 
           tr {
             height: 48px !important;
-            border-bottom: 1px solid var(--table-border-color);
+            border-bottom: 1px solid var(--table-border);
             table-layout: fixed;
 
             &:hover {
@@ -421,7 +421,7 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
               &:last-child {
                 i {
                   cursor: pointer;
-                  color: var(--table-icon-color);
+                  color: var(--table-icon);
                   transition: var(--transition-sm);
 
                   &:hover {
