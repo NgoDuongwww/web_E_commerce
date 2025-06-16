@@ -36,7 +36,7 @@ exports.getCategories = async (req, res) => {
   return res.status(200).json({
     // ↳ Trả về status 200 OK.
     message: 'Lấy danh sách danh mục thành công',
-    data: categories.map((category) => ({
+    categories: categories.map((category) => ({
       // ↳ Trả về mảng bài viết (mảng object) bao góc bảng danh mục.
       ...category.get({ plain: true }),
       // ↳ .get({ plain: true }) sẽ chuyển instance đó thành một JavaScript object bình thường,

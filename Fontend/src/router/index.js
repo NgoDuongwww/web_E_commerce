@@ -35,14 +35,17 @@ const router = createRouter({
               path: '',
               redirect: '/admin/products/product-list', // ➡ Mặc định load product-list
             },
+            // Product routes
             {
               path: 'product-list',
               component: () => import('@/views/admin/products/ProductList.vue'),
             },
+            // Brand routes
             {
               path: 'brand-list',
               component: () => import('@/views/admin/brands/BrandList.vue'),
             },
+            // Category routes
             {
               path: 'category-list',
               component: () =>
@@ -100,7 +103,7 @@ const router = createRouter({
  */
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(
-    (record) => record.meta.adminRequiresAuth,
+    (record) => record.meta.adminRequiresAuth
   )
 
   if (requiresAuth && !isAuthenticated()) {

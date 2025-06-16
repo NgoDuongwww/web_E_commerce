@@ -20,23 +20,33 @@ module.exports = (router) => {
   router.get('/brands/:id', asyncHandler(BrandController.getBrandById))
 
   // Admin
+  router.get(
+    '/admin/brands',
+    requireRoles([UserRole.ADMIN]),
+    asyncHandler(BrandController.getBrands)
+  )
+  router.get(
+    '/admin/brands/:id',
+    requireRoles([UserRole.ADMIN]),
+    asyncHandler(BrandController.getBrandById)
+  )
   router.post(
     '/admin/brands',
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
     validate(InsertBrandRequest),
-    asyncHandler(BrandController.insertBrand),
+    asyncHandler(BrandController.insertBrand)
   )
   router.put(
     '/admin/brands/:id',
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
     validate(UpdateBrandRequest),
-    asyncHandler(BrandController.updateBrand),
+    asyncHandler(BrandController.updateBrand)
   )
   router.delete(
     '/admin/brands/:id',
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(BrandController.deleteBrand),
+    asyncHandler(BrandController.deleteBrand)
   )
 }

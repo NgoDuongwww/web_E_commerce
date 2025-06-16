@@ -11,6 +11,7 @@ import { Toaster } from 'vue-sonner'
 
 // Import SCSS file
 import '@/styles/main.scss'
+
 /**
  * Tạo instance ứng dụng Vue mới, sử dụng router, rồi mount vào phần tử HTML có id="app".
  *

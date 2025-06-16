@@ -15,28 +15,41 @@ module.exports = (router) => {
   const InsertCategoryRequest = require('../dto/requests/category/InsertCategoryRequest.js')
   const UpdateCategoryRequest = require('../dto/requests/category/UpdateCategoryRequest.js')
 
+  // Public
   router.get('/categories', asyncHandler(CategoryController.getCategories))
   router.get(
     '/categories/:id',
-    asyncHandler(CategoryController.getCategoryById),
+    asyncHandler(CategoryController.getCategoryById)
+  )
+
+  // Admin
+  router.get(
+    '/admin/categories',
+    requireRoles([UserRole.ADMIN]),
+    asyncHandler(CategoryController.getCategories)
+  )
+  router.get(
+    '/admin/categories/:id',
+    requireRoles([UserRole.ADMIN]),
+    asyncHandler(CategoryController.getCategoryById)
   )
   router.post(
     '/admin/categories',
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
     validate(InsertCategoryRequest),
-    asyncHandler(CategoryController.insertCategory),
+    asyncHandler(CategoryController.insertCategory)
   )
   router.put(
     '/admin/categories/:id',
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
     validate(UpdateCategoryRequest),
-    asyncHandler(CategoryController.updateCategory),
+    asyncHandler(CategoryController.updateCategory)
   )
   router.delete(
     '/admin/categories/:id',
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(CategoryController.deleteCategory),
+    asyncHandler(CategoryController.deleteCategory)
   )
 }

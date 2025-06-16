@@ -1,100 +1,117 @@
+<script setup>
+import { ref, onMounted, watch } from 'vue'
+import api from '@/api/axios.js'
+
+const categories = ref([])
+const current_page = ref(1)
+const total_page = ref(0)
+const total = ref(0)
+const pageSize = 10
+const loading = ref(true)
+
+const getBrands = async () => {
+  const res = await api.get(
+    `/admin/categories`,
+    // ↳ Yêu cầu api tới server
+    {
+      params: {
+        // ↳ Tham số tìm kiếm (truyền query parameters)
+        page: current_page.value, // "/admin/categories?page=1"
+      },
+    }
+  )
+
+  // Sau khi gọi API thông cong, cập nhật dữ liệu
+  categories.value = res.data.categories
+  current_page.value = res.data.current_page
+  total_page.value = res.data.total_page
+  total.value = res.data.total
+
+  loading.value = false
+}
+
+// Hệ thống reset filters
+const resetFilters = () => {}
+
+onMounted(getBrands)
+</script>
+
 <template>
-  <div class="Product-List">
-    <div class="Product-List__Top">
-      <!-- <div class="Top__Left">
-        <div class="Left Select-Product">
-          <span>Select Product</span>
-          <select v-model="select">
-            <option value="" disabled selected>Select One</option>
+  <div class="Category-List">
+    <div class="Category-List__Top">
+      <div class="Top__Left">
+        <div class="Left Select-Category">
+          <span>Select Category</span>
+          <select>
+            <option value="" disabled>Select One</option>
             <option value="all">All</option>
             <option value="1">Visible</option>
             <option value="0">Invisible</option>
           </select>
         </div>
-        <div class="Left Product-Code">
-          <span>Product Code</span>
-          <input v-model="insertCode" type="text" placeholder="Product Code" />
+        <div class="Left Category-Code">
+          <span>Category Code</span>
+          <input type="text" placeholder="Category Code" />
         </div>
         <div class="Left Date-Time">
           <span>Date Time</span>
-          <input v-model="insertDate" type="date" />
+          <input type="date" />
         </div>
-      </div> -->
+        <div class="Left Reset-Filters">
+          <span></span>
+          <button @click="resetFilters" class="reset-button">
+            <i class="fas fa-undo-alt"></i> Reset Filters
+          </button>
+        </div>
+      </div>
       <div class="Top__Right">
         <ul>
           <li>
             <i class="fa fa-plus" aria-hidden="true"></i>
-            <span>Add Product</span>
+            <span>Add Category</span>
           </li>
-          <li><i class="fas fa-upload"></i> <span>Import Product</span></li>
-          <li><i class="fas fa-download"></i> <span>Export Product</span></li>
+          <li><i class="fas fa-upload"></i> <span>Import Category</span></li>
+          <li><i class="fas fa-download"></i> <span>Export Category</span></li>
         </ul>
       </div>
     </div>
-    <div class="Product-List__Bottom">
-      <div class="Product Bottom">
+    <div class="Category-List__Bottom">
+      <div class="Category Bottom">
         <table>
           <thead>
             <tr>
-              <th>Product ID</th>
+              <th>Category ID</th>
               <th>Name</th>
               <th>Image</th>
-              <th>Description</th>
-              <th>Buy Turn</th>
-              <th>Brand</th>
-              <th>Category</th>
-              <th>Rating</th>
-              <th>Total Ratings</th>
-              <th>Total Sold</th>
               <th>Created At</th>
-              <th>Visible</th>
               <th>Actions</th>
             </tr>
           </thead>
-          <!-- <tbody>
+          <tbody>
             <tr v-if="loading">
               <td colspan="14">Đang tải sản phẩm...</td>
             </tr>
 
-            <tr v-else-if="products.length === 0">
+            <tr v-else-if="categories.length === 0">
               <td colspan="14">Không tìm thấy sản phẩm nào.</td>
             </tr>
 
-            <tr v-for="product in products" :key="product.id">
-              <td>{{ product.id }}</td>
+            <tr v-for="category in categories" :key="categories.id">
+              <td>{{ category.id }}</td>
               <td>
-                {{ product.name }}
+                {{ category.name }}
               </td>
               <td>
-                {{ product.image }}
+                <img :src="category.image" alt="" />
               </td>
-              <td>
-                {{ product.description?.slice(0, 70) }}
-                {{ product.description?.length > 70 ? '...' : '' }}
-              </td>
-              <td>{{ product.buyturn }}</td>
-              <td>{{ product.brand_id }}</td>
-              <td>{{ product.category_id }}</td>
-              <td>{{ product.rating }}</td>
-              <td>{{ product.total_ratings }}</td>
-              <td>{{ product.total_sold }}</td>
-              <td>{{ product.created_at }}</td>
-              <td>
-                <i
-                  :class="
-                    product.is_visible
-                      ? 'fa fa-eye text-green'
-                      : 'fa fa-eye-slash text-red'
-                  "
-                ></i>
-              </td>
+              <td>{{ category.created_at }}</td>
               <td>
                 <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
               </td>
             </tr>
-          </tbody> -->
+          </tbody>
         </table>
-        <!-- <div class="Pagination" v-if="total > pageSize">
+        <div class="Pagination" v-if="total > pageSize">
           <ul>
             <li @click="Previous" :class="{ disabled: current_page === 1 }">
               <i class="fa fa-arrow-left" aria-hidden="true"></i> Previous
@@ -111,18 +128,18 @@
               <i class="fa fa-arrow-right" aria-hidden="true"></i> Next
             </li>
           </ul>
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.Product-List {
+.Category-List {
   @include w-100-h-100;
   @include display-flex-column-between;
 
-  .Product-List__Top {
+  .Category-List__Top {
     width: 100%;
     height: 7%;
     @include display-flex-row-between-center;
@@ -133,7 +150,7 @@
       @include display-flex-row-between-center;
 
       .Left {
-        width: 30%;
+        width: 24%;
         height: 100%;
         @include display-flex-column-flexStart;
 
@@ -143,7 +160,7 @@
         }
       }
 
-      .Select-Product {
+      .Select-Category {
         select {
           color: var(--text-default);
           font-size: var(--font-size-sm);
@@ -159,7 +176,7 @@
         }
       }
 
-      .Product-Code {
+      .Category-Code {
         input {
           color: var(--text-default);
           font-size: var(--font-size-sm);
@@ -187,6 +204,25 @@
 
           &:focus {
             outline: none;
+          }
+        }
+      }
+
+      .Reset-Filters {
+        .reset-button {
+          width: 100%;
+          height: 65%;
+          border-radius: var(--radius-md);
+          padding: 0px var(--padding-8);
+          border: none;
+          flex: 1;
+          background: var(--bg-default);
+          cursor: pointer;
+          color: var(--text-default);
+          font-size: var(--font-size-sm);
+
+          &:hover {
+            background-color: var(--bg-page);
           }
         }
       }
@@ -235,7 +271,7 @@
     }
   }
 
-  .Product-List__Bottom {
+  .Category-List__Bottom {
     border-radius: var(--radius-md);
     background: var(--bg-default);
     width: 100%;
@@ -298,6 +334,10 @@
                     color: var(--table-icon-hover);
                   }
                 }
+              }
+
+              img {
+                width: 40%;
               }
             }
           }

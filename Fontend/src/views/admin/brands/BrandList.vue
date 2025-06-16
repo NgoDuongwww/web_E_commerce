@@ -16,7 +16,7 @@ const getBrands = async () => {
     {
       params: {
         // ↳ Tham số tìm kiếm (truyền query parameters)
-        page: current_page.value ?? 1, // "/admin/brands?page=1"
+        page: current_page.value, // "/admin/brands?page=1"
       },
     }
   )
@@ -26,60 +26,64 @@ const getBrands = async () => {
   current_page.value = res.data.current_page
   total_page.value = res.data.total_page
   total.value = res.data.total
+
   loading.value = false
 }
+
+// Hệ thống reset filters
+const resetFilters = () => {}
+
+onMounted(getBrands)
 </script>
 
 <template>
-  <div class="Product-List">
-    <div class="Product-List__Top">
+  <div class="Brand-List">
+    <div class="Brand-List__Top">
       <div class="Top__Left">
-        <div class="Left Select-Product">
-          <span>Select Product</span>
-          <select v-model="select">
-            <option value="" disabled selected>Select One</option>
+        <div class="Left Select-Brand">
+          <span>Select Brand</span>
+          <select>
+            <option value="" disabled>Select One</option>
             <option value="all">All</option>
             <option value="1">Visible</option>
             <option value="0">Invisible</option>
           </select>
         </div>
-        <div class="Left Product-Code">
-          <span>Product Code</span>
-          <input v-model="insertCode" type="text" placeholder="Product Code" />
+        <div class="Left Brand-Code">
+          <span>Brand Code</span>
+          <input type="text" placeholder="Brand Code" />
         </div>
         <div class="Left Date-Time">
           <span>Date Time</span>
-          <input v-model="insertDate" type="date" />
+          <input type="date" />
+        </div>
+        <div class="Left Reset-Filters">
+          <span></span>
+          <button @click="resetFilters" class="reset-button">
+            <i class="fas fa-undo-alt"></i> Reset Filters
+          </button>
         </div>
       </div>
       <div class="Top__Right">
         <ul>
           <li>
             <i class="fa fa-plus" aria-hidden="true"></i>
-            <span>Add Product</span>
+            <span>Add Brand</span>
           </li>
-          <li><i class="fas fa-upload"></i> <span>Import Product</span></li>
-          <li><i class="fas fa-download"></i> <span>Export Product</span></li>
+          <li><i class="fas fa-upload"></i> <span>Import Brand</span></li>
+          <li><i class="fas fa-download"></i> <span>Export Brand</span></li>
         </ul>
       </div>
     </div>
-    <div class="Product-List__Bottom">
-      <div class="Product Bottom">
+    <div class="Brand-List__Bottom">
+      <div class="Brand Bottom">
         <table>
           <thead>
             <tr>
-              <th>Product ID</th>
+              <th>Brand ID</th>
               <th>Name</th>
               <th>Image</th>
-              <th>Description</th>
-              <th>Buy Turn</th>
-              <th>Brand</th>
-              <th>Category</th>
-              <th>Rating</th>
-              <th>Total Ratings</th>
-              <th>Total Sold</th>
               <th>Created At</th>
-              <th>Visible</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -88,38 +92,19 @@ const getBrands = async () => {
               <td colspan="14">Đang tải sản phẩm...</td>
             </tr>
 
-            <tr v-else-if="products.length === 0">
+            <tr v-else-if="brands.length === 0">
               <td colspan="14">Không tìm thấy sản phẩm nào.</td>
             </tr>
 
-            <tr v-for="product in products" :key="product.id">
-              <td>{{ product.id }}</td>
+            <tr v-for="brand in brands" :key="brands.id">
+              <td>{{ brand.id }}</td>
               <td>
-                {{ product.name }}
+                {{ brand.name }}
               </td>
               <td>
-                {{ product.image }}
+                <img :src="brand.image" alt="" />
               </td>
-              <td>
-                {{ product.description?.slice(0, 70) }}
-                {{ product.description?.length > 70 ? '...' : '' }}
-              </td>
-              <td>{{ product.buyturn }}</td>
-              <td>{{ product.brand_id }}</td>
-              <td>{{ product.category_id }}</td>
-              <td>{{ product.rating }}</td>
-              <td>{{ product.total_ratings }}</td>
-              <td>{{ product.total_sold }}</td>
-              <td>{{ product.created_at }}</td>
-              <td>
-                <i
-                  :class="
-                    product.is_visible
-                      ? 'fa fa-eye text-green'
-                      : 'fa fa-eye-slash text-red'
-                  "
-                ></i>
-              </td>
+              <td>{{ brand.created_at }}</td>
               <td>
                 <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
               </td>
@@ -150,11 +135,11 @@ const getBrands = async () => {
 </template>
 
 <style lang="scss" scoped>
-.Product-List {
+.Brand-List {
   @include w-100-h-100;
   @include display-flex-column-between;
 
-  .Product-List__Top {
+  .Brand-List__Top {
     width: 100%;
     height: 7%;
     @include display-flex-row-between-center;
@@ -165,7 +150,7 @@ const getBrands = async () => {
       @include display-flex-row-between-center;
 
       .Left {
-        width: 30%;
+        width: 24%;
         height: 100%;
         @include display-flex-column-flexStart;
 
@@ -175,7 +160,7 @@ const getBrands = async () => {
         }
       }
 
-      .Select-Product {
+      .Select-Brand {
         select {
           color: var(--text-default);
           font-size: var(--font-size-sm);
@@ -191,7 +176,7 @@ const getBrands = async () => {
         }
       }
 
-      .Product-Code {
+      .Brand-Code {
         input {
           color: var(--text-default);
           font-size: var(--font-size-sm);
@@ -219,6 +204,25 @@ const getBrands = async () => {
 
           &:focus {
             outline: none;
+          }
+        }
+      }
+
+      .Reset-Filters {
+        .reset-button {
+          width: 100%;
+          height: 65%;
+          border-radius: var(--radius-md);
+          padding: 0px var(--padding-8);
+          border: none;
+          flex: 1;
+          background: var(--bg-default);
+          cursor: pointer;
+          color: var(--text-default);
+          font-size: var(--font-size-sm);
+
+          &:hover {
+            background-color: var(--bg-page);
           }
         }
       }
@@ -267,7 +271,7 @@ const getBrands = async () => {
     }
   }
 
-  .Product-List__Bottom {
+  .Brand-List__Bottom {
     border-radius: var(--radius-md);
     background: var(--bg-default);
     width: 100%;
@@ -330,6 +334,10 @@ const getBrands = async () => {
                     color: var(--table-icon-hover);
                   }
                 }
+              }
+
+              img {
+                width: 40%;
               }
             }
           }

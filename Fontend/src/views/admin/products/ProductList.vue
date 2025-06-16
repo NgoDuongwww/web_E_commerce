@@ -1,7 +1,12 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import api from '@/api/axios.js'
+import AddProduct from '@/components/admin/products/add-product.vue'
 
+// Thêm sản phẩm
+const add_product = ref(false)
+
+// Danh sách sản phẩm
 const products = ref([]) // ➡ Danh sách toàn bộ sản phẩm đang hiển thị (đã lọc)
 const current_page = ref(1) // ➡ Trang hiện tại
 const total_page = ref(0) // ➡ Tổng số trang
@@ -10,9 +15,9 @@ const pageSize = 10 // ➡ Số sản phẩm trên 1 trang
 const loading = ref(true) // ➡ Loading
 
 const first_products = ref([]) // ➡ Danh sách toàn bộ sản phẩm ban đầu
-const select = ref('') // ➡ Danh sách sản phẩm tìm kiếm
-const insertCode = ref('') // ➡ Danh sách sản phân tìm kiếm theo id
-const insertDate = ref('') // ➡ Danh sách sản phân tìm kiếm theo ngày tạo
+const get_products_is_visible = ref('') // ➡ Danh sách sản phẩm tìm kiếm
+const get_products_by_id = ref('') // ➡ Danh sách sản phân tìm kiếm theo id
+const get_products_by_date = ref('') // ➡ Danh sách sản phân tìm kiếm theo ngày tạo
 
 // Lấy danh sách sản phẩm
 const getProducts = async () => {
@@ -22,10 +27,7 @@ const getProducts = async () => {
     {
       params: {
         // ↳ Tham số tìm kiếm (truyền query parameters)
-        page: current_page.value ?? 1, // "/admin/products?page=1"
-        select: select.value,
-        insertCode: insertCode.value,
-        insertDate: insertDate.value,
+        page: current_page.value, // "/admin/products?page=1"
       },
     }
   )
@@ -41,41 +43,42 @@ const getProducts = async () => {
 }
 
 // Lọc danh sách sản phẩm dựa trên các tiêu chí tìm kiếm
-// const filter_products = () => {
-//   products.value = first_products.value.filter((product) => {
-//     // ↳ Lọc sản phẩm theo tìm kiếm
-//     const selectProduct =
-//       select.value === 'all' ||
-//       select.value === '' ||
-//       product.is_visible === (select.value === '1' ? true : false)
+const filter_products = () => {
+  products.value = first_products.value.filter((product) => {
+    // ↳ Lọc sản phẩm theo tìm kiếm
+    const get_product_by_status =
+      get_products_is_visible.value === 'all' ||
+      get_products_is_visible.value === '' ||
+      product.is_visible ===
+        (get_products_is_visible.value === '1' ? true : false)
 
-//     // Lọc sản phẩm theo id
-//     const insertProduct =
-//       insertCode.value === '' || String(product.id).includes(insertCode.value)
+    // Lọc sản phẩm theo id
+    const get_product_by_id =
+      get_products_by_id.value === '' ||
+      String(product.name).includes(get_products_by_id.value)
 
-//     // Lọc sản phẩm theo ngày tạo
-//     const dateProduct =
-//       insertDate.value === '' ||
-//       product.created_at?.slice(0, 10).includes(insertDate.value)
+    // Lọc sản phẩm theo ngày tạo
+    const get_product_by_date =
+      get_products_by_date.value === '' ||
+      product.created_at?.slice(0, 10).includes(get_products_by_date.value)
 
-//     return selectProduct && insertProduct && dateProduct
-//   })
+    return get_product_by_status && get_product_by_id && get_product_by_date
+  })
 
-//   total.value = products.value.length
-//   current_page.value = 1
-// }
+  total.value = products.value.length
+}
 
 // Theo dõi các biến, tự động lọc lại dữ liệu khi thay đổi điều kiện tìm kiếm.
-watch([select, insertCode, insertDate], () => {
-  current_page.value = 1 // Reset về trang đầu khi filter thay đổi
-  getProducts()
-})
+watch(
+  [get_products_is_visible, get_products_by_id, get_products_by_date],
+  filter_products
+)
 
 // Hệ thống reset filters
 const resetFilters = () => {
-  select.value = ''
-  insertCode.value = ''
-  insertDate.value = ''
+  get_products_is_visible.value = ''
+  get_products_by_id.value = ''
+  get_products_by_date.value = ''
   current_page.value = 1
   getProducts()
 }
@@ -100,12 +103,14 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
 </script>
 
 <template>
+  <AddProduct v-if="add_product" @close="add_product = false" />
+
   <div class="Product-List">
     <div class="Product-List__Top">
       <div class="Top__Left">
         <div class="Left Select-Product">
           <span>Select Product</span>
-          <select v-model="select">
+          <select v-model="get_products_is_visible">
             <option value="" disabled>Select One</option>
             <option value="all">All</option>
             <option value="1">Visible</option>
@@ -114,11 +119,15 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
         </div>
         <div class="Left Product-Code">
           <span>Product Code</span>
-          <input v-model="insertCode" type="text" placeholder="Product Code" />
+          <input
+            v-model="get_products_by_id"
+            type="text"
+            placeholder="Product Code"
+          />
         </div>
         <div class="Left Date-Time">
           <span>Date Time</span>
-          <input v-model="insertDate" type="date" />
+          <input v-model="get_products_by_date" type="date" />
         </div>
         <div class="Left Reset-Filters">
           <span></span>
@@ -131,7 +140,7 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
         <ul>
           <li>
             <i class="fa fa-plus" aria-hidden="true"></i>
-            <span>Add Product</span>
+            <span @click="add_product = true">Add Product</span>
           </li>
           <li><i class="fas fa-upload"></i> <span>Import Product</span></li>
           <li><i class="fas fa-download"></i> <span>Export Product</span></li>
@@ -173,7 +182,7 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
                 {{ product.name }}
               </td>
               <td>
-                {{ product.image }}
+                <img :src="product.image" alt="" />
               </td>
               <td>
                 {{ product.description?.slice(0, 70) }}
@@ -419,6 +428,10 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
                     color: var(--table-icon-hover);
                   }
                 }
+              }
+
+              img {
+                width: 75%;
               }
             }
           }
