@@ -108,7 +108,7 @@ const logout = () => {
         }
 
         .activeTab {
-          background-color: var(--btn-primary-bg);
+          background-color: var(--btn-primary);
           color: var(--text-active);
         }
       }

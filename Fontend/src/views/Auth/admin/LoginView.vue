@@ -150,7 +150,7 @@ onMounted(() => {
 
           &:focus {
             outline: none;
-            border-color: var(--btn-primary-bg);
+            border-color: var(--btn-primary);
             box-shadow: 0 0 0 2px rgba(80, 101, 246, 0.2);
           }
         }
@@ -172,7 +172,7 @@ onMounted(() => {
         button {
           margin-top: var(--margin-16);
           padding: var(--padding-12);
-          background-color: var(--btn-primary-bg);
+          background-color: var(--btn-primary);
           color: var(--text-active);
           font-size: var(--font-size-lg);
           font-weight: 600;

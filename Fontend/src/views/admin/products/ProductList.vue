@@ -340,7 +340,7 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
           list-style: none;
           cursor: pointer;
           transition: var(--transition-sm);
-          background: var(--btn-primary-bg);
+          background: var(--btn-primary);
           color: var(--text-active);
           transition: var(--transition-md);
 

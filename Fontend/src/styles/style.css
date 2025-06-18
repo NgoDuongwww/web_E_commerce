@@ -1,3 +1,5 @@
+@import 'tailwindcss';
+
 :root {
   font-family: 'inter', sans-serif;
   font-size: 16px;
@@ -18,10 +20,10 @@
   --bg-error-notification: #fef2f2;
   --border-default: #bababa;
   --boder-error-notification: #f87171;
-  --btn-primary-bg: #5065f6;
+  --btn-default: #dfdfdf;
+  --btn-default-hover: #c7c7c7;
+  --btn-primary: #5065f6;
   --btn-primary-hover: #3545d8;
-  --btn-primary-default: #dfdfdf;
-  --btn-primary-default-hover: #c7c7c7;
   --table-header-text: #333333;
   --table-border: #e0e0e0;
   --table-row-hover: #dfdfdf;

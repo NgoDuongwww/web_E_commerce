@@ -34,7 +34,7 @@
       @include w-auto-h-100;
       list-style: none;
       @include display-flex-center-center;
-      background: var(--btn-primary-default);
+      background: var(--btn-default);
 
       .Tab {
         @include w-100-h-100;
@@ -45,7 +45,7 @@
       }
     }
     .active {
-      background: var(--btn-primary-bg);
+      background: var(--btn-primary);
       color: var(--text-active);
     }
   }

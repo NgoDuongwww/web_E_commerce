@@ -246,7 +246,7 @@ onMounted(getBrands)
           list-style: none;
           cursor: pointer;
           transition: var(--transition-sm);
-          background: var(--btn-primary-bg);
+          background: var(--btn-primary);
           color: var(--text-active);
           transition: var(--transition-md);
 

@@ -291,13 +291,13 @@ api.get('/admin/categories').then((res) => {
         button {
           align-self: flex-start;
           padding: var(--padding-8) var(--padding-12);
-          background-color: var(--btn-primary-default);
+          background-color: var(--btn-default);
           border: none;
           border-radius: var(--radius-sm);
           cursor: pointer;
 
           &:hover {
-            background-color: var(--btn-primary-default-hover);
+            background-color: var(--btn-default-hover);
           }
         }
       }
@@ -319,7 +319,7 @@ api.get('/admin/categories').then((res) => {
     }
 
     .save {
-      background-color: var(--btn-primary-bg);
+      background-color: var(--btn-primary);
 
       &:hover {
         background-color: var(--btn-primary-hover);
@@ -327,10 +327,10 @@ api.get('/admin/categories').then((res) => {
     }
 
     .cancel {
-      background-color: var(--btn-primary-default);
+      background-color: var(--btn-default);
 
       &:hover {
-        background-color: var(--btn-primary-default-hover);
+        background-color: var(--btn-default-hover);
       }
     }
   }
