@@ -68,7 +68,6 @@ const toggleVariantNameInput = (index) => {
   }
 }
 
-// Load data từ API
 api.get('/admin/brands').then((res) => {
   brands.value = res.data.brands
 })
@@ -194,11 +193,16 @@ api.get('/admin/categories').then((res) => {
         <div class="form__section">
           <label>Product Versions</label>
           <div v-for="(v, i) in variantValues" :key="i" class="dynamic-group">
-            <input
-              v-model="v.variant_combination"
-              type="text"
-              placeholder="Combination (e.g., 8GB, 128GB)"
-            />
+            <div v-for="(val, idx) in v.variant_combination" :key="idx">
+              <input
+                v-model="v.variant_combination[idx]"
+                type="text"
+                placeholder="e.g., 12GB"
+              />
+            </div>
+            <button type="button" @click="v.variant_combination.push('')">
+              + Add Combination
+            </button>
             <input v-model.number="v.price" type="number" placeholder="Price" />
             <input
               v-model.number="v.old_price"

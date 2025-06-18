@@ -1,6 +1,9 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import api from '@/api/axios.js'
+import AddBrand from '@/components/admin/brands/add-brand.vue'
+
+const add_brand = ref(false)
 
 const brands = ref([])
 const current_page = ref(1)
@@ -37,6 +40,7 @@ onMounted(getBrands)
 </script>
 
 <template>
+  <AddBrand v-if="add_brand" @close="add_brand = false" />
   <div class="Brand-List">
     <div class="Brand-List__Top">
       <div class="Top__Left">
@@ -66,7 +70,7 @@ onMounted(getBrands)
       </div>
       <div class="Top__Right">
         <ul>
-          <li>
+          <li @click="add_brand = true">
             <i class="fa fa-plus" aria-hidden="true"></i>
             <span>Add Brand</span>
           </li>
