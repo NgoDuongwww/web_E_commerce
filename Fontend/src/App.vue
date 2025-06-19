@@ -13,15 +13,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="wrapper max-w-[1920px] h-screen mx-auto my-0">
     <Toaster />
 
     <template v-if="!$route.meta.noLayout && $route.meta.adminLayout">
-      <div class="Admin">
-        <div class="AD admin__header">
+      <div class="Admin w-full h-full flex flex-row text-[var(--text-default)]">
+        <div class="AD admin__header w-[12%]">
           <AdminMenu />
         </div>
-        <div class="AD admin__main">
+        <div class="AD admin__main w-full">
           <router-view />
         </div>
       </div>
@@ -39,10 +39,6 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .wrapper {
-  max-width: 1920px;
-  height: 100vh;
-  margin: 0 auto;
-
   section[aria-label='Notifications alt+T'] {
     position: absolute !important;
     top: 20px;
@@ -53,24 +49,6 @@ onMounted(() => {
   :deep(section[aria-label='Notifications alt+T'] li) {
     list-style: none;
     display: block;
-  }
-
-  .Admin {
-    color: var(--text-default);
-    @include w-100-h-100;
-    @include display-flex-row;
-
-    .AD {
-      height: 100%;
-    }
-
-    .admin__header {
-      width: 12%;
-    }
-
-    .admin__main {
-      flex: 1;
-    }
   }
 }
 </style>

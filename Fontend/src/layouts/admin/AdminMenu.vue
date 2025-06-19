@@ -11,12 +11,12 @@ const logout = () => {
 </script>
 
 <template>
-  <div class="Admin-Header">
-    <div class="Header Admin-Header__img">
-      <img :src="toi" alt="Logo" />
+  <div class="Admin-Header w-100 h-100 py-6 px-4 flex flex-col justify-between">
+    <div class="Header Admin-Header__img w-full h-auto">
+      <img :src="toi" alt="Logo" class="w-full h-auto" />
     </div>
 
-    <div class="Header Admin-Header__Menu">
+    <div class="Header Admin-Header__Menu w-full object-cover">
       <ul>
         <li>
           <router-link
@@ -40,18 +40,18 @@ const logout = () => {
       </ul>
     </div>
 
-    <div class="Header Admin-Header__Logout">
+    <div class="Header Admin-Header__Logout w-full">
       <button @click="logout"><i class="fas fa-sign-out-alt"></i>Logout</button>
     </div>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<!-- <style lang="scss" scoped>
 .Admin-Header {
-  @include w-100-h-100;
+  // @include w-100-h-100;
   @include display-flex-column-between;
-  padding: var(--padding-24) var(--padding-16) var(--padding-24)
-    var(--padding-16);
+  // padding: var(--padding-24) var(--padding-16) var(--padding-24)
+  //   var(--padding-16);
 
   .Header {
     width: 100%;
@@ -142,4 +142,4 @@ const logout = () => {
     }
   }
 }
-</style>
+</style> -->
