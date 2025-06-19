@@ -105,51 +105,96 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
 <template>
   <AddProduct v-if="add_product" @close="add_product = false" />
 
-  <div class="Product-List">
-    <div class="Product-List__Top">
-      <div class="Top__Left">
-        <div class="Left Select-Product">
-          <span>Select Product</span>
-          <select v-model="get_products_is_visible">
+  <div class="Product-List w-full h-full flex flex-col justify-between">
+    <div
+      class="Product-List__Top w-full h-[7%] flex flex-row justify-between items-center"
+    >
+      <div
+        class="Top__Left w-[40%] h-full flex flex-row justify-between items-center"
+      >
+        <div
+          class="Left Select-Product w-[24%] h-full flex flex-col justify-start gap-1"
+        >
+          <span class="h-[35%] text-sm">Select Product</span>
+          <select
+            class="w-full h-full text-[var(--text-default)] text-sm rounded-md px-2 bg-[var(--bg-default)] focus:outline-none"
+            v-model="get_products_is_visible"
+          >
             <option value="" disabled>Select One</option>
             <option value="all">All</option>
             <option value="1">Visible</option>
             <option value="0">Invisible</option>
           </select>
         </div>
-        <div class="Left Product-Code">
-          <span>Product Code</span>
+        <div
+          class="Left Product-Code w-[24%] h-full flex flex-col justify-start gap-1"
+        >
+          <span class="h-[35%] text-sm">Product Code</span>
           <input
+            class="w-full h-full text-[var(--text-default)] text-sm rounded-md px-2 bg-[var(--bg-default)] focus:outline-none"
             v-model="get_products_by_id"
             type="text"
             placeholder="Product Code"
           />
         </div>
-        <div class="Left Date-Time">
-          <span>Date Time</span>
-          <input v-model="get_products_by_date" type="date" />
+        <div
+          class="Left Date-Time w-[24%] h-full flex flex-col justify-start gap-1"
+        >
+          <span class="h-[35%] text-sm">Date Time</span>
+          <input
+            class="w-full h-full text-[var(--text-default)] text-sm rounded-md px-2 bg-[var(--bg-default)] focus:outline-none"
+            v-model="get_products_by_date"
+            type="date"
+          />
         </div>
-        <div class="Left Reset-Filters">
-          <span></span>
-          <button @click="resetFilters" class="reset-button">
+        <div
+          class="Left Reset-Filters w-[24%] h-full flex flex-col justify-start gap-1"
+        >
+          <span class="h-[35%] text-sm"></span>
+          <button
+            @click="resetFilters"
+            class="reset-button w-full h-[65%] bg-[var(--bg-default)] rounded-md px-2 cursor-pointer text-[var(--text-default)] text-sm hover:bg-[var(--bg-page)]"
+          >
             <i class="fas fa-undo-alt"></i> Reset Filters
           </button>
         </div>
       </div>
-      <div class="Top__Right">
-        <ul>
-          <li @click="add_product = true">
-            <i class="fa fa-plus" aria-hidden="true"></i>
-            <span>Add Product</span>
+      <div class="Top__Right w-[30%] h-full">
+        <ul
+          class="w-full h-full flex flex-row justify-between items-center gap-4"
+        >
+          <li
+            class="w-1/3 h-full px-3 flex flex-row justify-between items-center rounded-md cursor-pointer transition-[var(--transition-sm)] bg-[var(--btn-primary)] text-[var(--text-active)] hover:bg-[var(--btn-primary-hover)] hover:text-[var(--text-active)]"
+            @click="add_product = true"
+          >
+            <i
+              class="fa fa-plus w-1/4 flex justify-center items-center"
+              aria-hidden="true"
+            ></i>
+            <span class="h-full flex justify-start items-center"
+              >Add Product</span
+            >
           </li>
-          <li><i class="fas fa-upload"></i> <span>Import Product</span></li>
-          <li><i class="fas fa-download"></i> <span>Export Product</span></li>
+          <li
+            class="w-1/3 h-full px-3 flex flex-row justify-between items-center rounded-md cursor-pointer transition-[var(--transition-sm)] bg-[var(--btn-primary)] text-[var(--text-active)] hover:bg-[var(--btn-primary-hover)] hover:text-[var(--text-active)]"
+          >
+            <i class="fas fa-upload"></i> <span>Import Product</span>
+          </li>
+          <li
+            class="w-1/3 h-full px-3 flex flex-row justify-between items-center rounded-md cursor-pointer transition-[var(--transition-sm)] bg-[var(--btn-primary)] text-[var(--text-active)] hover:bg-[var(--btn-primary-hover)] hover:text-[var(--text-active)]"
+          >
+            <i class="fas fa-download"></i> <span>Export Product</span>
+          </li>
         </ul>
       </div>
     </div>
-    <div class="Product-List__Bottom">
-      <div class="Product Bottom">
-        <table>
+    <div
+      class="Product-List__Bottom w-full h-[91%] bg-[var(--bg-default)] rounded-md"
+    >
+      <div
+        class="Product Bottom w-full h-full flex flex-col justify-between items-center"
+      >
+        <table class="">
           <thead>
             <tr>
               <th>Product ID</th>
@@ -228,7 +273,7 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
   </div>
 </template>
 
-<style lang="scss" scoped>
+<!-- <style lang="scss" scoped>
 .Product-List {
   @include w-100-h-100;
   @include display-flex-column-between;
@@ -472,4 +517,4 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
     }
   }
 }
-</style>
+</style> -->
