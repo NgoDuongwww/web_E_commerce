@@ -189,58 +189,170 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
       </div>
     </div>
     <div
-      class="Product-List__Bottom w-full h-[91%] bg-[var(--bg-default)] rounded-md"
+      class="Product-List__Bottom w-full h-[92%] bg-[var(--bg-default)] rounded-md"
     >
       <div
         class="Product Bottom w-full h-full flex flex-col justify-between items-center"
       >
-        <table class="">
-          <thead>
+        <table class="table-fixed border-collapse">
+          <thead class="w-full h-[5%]">
             <tr>
-              <th>Product ID</th>
-              <th>Name</th>
-              <th>Image</th>
-              <th>Description</th>
-              <th>Buy Turn</th>
-              <th>Brand</th>
-              <th>Category</th>
-              <th>Rating</th>
-              <th>Total Ratings</th>
-              <th>Total Sold</th>
-              <th>Created At</th>
-              <th>Visible</th>
-              <th>Actions</th>
+              <th
+                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
+              >
+                Product ID
+              </th>
+              <th
+                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
+              >
+                Name
+              </th>
+              <th
+                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
+              >
+                Image
+              </th>
+              <th
+                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
+              >
+                Description
+              </th>
+              <th
+                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
+              >
+                Buy Turn
+              </th>
+              <th
+                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
+              >
+                Brand
+              </th>
+              <th
+                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
+              >
+                Category
+              </th>
+              <th
+                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
+              >
+                Rating
+              </th>
+              <th
+                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
+              >
+                Total Ratings
+              </th>
+              <th
+                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
+              >
+                Total Sold
+              </th>
+              <th
+                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
+              >
+                Created At
+              </th>
+              <th
+                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
+              >
+                Visible
+              </th>
+              <th
+                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
+              >
+                Actions
+              </th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-if="loading">
-              <td colspan="14">Đang tải sản phẩm...</td>
+          <tbody class="w-full h-full">
+            <tr
+              v-if="loading"
+              class="h-12 border-b border-[var(--table-border)] table-fixed hover:bg-[var(--table-row-hover)]"
+            >
+              <td
+                colspan="14"
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
+              >
+                Đang tải sản phẩm...
+              </td>
             </tr>
 
-            <tr v-else-if="products.length === 0">
-              <td colspan="14">Không tìm thấy sản phẩm nào.</td>
+            <tr
+              v-else-if="products.length === 0"
+              class="h-12 border-b border-[var(--table-border)] table-fixed hover:bg-[var(--table-row-hover)]"
+            >
+              <td
+                colspan="14"
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
+              >
+                Không tìm thấy sản phẩm nào.
+              </td>
             </tr>
 
-            <tr v-for="product in products" :key="product.id">
-              <td>{{ product.id }}</td>
-              <td>
+            <tr
+              v-for="product in products"
+              :key="product.id"
+              class="h-12 border-b border-[var(--table-border)] hover:bg-[var(--table-row-hover)]"
+            >
+              <td
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
+              >
+                {{ product.id }}
+              </td>
+              <td
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
+              >
                 {{ product.name }}
               </td>
-              <td>
-                <img :src="product.image" alt="" />
+              <td
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none flex justify-center items-center"
+              >
+                <img :src="product.image" alt="" class="w-[75%]" />
               </td>
-              <td>
-                {{ product.description?.slice(0, 70) }}
-                {{ product.description?.length > 70 ? '...' : '' }}
+              <td
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
+              >
+                {{ product.description?.slice(0, 60) }}
+                {{ product.description?.length > 60 ? '...' : '' }}
               </td>
-              <td>{{ product.buyturn }}</td>
-              <td>{{ product.brand_id }}</td>
-              <td>{{ product.category_id }}</td>
-              <td>{{ product.rating }}</td>
-              <td>{{ product.total_ratings }}</td>
-              <td>{{ product.total_sold }}</td>
-              <td>{{ product.created_at?.slice(0, 10) }}</td>
-              <td>
+              <td
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
+              >
+                {{ product.buyturn }}
+              </td>
+              <td
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
+              >
+                {{ product.brand_id }}
+              </td>
+              <td
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
+              >
+                {{ product.category_id }}
+              </td>
+              <td
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
+              >
+                {{ product.rating }}
+              </td>
+              <td
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
+              >
+                {{ product.total_ratings }}
+              </td>
+              <td
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
+              >
+                {{ product.total_sold }}
+              </td>
+              <td
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
+              >
+                {{ product.created_at?.slice(0, 10) }}
+              </td>
+              <td
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
+              >
                 <i
                   :class="
                     product.is_visible
@@ -249,21 +361,34 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
                   "
                 ></i>
               </td>
-              <td>
+              <td
+                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
+              >
                 <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
               </td>
             </tr>
           </tbody>
         </table>
-        <div class="Pagination" v-if="total > pageSize">
-          <ul>
-            <li @click="Previous" :class="{ disabled: current_page === 1 }">
+        <div
+          class="Pagination w-full h-[5%] flex justify-center"
+          v-if="total > pageSize"
+        >
+          <ul class="flex items-center gap-6 text-sm">
+            <li
+              class="flex items-center gap-2 cursor-pointer transition-[var(--transition-sm)] hover:text-[var(--btn-primary-hover)]"
+              @click="Previous"
+              :class="{ disabled: current_page === 1 }"
+            >
               <i class="fa fa-arrow-left" aria-hidden="true"></i> Previous
             </li>
             <li>
               <span> Page {{ current_page }} of {{ total_page }} </span>
             </li>
-            <li @click="Next" :class="{ disabled: current_page >= total }">
+            <li
+              class="flex items-center gap-2 cursor-pointer transition-[var(--transition-sm)] hover:text-[var(--btn-primary-hover)]"
+              @click="Next"
+              :class="{ disabled: current_page >= total }"
+            >
               <i class="fa fa-arrow-right" aria-hidden="true"></i> Next
             </li>
           </ul>
@@ -272,249 +397,3 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
     </div>
   </div>
 </template>
-
-<!-- <style lang="scss" scoped>
-.Product-List {
-  @include w-100-h-100;
-  @include display-flex-column-between;
-
-  .Product-List__Top {
-    width: 100%;
-    height: 7%;
-    @include display-flex-row-between-center;
-
-    .Top__Left {
-      width: 40%;
-      height: 100%;
-      @include display-flex-row-between-center;
-
-      .Left {
-        width: 24%;
-        height: 100%;
-        @include display-flex-column-flexStart;
-
-        span {
-          height: 35%;
-          font-size: var(--font-size-sm);
-        }
-      }
-
-      .Select-Product {
-        select {
-          color: var(--text-default);
-          font-size: var(--font-size-sm);
-          width: 100%;
-          flex: 1;
-          border: none;
-          border-radius: var(--radius-md);
-          padding: 0px var(--padding-8);
-
-          &:focus {
-            outline: none;
-          }
-        }
-      }
-
-      .Product-Code {
-        input {
-          color: var(--text-default);
-          font-size: var(--font-size-sm);
-          width: 100%;
-          flex: 1;
-          border: none;
-          border-radius: var(--radius-md);
-          padding: 0px var(--padding-8);
-
-          &:focus {
-            outline: none;
-          }
-        }
-      }
-
-      .Date-Time {
-        input {
-          color: var(--text-default);
-          font-size: var(--font-size-sm);
-          width: 100%;
-          flex: 1;
-          border: none;
-          border-radius: var(--radius-md);
-          padding: 0px var(--padding-8);
-
-          &:focus {
-            outline: none;
-          }
-        }
-      }
-
-      .Reset-Filters {
-        .reset-button {
-          width: 100%;
-          height: 65%;
-          border-radius: var(--radius-md);
-          padding: 0px var(--padding-8);
-          border: none;
-          flex: 1;
-          background: var(--bg-default);
-          cursor: pointer;
-          color: var(--text-default);
-          font-size: var(--font-size-sm);
-
-          &:hover {
-            background-color: var(--bg-page);
-          }
-        }
-      }
-    }
-
-    .Top__Right {
-      width: 27%;
-      height: 80%;
-
-      ul {
-        @include w-100-h-100;
-        @include display-flex-row-between-center;
-        gap: 1rem;
-        font-size: var(--font-size-sm);
-
-        li {
-          @include display-flex-row-between-center;
-          border-radius: var(--radius-md);
-          height: 100%;
-          width: 100%;
-          list-style: none;
-          cursor: pointer;
-          transition: var(--transition-sm);
-          background: var(--btn-primary);
-          color: var(--text-active);
-          transition: var(--transition-md);
-
-          &:hover {
-            color: var(--text-active);
-            background: var(--btn-primary-hover);
-          }
-
-          i {
-            height: 100%;
-            width: 25%;
-            @include display-flex-center-center;
-          }
-
-          span {
-            height: 100%;
-            flex: 1;
-            @include display-flex-left-center;
-          }
-        }
-      }
-    }
-  }
-
-  .Product-List__Bottom {
-    border-radius: var(--radius-md);
-    background: var(--bg-default);
-    width: 100%;
-    height: 92%;
-
-    .Bottom {
-      @include w-100-h-100;
-      @include display-flex-column-between-center;
-
-      table {
-        table-layout: fixed;
-        border-collapse: collapse;
-
-        thead {
-          width: 100%;
-          height: 5%;
-          table-layout: fixed;
-
-          th {
-            width: 10%;
-            padding: var(--padding-12) var(--padding-16);
-            text-align: center;
-            font-weight: 600;
-            color: var(--table-header-text);
-            font-size: 14px;
-            border-bottom: 1px solid var(--table-border);
-          }
-        }
-
-        tbody {
-          width: 100%;
-          height: auto;
-
-          tr {
-            height: 48px !important;
-            border-bottom: 1px solid var(--table-border);
-            table-layout: fixed;
-
-            &:hover {
-              background-color: var(--table-row-hover);
-            }
-
-            td {
-              text-overflow: ellipsis;
-              vertical-align: middle;
-              height: 48px !important;
-              text-align: center;
-              padding: var(--padding-4) var(--padding-8);
-              font-size: var(--font-size-sm);
-              color: var(--table-text);
-              line-height: 1;
-
-              &:last-child {
-                i {
-                  cursor: pointer;
-                  color: var(--table-icon);
-                  transition: var(--transition-sm);
-
-                  &:hover {
-                    color: var(--table-icon-hover);
-                  }
-                }
-              }
-
-              img {
-                width: 75%;
-              }
-            }
-          }
-        }
-      }
-
-      .Pagination {
-        width: 100%;
-        height: 5%;
-        @include display-flex-jus-center;
-
-        ul {
-          @include display-flex-ali-center;
-          gap: 1.5rem;
-          font-size: var(--font-size-sm);
-        }
-
-        li {
-          @include display-flex-ali-center;
-          gap: 0.4rem;
-          cursor: pointer;
-          transition: var(--transition-sm);
-
-          &:hover {
-            color: var(--btn-primary-hover);
-          }
-        }
-
-        .disabled {
-          cursor: default;
-          color: var(--text-default);
-
-          &:hover {
-            color: var(--text-default);
-          }
-        }
-      }
-    }
-  }
-}
-</style> -->
