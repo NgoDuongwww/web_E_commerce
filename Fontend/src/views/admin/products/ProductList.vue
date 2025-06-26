@@ -105,56 +105,33 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
 <template>
   <AddProduct v-if="add_product" @close="add_product = false" />
 
-  <div class="Product-List w-full h-full flex flex-col justify-between">
-    <div
-      class="Product-List__Top w-full h-[7%] flex flex-row justify-between items-center"
-    >
-      <div
-        class="Top__Left w-[40%] h-full flex flex-row justify-between items-center"
-      >
-        <div
-          class="Left Select-Product w-[24%] h-full flex flex-col justify-start gap-1"
-        >
-          <span class="h-[35%] text-sm">Select Product</span>
-          <select
-            class="w-full h-full text-[var(--text-default)] text-sm rounded-md px-2 bg-[var(--bg-default)] focus:outline-none"
-            v-model="get_products_is_visible"
-          >
+  <div class="Product-List">
+    <div class="Product-List__Top">
+      <div class="Top__Left">
+        <div class="Left Select-Product">
+          <span>Select Product</span>
+          <select v-model="get_products_is_visible">
             <option value="" disabled>Select One</option>
             <option value="all">All</option>
             <option value="1">Visible</option>
             <option value="0">Invisible</option>
           </select>
         </div>
-        <div
-          class="Left Product-Code w-[24%] h-full flex flex-col justify-start gap-1"
-        >
-          <span class="h-[35%] text-sm">Product Code</span>
+        <div class="Left Product-Code">
+          <span>Product Code</span>
           <input
-            class="w-full h-full text-[var(--text-default)] text-sm rounded-md px-2 bg-[var(--bg-default)] focus:outline-none"
             v-model="get_products_by_id"
             type="text"
             placeholder="Product Code"
           />
         </div>
-        <div
-          class="Left Date-Time w-[24%] h-full flex flex-col justify-start gap-1"
-        >
-          <span class="h-[35%] text-sm">Date Time</span>
-          <input
-            class="w-full h-full text-[var(--text-default)] text-sm rounded-md px-2 bg-[var(--bg-default)] focus:outline-none"
-            v-model="get_products_by_date"
-            type="date"
-          />
+        <div class="Left Date-Time">
+          <span>Date Time</span>
+          <input v-model="get_products_by_date" type="date" />
         </div>
-        <div
-          class="Left Reset-Filters w-[24%] h-full flex flex-col justify-start gap-1"
-        >
-          <span class="h-[35%] text-sm"></span>
-          <button
-            @click="resetFilters"
-            class="reset-button w-full h-[65%] bg-[var(--bg-default)] rounded-md px-2 cursor-pointer text-[var(--text-default)] text-sm hover:bg-[var(--bg-page)]"
-          >
+        <div class="Left Reset-Filters">
+          <span></span>
+          <button @click="resetFilters" class="reset-button">
             <i class="fas fa-undo-alt"></i> Reset Filters
           </button>
         </div>
@@ -397,3 +374,129 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.Product-List {
+  @include w-100-h-100;
+  @include display-flex-column-between;
+
+  .Product-List__Top {
+    width: 100%;
+    height: 7%;
+    @include display-flex-row-between-center;
+
+    .Top__Left {
+      width: 40%;
+      height: 100%;
+      @include display-flex-row-between-center;
+
+      .Select-Product {
+        width: 24%;
+        height: 100%;
+        @include display-flex-column-flexStart;
+        gap: 4px;
+
+        span {
+          height: 35%;
+          font-size: var(--font-size-sm);
+        }
+
+        select {
+          background: var(--bg-default);
+          @include w-100-h-100;
+          color: var(--text-default);
+          font-size: var(--font-size-sm);
+          border: none;
+          border-radius: var(--radius-md);
+          padding: 0px var(--padding-8);
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+
+      .Product-Code {
+        width: 24%;
+        height: 100%;
+        @include display-flex-column-flexStart;
+        gap: 4px;
+
+        span {
+          height: 35%;
+          font-size: var(--font-size-sm);
+        }
+
+        input {
+          background: var(--bg-default);
+          @include w-100-h-100;
+          color: var(--text-default);
+          font-size: var(--font-size-sm);
+          border: none;
+          border-radius: var(--radius-md);
+          padding: 0px var(--padding-8);
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+
+      .Date-Time {
+        width: 24%;
+        height: 100%;
+        @include display-flex-column-flexStart;
+        gap: 4px;
+
+        span {
+          height: 35%;
+          font-size: var(--font-size-sm);
+        }
+
+        input {
+          background: var(--bg-default);
+          @include w-100-h-100;
+          color: var(--text-default);
+          font-size: var(--font-size-sm);
+          border: none;
+          border-radius: var(--radius-md);
+          padding: 0px var(--padding-8);
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+
+      .Reset-Filters {
+        width: 24%;
+        height: 100%;
+        @include display-flex-column-flexStart;
+        gap: 4px;
+
+        span {
+          height: 35%;
+          font-size: var(--font-size-sm);
+        }
+
+        .reset-button {
+          width: 100%;
+          height: 65%;
+          border-radius: var(--radius-md);
+          padding: 0px var(--padding-8);
+          border: none;
+          flex: 1;
+          background: var(--bg-default);
+          cursor: pointer;
+          color: var(--text-default);
+          font-size: var(--font-size-sm);
+
+          &:hover {
+            background-color: var(--bg-page);
+          }
+        }
+      }
+    }
+  }
+}
+</style>
