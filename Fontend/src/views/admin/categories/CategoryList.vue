@@ -162,6 +162,7 @@ onMounted(getBrands)
 
       .Select-Category {
         select {
+          background: var(--bg-default);
           color: var(--text-default);
           font-size: var(--font-size-sm);
           width: 100%;
@@ -178,6 +179,7 @@ onMounted(getBrands)
 
       .Category-Code {
         input {
+          background: var(--bg-default);
           color: var(--text-default);
           font-size: var(--font-size-sm);
           width: 100%;
@@ -194,6 +196,7 @@ onMounted(getBrands)
 
       .Date-Time {
         input {
+          background: var(--bg-default);
           color: var(--text-default);
           font-size: var(--font-size-sm);
           width: 100%;

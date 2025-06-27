@@ -255,17 +255,18 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
       height: 100%;
       @include display-flex-row-between-center;
 
-      .Select-Product {
+      .Left {
         width: 24%;
         height: 100%;
         @include display-flex-column-flexStart;
-        gap: 4px;
 
         span {
           height: 35%;
           font-size: var(--font-size-sm);
         }
+      }
 
+      .Select-Product {
         select {
           background: var(--bg-default);
           @include w-100-h-100;
@@ -282,16 +283,6 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
       }
 
       .Product-Code {
-        width: 24%;
-        height: 100%;
-        @include display-flex-column-flexStart;
-        gap: 4px;
-
-        span {
-          height: 35%;
-          font-size: var(--font-size-sm);
-        }
-
         input {
           background: var(--bg-default);
           @include w-100-h-100;
@@ -308,16 +299,6 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
       }
 
       .Date-Time {
-        width: 24%;
-        height: 100%;
-        @include display-flex-column-flexStart;
-        gap: 4px;
-
-        span {
-          height: 35%;
-          font-size: var(--font-size-sm);
-        }
-
         input {
           background: var(--bg-default);
           @include w-100-h-100;
@@ -334,16 +315,6 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
       }
 
       .Reset-Filters {
-        width: 24%;
-        height: 100%;
-        @include display-flex-column-flexStart;
-        gap: 4px;
-
-        span {
-          height: 35%;
-          font-size: var(--font-size-sm);
-        }
-
         .reset-button {
           width: 100%;
           height: 65%;
@@ -364,33 +335,42 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
     }
 
     .Top__Right {
-      width: 30%;
-      height: 100%;
+      width: 27%;
+      height: 80%;
 
       ul {
         @include w-100-h-100;
         @include display-flex-row-between-center;
-        gap: 16px;
+        gap: 1rem;
+        font-size: var(--font-size-sm);
 
         li {
-          width: 33%;
-          height: 100%;
-          padding: 0px var(--padding-12);
           @include display-flex-row-between-center;
           border-radius: var(--radius-md);
+          height: 100%;
+          width: 100%;
+          list-style: none;
           cursor: pointer;
           transition: var(--transition-sm);
           background: var(--btn-primary);
           color: var(--text-active);
+          transition: var(--transition-md);
 
           &:hover {
             color: var(--text-active);
             background: var(--btn-primary-hover);
           }
 
-          .fa {
+          i {
+            height: 100%;
             width: 25%;
             @include display-flex-center-center;
+          }
+
+          span {
+            height: 100%;
+            flex: 1;
+            @include display-flex-left-center;
           }
         }
       }
