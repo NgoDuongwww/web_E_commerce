@@ -19,10 +19,8 @@ function upload_image(event) {
 </script>
 
 <template>
-  <div
-    class="add-brand fixed inset-0 bg-opacity-50 flex items-center justify-center z-[1000]"
-  >
-    <div class="add w-xl gap-5 flex flex-col rounded-lg p-6">
+  <div class="add-brand">
+    <div class="add">
       <div class="form__title text-2xl font-bold">Add New Brand</div>
       <form class="form__add-brand flex flex-col gap-3">
         <div class="form__section flex flex-col">
@@ -80,9 +78,18 @@ function upload_image(event) {
 
 <style lang="scss" scoped>
 .add-brand {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  @include display-flex-center-center;
   background-color: rgba(0, 0, 0, 0.5);
 
   .add {
+    width: 500px;
+    padding: var(--padding-24);
+    @include display-flex-column;
+    gap: 20px;
+    border-radius: var(--radius-lg);
     background: var(--bg-default);
 
     .form__actions {

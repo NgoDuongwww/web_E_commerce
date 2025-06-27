@@ -136,236 +136,101 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
           </button>
         </div>
       </div>
-      <div class="Top__Right w-[30%] h-full">
-        <ul
-          class="w-full h-full flex flex-row justify-between items-center gap-4"
-        >
-          <li
-            class="w-1/3 h-full px-3 flex flex-row justify-between items-center rounded-md cursor-pointer transition-[var(--transition-sm)] bg-[var(--btn-primary)] text-[var(--text-active)] hover:bg-[var(--btn-primary-hover)] hover:text-[var(--text-active)]"
-            @click="add_product = true"
-          >
-            <i
-              class="fa fa-plus w-1/4 flex justify-center items-center"
-              aria-hidden="true"
-            ></i>
-            <span class="h-full flex justify-start items-center"
-              >Add Product</span
-            >
+      <div class="Top__Right">
+        <ul>
+          <li @click="add_product = true">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <span>Add Product</span>
           </li>
-          <li
-            class="w-1/3 h-full px-3 flex flex-row justify-between items-center rounded-md cursor-pointer transition-[var(--transition-sm)] bg-[var(--btn-primary)] text-[var(--text-active)] hover:bg-[var(--btn-primary-hover)] hover:text-[var(--text-active)]"
-          >
-            <i class="fas fa-upload"></i> <span>Import Product</span>
-          </li>
-          <li
-            class="w-1/3 h-full px-3 flex flex-row justify-between items-center rounded-md cursor-pointer transition-[var(--transition-sm)] bg-[var(--btn-primary)] text-[var(--text-active)] hover:bg-[var(--btn-primary-hover)] hover:text-[var(--text-active)]"
-          >
-            <i class="fas fa-download"></i> <span>Export Product</span>
-          </li>
+          <li><i class="fas fa-upload"></i> <span>Import Product</span></li>
+          <li><i class="fas fa-download"></i> <span>Export Product</span></li>
         </ul>
       </div>
     </div>
-    <div
-      class="Product-List__Bottom w-full h-[92%] bg-[var(--bg-default)] rounded-md"
-    >
-      <div
-        class="Product Bottom w-full h-full flex flex-col justify-between items-center"
-      >
-        <table class="table-fixed border-collapse">
-          <thead class="w-full h-[5%]">
+    <div class="Product-List__Bottom">
+      <div class="Product Bottom">
+        <table>
+          <thead>
             <tr>
-              <th
-                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
-              >
-                Product ID
-              </th>
-              <th
-                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
-              >
-                Name
-              </th>
-              <th
-                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
-              >
-                Image
-              </th>
-              <th
-                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
-              >
-                Description
-              </th>
-              <th
-                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
-              >
-                Buy Turn
-              </th>
-              <th
-                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
-              >
-                Brand
-              </th>
-              <th
-                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
-              >
-                Category
-              </th>
-              <th
-                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
-              >
-                Rating
-              </th>
-              <th
-                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
-              >
-                Total Ratings
-              </th>
-              <th
-                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
-              >
-                Total Sold
-              </th>
-              <th
-                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
-              >
-                Created At
-              </th>
-              <th
-                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
-              >
-                Visible
-              </th>
-              <th
-                class="w-[10%] py-3 px-4 text-center font-semibold text-[var(--table-header-text)] text-sm border-b border-[var(--table-border)]"
-              >
-                Actions
-              </th>
+              <th>Product ID</th>
+              <th>Name</th>
+              <th>Image</th>
+              <th>Description</th>
+              <th>Buy Turn</th>
+              <th>Brand</th>
+              <th>Category</th>
+              <th>Rating</th>
+              <th>Total Ratings</th>
+              <th>Total Sold</th>
+              <th>Created At</th>
+              <th>Visible</th>
+              <th>Actions</th>
             </tr>
           </thead>
-          <tbody class="w-full h-full">
-            <tr
-              v-if="loading"
-              class="h-12 border-b border-[var(--table-border)] table-fixed hover:bg-[var(--table-row-hover)]"
-            >
-              <td
-                colspan="14"
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
-              >
-                Đang tải sản phẩm...
-              </td>
+          <tbody>
+            <tr v-if="loading">
+              <td colspan="14">Đang tải sản phẩm...</td>
             </tr>
 
-            <tr
-              v-else-if="products.length === 0"
-              class="h-12 border-b border-[var(--table-border)] table-fixed hover:bg-[var(--table-row-hover)]"
-            >
-              <td
-                colspan="14"
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
-              >
-                Không tìm thấy sản phẩm nào.
-              </td>
+            <tr v-else-if="products.length === 0">
+              <td colspan="14">Không tìm thấy sản phẩm nào.</td>
             </tr>
 
-            <tr
-              v-for="product in products"
-              :key="product.id"
-              class="h-12 border-b border-[var(--table-border)] hover:bg-[var(--table-row-hover)]"
-            >
-              <td
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
-              >
+            <tr v-for="product in products" :key="product.id">
+              <td>
                 {{ product.id }}
               </td>
-              <td
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
-              >
+              <td>
                 {{ product.name }}
               </td>
-              <td
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none flex justify-center items-center"
-              >
-                <img :src="product.image" alt="" class="w-[75%]" />
+              <td class="img">
+                <img :src="product.image" alt="" />
               </td>
-              <td
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
-              >
-                {{ product.description?.slice(0, 60) }}
-                {{ product.description?.length > 60 ? '...' : '' }}
+              <td>
+                {{ product.description?.slice(0, 70) }}
+                {{ product.description?.length > 70 ? '...' : '' }}
               </td>
-              <td
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
-              >
+              <td>
                 {{ product.buyturn }}
               </td>
-              <td
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
-              >
+              <td>
                 {{ product.brand_id }}
               </td>
-              <td
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
-              >
+              <td>
                 {{ product.category_id }}
               </td>
-              <td
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
-              >
+              <td>
                 {{ product.rating }}
               </td>
-              <td
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
-              >
+              <td>
                 {{ product.total_ratings }}
               </td>
-              <td
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
-              >
+              <td>
                 {{ product.total_sold }}
               </td>
-              <td
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
-              >
+              <td>
                 {{ product.created_at?.slice(0, 10) }}
               </td>
-              <td
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
-              >
+              <td>
                 <i
-                  :class="
-                    product.is_visible
-                      ? 'fa fa-eye text-green'
-                      : 'fa fa-eye-slash text-red'
-                  "
+                  :class="product.is_visible ? 'fa fa-eye' : 'fa fa-eye-slash'"
                 ></i>
               </td>
-              <td
-                class="text-ellipsis align-middle text-center py-1 px-2 text-sm text-[var(--table-text)] leading-none"
-              >
+              <td>
                 <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
               </td>
             </tr>
           </tbody>
         </table>
-        <div
-          class="Pagination w-full h-[5%] flex justify-center"
-          v-if="total > pageSize"
-        >
-          <ul class="flex items-center gap-6 text-sm">
-            <li
-              class="flex items-center gap-2 cursor-pointer transition-[var(--transition-sm)] hover:text-[var(--btn-primary-hover)]"
-              @click="Previous"
-              :class="{ disabled: current_page === 1 }"
-            >
+        <div class="Pagination" v-if="total > pageSize">
+          <ul>
+            <li @click="Previous" :class="{ disabled: current_page === 1 }">
               <i class="fa fa-arrow-left" aria-hidden="true"></i> Previous
             </li>
             <li>
               <span> Page {{ current_page }} of {{ total_page }} </span>
             </li>
-            <li
-              class="flex items-center gap-2 cursor-pointer transition-[var(--transition-sm)] hover:text-[var(--btn-primary-hover)]"
-              @click="Next"
-              :class="{ disabled: current_page >= total }"
-            >
+            <li @click="Next" :class="{ disabled: current_page >= total }">
               <i class="fa fa-arrow-right" aria-hidden="true"></i> Next
             </li>
           </ul>
@@ -493,6 +358,147 @@ onMounted(getProducts) // ➡ Hook chạy sau khi component render lần đầu.
 
           &:hover {
             background-color: var(--bg-page);
+          }
+        }
+      }
+    }
+
+    .Top__Right {
+      width: 30%;
+      height: 100%;
+
+      ul {
+        @include w-100-h-100;
+        @include display-flex-row-between-center;
+        gap: 16px;
+
+        li {
+          width: 33%;
+          height: 100%;
+          padding: 0px var(--padding-12);
+          @include display-flex-row-between-center;
+          border-radius: var(--radius-md);
+          cursor: pointer;
+          transition: var(--transition-sm);
+          background: var(--btn-primary);
+          color: var(--text-active);
+
+          &:hover {
+            color: var(--text-active);
+            background: var(--btn-primary-hover);
+          }
+
+          .fa {
+            width: 25%;
+            @include display-flex-center-center;
+          }
+        }
+      }
+    }
+  }
+
+  .Product-List__Bottom {
+    width: 100%;
+    height: 92%;
+    background: var(--bg-default);
+    border-radius: var(--radius-md);
+
+    .Product {
+      @include w-100-h-100;
+      @include display-flex-column-between-center;
+
+      table {
+        table-layout: fixed;
+        border-collapse: collapse;
+
+        thead {
+          width: 100%;
+          height: 5%;
+
+          tr {
+            th {
+              width: 10%;
+              padding: var(--padding-12) var(--padding-16);
+              text-align: center;
+              font-weight: 600;
+              color: var(--table-header-text);
+              font-size: var(--font-size-sm);
+              border-bottom: 1px solid var(--table-border);
+            }
+          }
+        }
+
+        tbody {
+          @include w-100-h-100;
+
+          tr {
+            height: 48px !important;
+            border-bottom: 1px solid var(--table-border);
+            table-layout: fixed;
+
+            &:hover {
+              background-color: var(--table-row-hover);
+            }
+
+            td {
+              text-overflow: ellipsis;
+              vertical-align: middle;
+              text-align: center;
+              padding: var(--padding-4) var(--padding-8);
+              font-size: var(--font-size-sm);
+              color: var(--table-text);
+              line-height: 1;
+
+              &:last-child {
+                i {
+                  cursor: pointer;
+                  color: var(--table-icon);
+                  transition: var(--transition-sm);
+
+                  &:hover {
+                    color: var(--table-icon-hover);
+                  }
+                }
+              }
+            }
+
+            .img {
+              @include display-flex-center-center;
+
+              img {
+                width: 75%;
+              }
+            }
+          }
+        }
+      }
+
+      .Pagination {
+        width: 100%;
+        height: 5%;
+        @include display-flex-jus-center;
+
+        ul {
+          @include display-flex-ali-center;
+          gap: 24px;
+          font-size: var(--font-size-sm);
+
+          li {
+            cursor: pointer;
+            transition: var(--transition-sm);
+
+            &:hover {
+              color: var(--btn-primary-hover);
+            }
+          }
+
+          .disabled {
+            cursor: default;
+            color: var(--text-default);
+
+            &:hover {
+              color: var(--text-default);
+            }
           }
         }
       }

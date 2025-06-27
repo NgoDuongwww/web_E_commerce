@@ -11,66 +11,51 @@ const logout = () => {
 </script>
 
 <template>
-  <div
-    class="Admin-Header w-full h-full py-6 px-4 flex flex-col justify-between"
-  >
-    <div class="Header Admin-Header__img w-full h-1/12 flex justify-center">
-      <img :src="toi" alt="Logo" class="w-full h-full object-contain" />
+  <div class="Admin-Header">
+    <div class="Header Admin-Header__img">
+      <img :src="toi" alt="Logo" />
     </div>
 
-    <div class="Header Admin-Header__Menu w-full h-9/12 object-cover">
-      <ul class="w-full h-full flex flex-col gap-2">
-        <li class="w-full h-11 flex flex-row">
+    <div class="Header Admin-Header__Menu">
+      <ul>
+        <li>
           <router-link
-            class="tab w-full h-full flex justify-start items-center rounded-md transition-[var(--transition-md)] hover:bg-[var(--btn-primary-hover)] hover:text-[var(--text-active)]"
+            class="tab"
             :class="{
-              'activeTab bg-[var(--btn-primary)] text-[var(--text-active)]':
-                $route.path === '/admin/dashboard',
+              activeTab: $route.path === '/admin/dashboard',
             }"
             to="/admin/dashboard"
-            ><i class="fa fa-home w-1/4 h-full text-center py-3"></i
-            >Dashboard</router-link
+            ><i class="fa fa-home"></i>Dashboard</router-link
           >
         </li>
-        <li class="w-full h-11 flex flex-row">
+        <li>
           <router-link
-            class="tab w-full h-full flex justify-start items-center rounded-md transition-[var(--transition-md)] hover:bg-[var(--btn-primary-hover)] hover:text-[var(--text-active)]"
+            class="tab"
             :class="{
-              'activeTab bg-[var(--btn-primary)] text-[var(--text-active)]':
-                $route.path.startsWith('/admin/products'),
+              activeTab: $route.path.startsWith('/admin/products'),
             }"
             to="/admin/products"
-            ><i class="fa fa-cube w-1/4 h-full text-center py-3"></i>
-            Product</router-link
+            ><i class="fa fa-cube"></i> Product</router-link
           >
         </li>
-        <li class="w-full h-11 flex flex-row">
-          <div
-            class="tab w-full h-full flex justify-start items-center rounded-md transition-[var(--transition-md)] hover:bg-[var(--btn-primary-hover)] hover:text-[var(--text-active)]"
-          >
-            <i class="fa fa-cog w-1/4 h-full text-center py-3"></i> Settings
-          </div>
+        <li>
+          <div class="tab"><i class="fa fa-cog"></i> Settings</div>
         </li>
       </ul>
     </div>
 
-    <div class="Header Admin-Header__Logout w-full h-1/12 py-2">
-      <button
-        @click="logout"
-        class="w-full h-full flex flex-row justify-center items-center gap-3 cursor-pointer rounded-md transition-[var(--transition-md)] hover:bg-[var(--btn-primary-hover)] hover:text-[var(--text-active)]"
-      >
-        <i class="fas fa-sign-out-alt"></i>Logout
-      </button>
+    <div class="Header Admin-Header__Logout">
+      <button @click="logout"><i class="fas fa-sign-out-alt"></i>Logout</button>
     </div>
   </div>
 </template>
 
-<!-- <style lang="scss" scoped>
+<style lang="scss" scoped>
 .Admin-Header {
-  // @include w-100-h-100;
+  @include w-100-h-100;
   @include display-flex-column-between;
-  // padding: var(--padding-24) var(--padding-16) var(--padding-24)
-  //   var(--padding-16);
+  padding: var(--padding-24) var(--padding-16) var(--padding-24)
+    var(--padding-16);
 
   .Header {
     width: 100%;
@@ -161,4 +146,4 @@ const logout = () => {
     }
   }
 }
-</style> -->
+</style>
