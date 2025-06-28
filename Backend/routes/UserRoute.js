@@ -1,6 +1,6 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require('../constants/UserRole.js')
+  const UserRole = require('../constants')
 
   // Controller import
   const UserController = require('../controllers/UserController.js')
@@ -11,32 +11,32 @@ module.exports = (router) => {
   const requireRoles = require('../middlewares/jwtMiddleware.js')
 
   // DTO import
-  const LoginUserRequest = require('../dto/requests/user/LoginUserRequest.js')
-  const RegisterUserRequest = require('../dto/requests/user/RegisterUserRequest.js')
+  const LoginRequest = require('../dto/requests/user/LoginRequest.js')
+  const RegisterRequest = require('../dto/requests/user/RegisterRequest.js')
 
   router.post(
     '/users/admin/register',
-    validate(RegisterUserRequest),
-    asyncHandler(UserController.registerAdmin),
+    validate(RegisterRequest),
+    asyncHandler(UserController.registerAdmin)
   )
   router.post(
     '/users/register',
-    validate(RegisterUserRequest),
-    asyncHandler(UserController.registerUser),
+    validate(RegisterRequest),
+    asyncHandler(UserController.registerUser)
   )
   router.post(
     '/users/login',
-    validate(LoginUserRequest),
-    asyncHandler(UserController.loginUser),
+    validate(LoginRequest),
+    asyncHandler(UserController.login)
   )
   router.put(
     '/users/update/:id',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
-    asyncHandler(UserController.updateUser),
+    asyncHandler(UserController.updateUser)
   )
   router.post(
     '/users/me/:id',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
-    asyncHandler(UserController.getUserById),
+    asyncHandler(UserController.getUserById)
   )
 }

@@ -1,6 +1,6 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require('../constants/UserRole.js')
+  const UserRole = require('../constants')
 
   // Controller import
   const OrderDetailController = require('../controllers/OrderDetailController.js')
@@ -13,19 +13,19 @@ module.exports = (router) => {
 
   router.get(
     '/order-details',
-    asyncHandler(OrderDetailController.getOrderDetails),
+    asyncHandler(OrderDetailController.getOrderDetails)
   )
   router.get(
     '/order-details/:id',
-    asyncHandler(OrderDetailController.getOrderDetailById),
+    asyncHandler(OrderDetailController.getOrderDetailById)
   )
   router.put(
     '/order-details/:id',
-    asyncHandler(OrderDetailController.updateOrderDetail),
+    asyncHandler(OrderDetailController.updateOrderDetail)
   )
   router.delete(
     '/order-details/:id',
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(OrderDetailController.deleteOrderDetail),
+    asyncHandler(OrderDetailController.deleteOrderDetail)
   )
 }

@@ -1,6 +1,6 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require('../constants/UserRole.js')
+  const UserRole = require('../constants')
 
   // Controller import
   const BannerDetailController = require('../controllers/BannerDetailController.js')

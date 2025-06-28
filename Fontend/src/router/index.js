@@ -21,7 +21,7 @@ const router = createRouter({
       meta: {
         adminLayout: true, // ➡ Bật layout cho view admin
         adminRequiresAuth: true, // ➡ Route cần login
-      },
+      }, 
       children: [
         {
           path: 'dashboard',

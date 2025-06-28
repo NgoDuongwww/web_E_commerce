@@ -9,13 +9,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      category_code: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
       },
-      image: {
-        type: Sequelize.TEXT,
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
       },
       created_at: {
         allowNull: false,

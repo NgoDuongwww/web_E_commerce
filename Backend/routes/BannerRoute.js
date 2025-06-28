@@ -1,6 +1,6 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require('../constants/UserRole.js')
+  const UserRole = require('../constants')
 
   // Controller import
   const BannerController = require('../controllers/BannerController.js')
@@ -19,37 +19,37 @@ module.exports = (router) => {
   router.get('/banners', asyncHandler(BannerController.getBannersForPublic))
   router.get(
     '/banners/:id',
-    asyncHandler(BannerController.getBannerByIdForPublic),
+    asyncHandler(BannerController.getBannerByIdForPublic)
   )
 
   // Admin
   router.get(
     '/admin/banners',
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(BannerController.getBannersForAdmin),
+    asyncHandler(BannerController.getBannersForAdmin)
   )
   router.get(
     '/admin/banners/:id',
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(BannerController.getBannerByIdForAdmin),
+    asyncHandler(BannerController.getBannerByIdForAdmin)
   )
   router.post(
     '/admin/banners',
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
     validate(InsertBannerRequest),
-    asyncHandler(BannerController.insertBanner),
+    asyncHandler(BannerController.insertBanner)
   )
   router.put(
     '/admin/banners/:id',
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
     validate(UpdateBannerRequest),
-    asyncHandler(BannerController.updateBanner),
+    asyncHandler(BannerController.updateBanner)
   )
   router.delete(
     '/admin/banners/:id',
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(BannerController.deleteBanner),
+    asyncHandler(BannerController.deleteBanner)
   )
 }

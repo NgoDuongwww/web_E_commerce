@@ -1,6 +1,6 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require('../constants/UserRole.js')
+  const UserRole = require('../constants')
 
   // Controller import
   const ProductController = require('../controllers/ProductController.js')
@@ -18,41 +18,41 @@ module.exports = (router) => {
   // Public
   router.get(
     '/products', // ➡ tạo routes GET /products.
-    asyncHandler(ProductController.getProductsForPublic), // ➡ asyncHandler để tự động bắt lỗi trong getProductsForPublic.
+    asyncHandler(ProductController.getProductsForPublic) // ➡ asyncHandler để tự động bắt lỗi trong getProductsForPublic.
   )
   router.get(
     '/products/:id', // ➡ tạo routes GET /products/:id.
-    asyncHandler(ProductController.getProductByIdForPublic), // ➡ asyncHandler để tự động bắt lỗi trong getProductByIdForPublic.
+    asyncHandler(ProductController.getProductByIdForPublic) // ➡ asyncHandler để tự động bắt lỗi trong getProductByIdForPublic.
   )
 
   // Admin
   router.get(
     '/admin/products', // ➡ tạo routes GET /admin/products.
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(ProductController.getProductsForAdmin), // ➡ asyncHandler để tự động bắt lỗi trong getProductsForAdmin.
+    asyncHandler(ProductController.getProductsForAdmin) // ➡ asyncHandler để tự động bắt lỗi trong getProductsForAdmin.
   )
   router.get(
     '/admin/products/:id', // ➡ tạo routes GET /admin/products/:id.
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(ProductController.getProductByIdForAdmin), // ➡ asyncHandler để tự động bắt lỗi trong getProductByIdForAdmin.
+    asyncHandler(ProductController.getProductByIdForAdmin) // ➡ asyncHandler để tự động bắt lỗi trong getProductByIdForAdmin.
   )
   router.post(
     '/admin/products', // ➡ tạo routes POST /admin/products.
     requireRoles([UserRole.ADMIN]), // ➡ requireRoles kiểm tra quyền truy cập của người dùng.
     validateImageExists, // ➡ validateImageExists kiểm tra ảnh có tồn tại hay không và tạo đường dẫn hình ảnh.
     validate(InsertProductRequest), // ➡ validate kiểm tra dữ liệu gửi lên có đúng yêu cầu không
-    asyncHandler(ProductController.insertProduct), // ➡ asyncHandler để tự động bắt lỗi.
+    asyncHandler(ProductController.insertProduct) // ➡ asyncHandler để tự động bắt lỗi.
   )
   router.put(
     '/admin/products/:id', // ➡ tạo routes PUT /admin/products/:id.
     requireRoles([UserRole.ADMIN]), // ➡ requireRoles kiểm tra quyền truy cập của người dùng.
     validateImageExists, // ➡ validateImageExists kiểm tra ảnh có tồn tại hay không và tạo đường dẫn hình ảnh.
     validate(UpdateProductRequest), // ➡ validate kiểm tra dữ liệu gửi lên có đúng yêu cầu không
-    asyncHandler(ProductController.updateProduct), // ➡ asyncHandler để tự động bắt lỗi trong updateProducts.
+    asyncHandler(ProductController.updateProduct) // ➡ asyncHandler để tự động bắt lỗi trong updateProducts.
   )
   router.delete(
     '/admin/products/:id', // ➡ tạo routes DELETE /admin/products/:id.
     requireRoles([UserRole.ADMIN]), // ➡ requireRoles kiểm tra quyền truy cập của người dùng.
-    asyncHandler(ProductController.deleteProduct), // ➡ asyncHandler để tự động bắt lỗi trong deleteProducts.
+    asyncHandler(ProductController.deleteProduct) // ➡ asyncHandler để tự động bắt lỗi trong deleteProducts.
   )
 }

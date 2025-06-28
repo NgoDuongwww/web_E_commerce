@@ -3,7 +3,7 @@ const { Op } = Sequelize
 const db = require('../models')
 const ResponseUser = require('../dto/response/user/ResponseUser.js')
 const argon2 = require('argon2')
-const UserRole = require('../constants/UserRole.js')
+const UserRole = require('../constants')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const { getAvatarUrl } = require('../helpers')
@@ -88,7 +88,7 @@ exports.registerAdmin = async (req, res) => {
   })
 }
 
-exports.loginUser = async (req, res) => {
+exports.login = async (req, res) => {
   const { email, phone, password } = req.body // ➡ Lấy dữ liệu từ body.
 
   if (!email && !phone) {

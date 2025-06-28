@@ -1,6 +1,6 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require('../constants/UserRole.js')
+  const UserRole = require('../constants')
 
   // Controller import
   const DiscountController = require('../controllers/DiscountController.js')
@@ -20,17 +20,17 @@ module.exports = (router) => {
     '/admin/discounts',
     requireRoles([UserRole.ADMIN]),
     validate(InsertDiscountRequest),
-    asyncHandler(DiscountController.insertDiscount),
+    asyncHandler(DiscountController.insertDiscount)
   )
   router.put(
     '/admin/discounts/:id',
     requireRoles([UserRole.ADMIN]),
     validate(UpdateDiscountRequest),
-    asyncHandler(DiscountController.updateDiscount),
+    asyncHandler(DiscountController.updateDiscount)
   )
   router.delete(
     '/admin/discounts/:id',
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(DiscountController.deleteDiscount),
+    asyncHandler(DiscountController.deleteDiscount)
   )
 }

@@ -9,12 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.10",
     "axios": "^1.9.0",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "scss": "^0.2.4",
-    "tailwindcss": "^4.1.10",
     "vue": "^3.5.15",
     "vue-router": "^4.5.1",
     "vue-sonner": "^2.0.0"

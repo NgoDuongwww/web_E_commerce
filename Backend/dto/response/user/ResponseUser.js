@@ -3,6 +3,7 @@ class ResponseUser {
   constructor(user) {
     // ↳ Hàm khởi tạo (constructor), nhận dữ liệu từ client gửi lên (thường là req.body).
     this.id = user.id // ➡ Gán từng trường dữ liệu vào thuộc tính của đối tượng
+    this.user_code = user.user_code
     this.email = user.email
     this.password = user.password
     this.name = user.name

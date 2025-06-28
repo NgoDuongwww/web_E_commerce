@@ -14,7 +14,6 @@ import { fileURLToPath, URL } from 'node:url'
 // ↳ fileURLToPath chuyển URL về dạng đường dẫn hệ thống file.
 // ↳ URL dùng để tạo URL tuyệt đối dựa trên import.meta.url (đại diện cho file hiện
 import { resolve } from 'node:path' // ➡ Dùng để tạo đường dẫn tuyệt đối.
-import tailwindcss from '@tailwindcss/vite' // ➡ Giúp Vite xử lý các file .css với tailwindcss.
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,7 +23,6 @@ export default defineConfig({
    */
   plugins: [
     vue(), // ➡ Kích hoạt plugin Vue để Vite hiểu và xử lý các file .vue.
-    tailwindcss(), // ➡ Kích hoạt plugin tailwindcss.
   ],
 
   /**

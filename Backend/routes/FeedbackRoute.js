@@ -1,6 +1,6 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require('../constants/UserRole.js')
+  const UserRole = require('../constants')
 
   // Controller import
   const FeedbackController = require('../controllers/FeedbackController.js')
@@ -20,17 +20,17 @@ module.exports = (router) => {
     '/feedbacks',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
     validate(InsertFeedbackRequest),
-    asyncHandler(FeedbackController.insertFeedback),
+    asyncHandler(FeedbackController.insertFeedback)
   )
   router.put(
     '/feedbacks/:id',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
     validate(UpdateFeedbackRequest),
-    asyncHandler(FeedbackController.updateFeedback),
+    asyncHandler(FeedbackController.updateFeedback)
   )
   router.delete(
     '/feedbacks/:id',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
-    asyncHandler(FeedbackController.deleteFeedback),
+    asyncHandler(FeedbackController.deleteFeedback)
   )
 }

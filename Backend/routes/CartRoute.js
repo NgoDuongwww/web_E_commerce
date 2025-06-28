@@ -1,6 +1,6 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require('../constants/UserRole.js')
+  const UserRole = require('../constants')
 
   // Controller import
   const CartController = require('../controllers/CartController.js')
@@ -19,16 +19,16 @@ module.exports = (router) => {
     '/carts',
     requireRoles([UserRole.ADMIN, UserRole.USER]),
     validate(InsertCartRequest),
-    asyncHandler(CartController.insertCart),
+    asyncHandler(CartController.insertCart)
   )
   router.post(
     '/checkout',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
-    asyncHandler(CartController.checkoutCart),
+    asyncHandler(CartController.checkoutCart)
   )
   router.delete(
     '/carts/:id',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
-    asyncHandler(CartController.deleteCart),
+    asyncHandler(CartController.deleteCart)
   )
 }

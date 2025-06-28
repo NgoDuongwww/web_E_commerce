@@ -1,6 +1,6 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require('../constants/UserRole.js')
+  const UserRole = require('../constants')
 
   // Controller import
   const ImageController = require('../controllers/ImageController.js')
@@ -15,18 +15,18 @@ module.exports = (router) => {
     '/images/upload',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
     imageUpload.array('images', 5), // ➡ imageUpload chỉ cho phép upload tối đa 5 ảnh
-    asyncHandler(ImageController.uploadImages),
+    asyncHandler(ImageController.uploadImages)
   )
   router.post(
     '/images/google/upload',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
     imageGoogleUpload.single('image'),
-    asyncHandler(ImageController.uploadImageToGoogleStorage),
+    asyncHandler(ImageController.uploadImageToGoogleStorage)
   )
   router.get('/images/:filename', asyncHandler(ImageController.viewImage)),
     router.delete(
       '/images/delete',
       requireRoles([UserRole.USER, UserRole.ADMIN]),
-      ImageController.deleteImage,
+      ImageController.deleteImage
     )
 }

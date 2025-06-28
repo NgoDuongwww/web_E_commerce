@@ -1,6 +1,6 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require('../constants/UserRole.js')
+  const UserRole = require('../constants')
 
   // Controller import
   const CartItemController = require('../controllers/CartItemController.js')
@@ -16,26 +16,26 @@ module.exports = (router) => {
   router.get('/cart-items', asyncHandler(CartItemController.getCartItems))
   router.get(
     '/cart-items/:id',
-    asyncHandler(CartItemController.getCartItemById),
+    asyncHandler(CartItemController.getCartItemById)
   )
   router.get(
     '/cart-items/carts/:cart_id',
-    asyncHandler(CartItemController.getCartItemByCartId),
+    asyncHandler(CartItemController.getCartItemByCartId)
   )
   router.post(
     '/cart-items',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
     validate(InsertCartItemRequest),
-    asyncHandler(CartItemController.insertCartItem),
+    asyncHandler(CartItemController.insertCartItem)
   )
   router.put(
     '/cart-items/:id',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
-    asyncHandler(CartItemController.insertCartItem),
+    asyncHandler(CartItemController.insertCartItem)
   )
   router.delete(
     '/cart-items/:id',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
-    asyncHandler(CartItemController.deleteCartItem),
+    asyncHandler(CartItemController.deleteCartItem)
   )
 }

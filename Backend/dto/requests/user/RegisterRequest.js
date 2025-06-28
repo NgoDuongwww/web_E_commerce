@@ -1,7 +1,7 @@
 const Joi = require('joi')
 const { UserRole } = require('../../../constants')
 
-class RegisterUserRequest {
+class RegisterRequest {
   // ↳ Tạo một class để đại diện cho yêu cầu đăng ký người dùng.
   constructor(data) {
     // ↳ Hàm khởi tạo (constructor), nhận dữ liệu từ client gửi lên (thường là req.body).
@@ -31,4 +31,4 @@ class RegisterUserRequest {
   }
 }
 
-module.exports = RegisterUserRequest
+module.exports = RegisterRequest

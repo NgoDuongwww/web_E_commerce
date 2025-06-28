@@ -1,6 +1,6 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require('../constants/UserRole.js')
+  const UserRole = require('../constants')
 
   // Controller import
   const OrderController = require('../controllers/OrderController.js')
@@ -19,11 +19,11 @@ module.exports = (router) => {
     '/orders/:id',
     requireRoles([UserRole.ADMIN, UserRole.USER]),
     validate(UpdateOrderRequest),
-    asyncHandler(OrderController.updateOrder),
+    asyncHandler(OrderController.updateOrder)
   )
   router.delete(
     '/orders/:id',
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(OrderController.deleteOrder),
+    asyncHandler(OrderController.deleteOrder)
   )
 }

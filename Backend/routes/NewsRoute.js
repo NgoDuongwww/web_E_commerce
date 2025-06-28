@@ -1,6 +1,6 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require('../constants/UserRole.js')
+  const UserRole = require('../constants')
 
   // Controller import
   const NewsController = require('../controllers/NewsController.js')
@@ -22,18 +22,18 @@ module.exports = (router) => {
     requireRoles([UserRole.USER, UserRole.ADMIN]),
     validateImageExists,
     validate(InsertNewsRequest),
-    asyncHandler(NewsController.insertNewsArticle),
+    asyncHandler(NewsController.insertNewsArticle)
   )
   router.put(
     '/news/:id',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
     validateImageExists,
     validate(UpdateNewsRequest),
-    asyncHandler(NewsController.updateNewsArticle),
+    asyncHandler(NewsController.updateNewsArticle)
   )
   router.delete(
     '/news/:id',
     requireRoles([UserRole.USER, UserRole.ADMIN]),
-    asyncHandler(NewsController.deleteNewsArticle),
+    asyncHandler(NewsController.deleteNewsArticle)
   )
 }

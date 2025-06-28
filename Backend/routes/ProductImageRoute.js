@@ -1,6 +1,6 @@
 module.exports = (router) => {
   // Constant import
-  const UserRole = require('../constants/UserRole.js')
+  const UserRole = require('../constants')
 
   // Controller import
   const ProductImageController = require('../controllers/ProductImageController.js')
@@ -16,27 +16,27 @@ module.exports = (router) => {
 
   router.get(
     '/product-images',
-    asyncHandler(ProductImageController.getProductImages),
+    asyncHandler(ProductImageController.getProductImages)
   )
   router.get(
     '/product-images/:id',
-    asyncHandler(ProductImageController.getProductImageById),
+    asyncHandler(ProductImageController.getProductImageById)
   )
   router.post(
     '/product-images',
     requireRoles([UserRole.ADMIN]),
     validate(insertProductImageRequest),
-    asyncHandler(ProductImageController.insertProductImage),
+    asyncHandler(ProductImageController.insertProductImage)
   )
   router.put(
     '/product-images/:id',
     requireRoles([UserRole.ADMIN]),
     validateImageExists,
-    asyncHandler(ProductImageController.updateProductImage),
+    asyncHandler(ProductImageController.updateProductImage)
   )
   router.delete(
     '/product-images/:id',
     requireRoles([UserRole.ADMIN]),
-    asyncHandler(ProductImageController.deleteProductImage),
+    asyncHandler(ProductImageController.deleteProductImage)
   )
 }

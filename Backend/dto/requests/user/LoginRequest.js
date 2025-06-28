@@ -1,6 +1,6 @@
 const Joi = require('joi')
 
-class LoginUserRequest {
+class LoginRequest {
   // ↳ Tạo một class để đại diện cho yêu cầu đăng nhập người dùng.
   constructor(data) {
     // ↳ Hàm khởi tạo (constructor), nhận dữ liệu từ client gửi lên (thường là req.body).
@@ -27,4 +27,4 @@ class LoginUserRequest {
   }
 }
 
-module.exports = LoginUserRequest
+module.exports = LoginRequest
