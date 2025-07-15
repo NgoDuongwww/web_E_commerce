@@ -6,7 +6,11 @@ const argon2 = require('argon2')
 const UserRole = require('../constants')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-const { getAvatarUrl } = require('../helpers')
+const {
+  getAvatarUrl,
+  checkUserCodeHelper,
+  generateUserCode,
+} = require('../helpers')
 
 exports.registerUser = async (req, res) => {
   const { email, phone, password } = req.body // ➡ Lấy dữ liệu từ body.
@@ -33,12 +37,31 @@ exports.registerUser = async (req, res) => {
   const hashedPassword = password ? await argon2.hash(req.body.password) : null
   // ↳ req.body.password là mật khẩu gốc người dùng nhập.
   // ↳ hashedPassword là chuỗi mật khẩu đã được mã hóa (không thể đọc ngược).
+
+  let user_code
+  let checkDuplicateUserCode = true
+  let tryCount = 0
+  const MAX_TRIES = 10
+
+  while (checkDuplicateUserCode && tryCount < MAX_TRIES) {
+    user_code = generateUserCode()
+    checkDuplicateUserCode = await checkUserCodeHelper(user_code)
+    tryCount++
+  }
+
+  if (checkDuplicateUserCode) {
+    return res.status(500).json({
+      message: 'Không thể tạo user_code duy nhất, vui lòng thử lại',
+    })
+  }
+
   const newUser = await db.User.create({
     ...req.body, // ➡ Läy lấy tất cả các trường khác từ request (email, name, role, phone, v.v).
     email,
     phone,
     role: UserRole.USER,
     password: hashedPassword,
+    user_code,
   }) // ➡ Tạo mới người dùng từ dữ liệu req.body đã được xử lý thông qua class RegisterUserRequest, rồi lưu vào database.
 
   return res.status(201).json({
@@ -127,7 +150,7 @@ exports.login = async (req, res) => {
     process.env.JWT_SECRET,
     {
       expiresIn: process.env.JWT_EXPIRATION, // ➡ Cấu hình thời gian hết hạn cho token.
-    },
+    }
   )
   return res.status(200).json({
     // ↳ Trả về status 200 OK.
